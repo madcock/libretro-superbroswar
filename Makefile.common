@@ -1,21 +1,27 @@
 LIBRETRO_COMM_DIR := $(CORE_DIR)/libretro-common
+DEPS_DIR          := $(CORE_DIR)/dependencies
 
-INCFLAGS = -I$(CORE_DIR)/libretro \
+INCFLAGS = -I$(LIBRETRO_DIR) \
            -I$(LIBRETRO_COMM_DIR)/include \
+           -I$(LIBRETRO_COMM_DIR)/include/compat \
            -I$(CORE_DIR)/src/common \
            -I$(CORE_DIR)/src/common_netplay \
            -I$(CORE_DIR)/src/smw \
-           -I$(CORE_DIR)/dependencies/yaml-cpp-noboost/include \
-           -I$(CORE_DIR)/dependencies/SDL/include \
-           -I$(CORE_DIR)/dependencies/SDL_mixer \
-           -I$(CORE_DIR)/dependencies/SDL_image
+           -I$(DEPS_DIR)/yaml-cpp-noboost/include \
+           -I$(DEPS_DIR)/SDL/include \
+           -I$(DEPS_DIR)/SDL_mixer \
+           -I$(DEPS_DIR)/SDL_image
 
-CORE_DEFINE := -DNETWORK_DISABLED
+CORE_DEFINE := -DNETWORK_DISABLED -DWANT_ZLIB
+
 FLAGS += -ffast-math
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive
 
 YAML_CPP_SOURCES := \
     $(wildcard $(CORE_DIR)/dependencies/yaml-cpp-noboost/src/*.cpp)
+
+ZLIB_SOURCES := \
+    $(wildcard $(CORE_DIR)/dependencies/libretro-deps/libz/*.c)
 
 SDL_SOURCES := \
     $(wildcard $(CORE_DIR)/dependencies/SDL/src/*.c) \
@@ -78,13 +84,14 @@ SDL_MIXER_SOURCES := \
     $(CORE_DIR)/dependencies/SDL_mixer/music.c
 
 SOURCES_C := \
+    $(ZLIB_SOURCES) \
     $(SDL_SOURCES) \
     $(SDL_IMAGE_SOURCES) \
     $(SDL_MIXER_SOURCES)
 
 SOURCES_CXX := \
     $(YAML_CPP_SOURCES) \
-    $(CORE_DIR)/libretro/libretro.cpp \
+    $(LIBRETRO_DIR)/libretro.cpp \
     $(CORE_DIR)/src/common/dirlist.cpp \
     $(CORE_DIR)/src/common/eyecandy.cpp \
     $(CORE_DIR)/src/common/gfx.cpp \
@@ -136,3 +143,73 @@ SOURCES_CXX := \
     $(CORE_DIR)/src/smw/GSMenu.cpp \
     $(CORE_DIR)/src/smw/GSSplashScreen.cpp \
     $(CORE_DIR)/src/smw/ObjectContainer.cpp \
+    $(CORE_DIR)/src/smw/menu/BonusWheelMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/GameSettingsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/MainMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/MapFilterEditMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/MatchSelectionMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/ModeOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/OptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/PlayerControlsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/PlayerControlsSelectMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/TeamSelectMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/TournamentScoreboardMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/TourStopMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/WorldMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/network/NetEditServersMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/network/NetLobbyMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/network/NetNewRoomMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/network/NetNewRoomSettingsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/network/NetRoomMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/network/NetServersMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/EyeCandyOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/GameplayOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/GraphicsOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/PowerupDropRatesMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/PowerupSettingsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/ProjectileLimitsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/ProjectileOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/SoundOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/menu/options/TeamOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/network/FileCompressor.cpp \
+    $(CORE_DIR)/src/smw/network/NetConfigManager.cpp \
+    $(CORE_DIR)/src/smw/menu/options/TeamOptionsMenu.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/BounceBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/BreakableBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/DonutBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/FlipBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/IO_Block.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/NoteBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/OnOffSwitchBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/PowerupBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/SwitchBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/ThrowBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/ViewBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/blocks/WeaponBreakableBlock.cpp \
+    $(CORE_DIR)/src/smw/objects/moving/MovingObject.cpp \
+    $(CORE_DIR)/src/smw/objects/overmap/OverMapObject.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerAwardEffects.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerBurnupTimer.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerCape.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerCardCollection.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerCollisions.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerInvincibility.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerJail.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerKuriboShoe.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerOutOfArenaTimer.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerSecretCode.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerShield.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerSpinStatus.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerSuicideTimer.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerSuperStomp.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerTail.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerTanookiSuit.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerWarpStatus.cpp \
+    $(CORE_DIR)/src/smw/player_components/PlayerWings.cpp \
+    $(CORE_DIR)/src/smw/ui/MI_FrenzyModeOptions.cpp \
+    $(CORE_DIR)/src/smw/ui/MI_InputControlContainer.cpp \
+    $(CORE_DIR)/src/smw/ui/MI_NetRoomTeamSelect.cpp \
+    $(CORE_DIR)/src/smw/ui/MI_PowerupSlider.cpp \
+    $(CORE_DIR)/src/smw/ui/MI_StringScroll.cpp \
+    $(CORE_DIR)/src/smw/ui/MI_TeamSelect.cpp \
+    $(CORE_DIR)/src/smw/ui/NetworkListScroll.cpp
