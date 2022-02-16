@@ -1,0 +1,82 @@
+LIBRETRO_COMM_DIR := $(CORE_DIR)/libretro-common
+
+INCFLAGS = -I$(CORE_DIR)/libretro \
+           -I$(LIBRETRO_COMM_DIR)/include \
+           -I$(CORE_DIR)/src/common \
+           -I$(CORE_DIR)/src/common_netplay \
+           -I$(CORE_DIR)/src/smw \
+           -I$(CORE_DIR)/dependencies/yaml-cpp-noboost/include \
+           -I$(CORE_DIR)/dependencies/SDL/include \
+           -I$(CORE_DIR)/dependencies/SDL_mixer \
+           -I$(CORE_DIR)/dependencies/SDL_image
+
+CORE_DEFINE := -DNETWORK_DISABLED
+FLAGS += -ffast-math
+CXXFLAGS += -std=c++11 -fexceptions -fpermissive
+
+YAML_CPP_FILE_LIST := $(wildcard $(CORE_DIR)/dependencies/yaml-cpp-noboost/src/*.cpp)
+
+SDL_SOURCES := \
+    $(wildcard $(CORE_DIR)/dependencies/SDL/src/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/audio/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/cdrom/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/cpuinfo/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/events/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/file/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/joystick/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/stdlib/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/thread/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/timer/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/video/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/audio/dummy/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/video/dummy/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/joystick/dummy/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/cdrom/dummy/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/thread/generic/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/timer/dummy/*.c) \
+	$(wildcard $(CORE_DIR)/dependencies/SDL/src/loadso/dummy/*.c)
+
+SOURCES_C := \
+    $(SDL_SOURCES)
+
+SOURCES_CXX := \
+    $(YAML_CPP_FILE_LIST) \
+    $(CORE_DIR)/libretro/libretro.cpp \
+    $(CORE_DIR)/src/common/dirlist.cpp \
+    $(CORE_DIR)/src/common/eyecandy.cpp \
+    $(CORE_DIR)/src/common/gfx.cpp \
+    $(CORE_DIR)/src/common/global.cpp \
+    $(CORE_DIR)/src/common/input.cpp \
+    $(CORE_DIR)/src/common/linfunc.cpp \
+    $(CORE_DIR)/src/common/map.cpp \
+    $(CORE_DIR)/src/common/movingplatform.cpp \
+    $(CORE_DIR)/src/common/path.cpp \
+    $(CORE_DIR)/src/common/savepng.cpp \
+    $(CORE_DIR)/src/common/sfx.cpp \
+    $(CORE_DIR)/src/common/uicontrol.cpp \
+    $(CORE_DIR)/src/common/uimenu.cpp \
+    $(CORE_DIR)/src/common/FileIO.cpp \
+    $(CORE_DIR)/src/common/FileList.cpp \
+    $(CORE_DIR)/src/common/Game.cpp \
+    $(CORE_DIR)/src/common/GameModeSettings.cpp \
+    $(CORE_DIR)/src/common/GameValues.cpp \
+    $(CORE_DIR)/src/common/MapList.cpp \
+    $(CORE_DIR)/src/common/ObjectBase.cpp \
+    $(CORE_DIR)/src/common/RandomNumberGenerator.cpp \
+    $(CORE_DIR)/src/common/ResourceManager.cpp \
+    $(CORE_DIR)/src/common/TilesetManager.cpp \
+    $(CORE_DIR)/src/common/gfx/gfxFont.cpp \
+    $(CORE_DIR)/src/common/gfx/gfxPalette.cpp \
+    $(CORE_DIR)/src/common/gfx/gfxSDL.cpp \
+    $(CORE_DIR)/src/common/gfx/gfxSprite.cpp \
+    $(CORE_DIR)/src/common/gfx/SFont.cpp \
+    $(CORE_DIR)/src/common/map/MapReader.cpp \
+    $(CORE_DIR)/src/common/map/MapReader15xx.cpp \
+    $(CORE_DIR)/src/common/map/MapReader16xx.cpp \
+    $(CORE_DIR)/src/common/map/MapReader17xx.cpp \
+    $(CORE_DIR)/src/common/map/MapReader18xx.cpp \
+    $(CORE_DIR)/src/common/ui/MI_ImageSelectField.cpp \
+    $(CORE_DIR)/src/common/ui/MI_MapField.cpp \
+    $(CORE_DIR)/src/common/ui/MI_MapPreview.cpp \
+    $(CORE_DIR)/src/common/ui/MI_SelectField.cpp \
+    $(CORE_DIR)/src/common/ui/MI_SliderField.cpp \
