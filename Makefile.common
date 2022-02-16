@@ -37,8 +37,50 @@ SDL_SOURCES := \
 	$(wildcard $(CORE_DIR)/dependencies/SDL/src/timer/dummy/*.c) \
 	$(wildcard $(CORE_DIR)/dependencies/SDL/src/loadso/dummy/*.c)
 
+SDL_IMAGE_SOURCES := \
+    $(CORE_DIR)/dependencies/SDL_image/IMG.c           \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_bmp.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_gif.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_jpg.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_lbm.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_pcx.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_png.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_pnm.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_tga.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_tif.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_webp.c      \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_xcf.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_xpm.c       \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_xv.c        \
+    $(CORE_DIR)/dependencies/SDL_image/IMG_xxx.c
+
+SDL_MIXER_SOURCES := \
+    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_flac.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_fluidsynth.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_mod.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_mp3.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_ogg.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/effect_position.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/effect_stereoreverse.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/effects_internal.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/fluidsynth.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/load_aiff.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/load_flac.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/load_ogg.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/load_voc.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/mixer.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/music_cmd.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/music_flac.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/music_mad.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/music_mod.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/music_modplug.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/music_ogg.c  \
+    $(CORE_DIR)/dependencies/SDL_mixer/music.c
+
 SOURCES_C := \
-    $(SDL_SOURCES)
+    $(SDL_SOURCES) \
+    $(SDL_IMAGE_SOURCES) \
+    $(SDL_MIXER_SOURCES)
 
 SOURCES_CXX := \
     $(YAML_CPP_SOURCES) \
@@ -89,3 +131,8 @@ SOURCES_CXX := \
     $(CORE_DIR)/src/smw/player.cpp \
     $(CORE_DIR)/src/smw/uicustomcontrol.cpp \
     $(CORE_DIR)/src/smw/world.cpp \
+    $(CORE_DIR)/src/smw/FPSLimiter.cpp \
+    $(CORE_DIR)/src/smw/GSGameplay.cpp \
+    $(CORE_DIR)/src/smw/GSMenu.cpp \
+    $(CORE_DIR)/src/smw/GSSplashScreen.cpp \
+    $(CORE_DIR)/src/smw/ObjectContainer.cpp \
