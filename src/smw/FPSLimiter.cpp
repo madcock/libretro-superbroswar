@@ -24,7 +24,7 @@ FPSLimiter& FPSLimiter::instance()
 }
 
 
-#ifdef __EMSCRIPTEN__
+#if defined(__EMSCRIPTEN__) || defined(__LIBRETRO__)
 // the browser limits the frame rate
 void FPSLimiter::frameStart() {}
 void FPSLimiter::beforeFlip() {}

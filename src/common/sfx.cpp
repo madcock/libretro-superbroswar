@@ -23,7 +23,7 @@ bool sfx_init()
 	for (short iChannel = 0; iChannel < NUM_SOUND_CHANNELS; iChannel++)
 		g_PlayingSoundChannels[iChannel] = NULL;
 
-#ifndef __EMSCRIPTEN__
+#if !defined(__EMSCRIPTEN__) && !defined(__LIBRETRO__)
     const SDL_version *link_version = Mix_Linked_Version();
     printf("[sfx] SDL_Mixer %d.%d.%d initialized.\n",
         link_version->major, link_version->minor, link_version->patch);

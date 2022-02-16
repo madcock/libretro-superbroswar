@@ -195,7 +195,7 @@ void _load_drawmsg(const std::string& f)
 
 void _load_waitforkey()
 {
-#ifndef __EMSCRIPTEN__
+#if !defined(__EMSCRIPTEN__) && !defined(__LIBRETRO__)
     SDL_Event event;
     while (true) {
         while (SDL_PollEvent(&event)) {

@@ -31,7 +31,7 @@ using std::endl;
     #endif
 #endif
 
-#ifndef __EMSCRIPTEN__
+#if !defined(__EMSCRIPTEN__) && !defined(__LIBRETRO__)
     inline void smallDelay() { SDL_Delay(10); }
 #else
     inline void smallDelay() {}

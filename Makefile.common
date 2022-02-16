@@ -14,7 +14,8 @@ CORE_DEFINE := -DNETWORK_DISABLED
 FLAGS += -ffast-math
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive
 
-YAML_CPP_FILE_LIST := $(wildcard $(CORE_DIR)/dependencies/yaml-cpp-noboost/src/*.cpp)
+YAML_CPP_SOURCES := \
+    $(wildcard $(CORE_DIR)/dependencies/yaml-cpp-noboost/src/*.cpp)
 
 SDL_SOURCES := \
     $(wildcard $(CORE_DIR)/dependencies/SDL/src/*.c) \
@@ -40,7 +41,7 @@ SOURCES_C := \
     $(SDL_SOURCES)
 
 SOURCES_CXX := \
-    $(YAML_CPP_FILE_LIST) \
+    $(YAML_CPP_SOURCES) \
     $(CORE_DIR)/libretro/libretro.cpp \
     $(CORE_DIR)/src/common/dirlist.cpp \
     $(CORE_DIR)/src/common/eyecandy.cpp \
@@ -80,3 +81,11 @@ SOURCES_CXX := \
     $(CORE_DIR)/src/common/ui/MI_MapPreview.cpp \
     $(CORE_DIR)/src/common/ui/MI_SelectField.cpp \
     $(CORE_DIR)/src/common/ui/MI_SliderField.cpp \
+    $(CORE_DIR)/src/smw/ai.cpp \
+    $(CORE_DIR)/src/smw/gamemodes.cpp \
+    $(CORE_DIR)/src/smw/net.cpp \
+    $(CORE_DIR)/src/smw/objectgame.cpp \
+    $(CORE_DIR)/src/smw/objecthazard.cpp \
+    $(CORE_DIR)/src/smw/player.cpp \
+    $(CORE_DIR)/src/smw/uicustomcontrol.cpp \
+    $(CORE_DIR)/src/smw/world.cpp \

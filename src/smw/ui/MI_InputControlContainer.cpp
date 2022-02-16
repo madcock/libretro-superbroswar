@@ -113,7 +113,7 @@ MenuCodeEnum MI_InputControlField::SendInput(CPlayerInput *)
     bool done = false;
 
     while (!done) {
-        #ifndef __EMSCRIPTEN__
+        #if !defined(__EMSCRIPTEN__) && !defined(__LIBRETRO__)
         SDL_WaitEvent(&event);
         #endif
 
