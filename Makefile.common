@@ -3,7 +3,6 @@ DEPS_DIR          := $(CORE_DIR)/dependencies
 
 INCFLAGS = -I$(LIBRETRO_DIR) \
            -I$(LIBRETRO_COMM_DIR)/include \
-           -I$(LIBRETRO_COMM_DIR)/include/compat \
            -I$(CORE_DIR)/src/common \
            -I$(CORE_DIR)/src/common_netplay \
            -I$(CORE_DIR)/src/smw \
@@ -12,79 +11,76 @@ INCFLAGS = -I$(LIBRETRO_DIR) \
            -I$(DEPS_DIR)/SDL_mixer \
            -I$(DEPS_DIR)/SDL_image
 
-CORE_DEFINE := -DNETWORK_DISABLED -DWANT_ZLIB
+CORE_DEFINE := -DNETWORK_DISABLED
 
 FLAGS += -ffast-math
+LDFLAGS += -lz
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive
 
 YAML_CPP_SOURCES := \
-    $(wildcard $(CORE_DIR)/dependencies/yaml-cpp-noboost/src/*.cpp)
-
-ZLIB_SOURCES := \
-    $(wildcard $(CORE_DIR)/dependencies/libretro-deps/libz/*.c)
+    $(wildcard $(DEPS_DIR)/yaml-cpp-noboost/src/*.cpp)
 
 SDL_SOURCES := \
-    $(wildcard $(CORE_DIR)/dependencies/SDL/src/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/audio/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/cdrom/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/cpuinfo/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/events/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/file/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/joystick/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/stdlib/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/thread/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/timer/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/video/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/audio/dummy/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/video/dummy/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/joystick/dummy/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/cdrom/dummy/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/thread/generic/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/timer/dummy/*.c) \
-	$(wildcard $(CORE_DIR)/dependencies/SDL/src/loadso/dummy/*.c)
+    $(wildcard $(DEPS_DIR)/SDL/src/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/audio/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/cdrom/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/cpuinfo/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/events/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/file/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/joystick/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/stdlib/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/thread/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/timer/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/video/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/audio/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/video/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/joystick/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/cdrom/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/thread/generic/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/timer/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/loadso/dummy/*.c)
 
 SDL_IMAGE_SOURCES := \
-    $(CORE_DIR)/dependencies/SDL_image/IMG.c           \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_bmp.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_gif.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_jpg.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_lbm.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_pcx.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_png.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_pnm.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_tga.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_tif.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_webp.c      \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_xcf.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_xpm.c       \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_xv.c        \
-    $(CORE_DIR)/dependencies/SDL_image/IMG_xxx.c
+    $(DEPS_DIR)/SDL_image/IMG.c           \
+    $(DEPS_DIR)/SDL_image/IMG_bmp.c       \
+    $(DEPS_DIR)/SDL_image/IMG_gif.c       \
+    $(DEPS_DIR)/SDL_image/IMG_jpg.c       \
+    $(DEPS_DIR)/SDL_image/IMG_lbm.c       \
+    $(DEPS_DIR)/SDL_image/IMG_pcx.c       \
+    $(DEPS_DIR)/SDL_image/IMG_png.c       \
+    $(DEPS_DIR)/SDL_image/IMG_pnm.c       \
+    $(DEPS_DIR)/SDL_image/IMG_tga.c       \
+    $(DEPS_DIR)/SDL_image/IMG_tif.c       \
+    $(DEPS_DIR)/SDL_image/IMG_webp.c      \
+    $(DEPS_DIR)/SDL_image/IMG_xcf.c       \
+    $(DEPS_DIR)/SDL_image/IMG_xpm.c       \
+    $(DEPS_DIR)/SDL_image/IMG_xv.c        \
+    $(DEPS_DIR)/SDL_image/IMG_xxx.c
 
 SDL_MIXER_SOURCES := \
-    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_flac.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_fluidsynth.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_mod.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_mp3.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/dynamic_ogg.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/effect_position.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/effect_stereoreverse.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/effects_internal.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/fluidsynth.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/load_aiff.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/load_flac.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/load_ogg.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/load_voc.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/mixer.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/music_cmd.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/music_flac.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/music_mad.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/music_mod.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/music_modplug.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/music_ogg.c  \
-    $(CORE_DIR)/dependencies/SDL_mixer/music.c
+    $(DEPS_DIR)/SDL_mixer/dynamic_flac.c  \
+    $(DEPS_DIR)/SDL_mixer/dynamic_fluidsynth.c  \
+    $(DEPS_DIR)/SDL_mixer/dynamic_mod.c  \
+    $(DEPS_DIR)/SDL_mixer/dynamic_mp3.c  \
+    $(DEPS_DIR)/SDL_mixer/dynamic_ogg.c  \
+    $(DEPS_DIR)/SDL_mixer/effect_position.c  \
+    $(DEPS_DIR)/SDL_mixer/effect_stereoreverse.c  \
+    $(DEPS_DIR)/SDL_mixer/effects_internal.c  \
+    $(DEPS_DIR)/SDL_mixer/fluidsynth.c  \
+    $(DEPS_DIR)/SDL_mixer/load_aiff.c  \
+    $(DEPS_DIR)/SDL_mixer/load_flac.c  \
+    $(DEPS_DIR)/SDL_mixer/load_ogg.c  \
+    $(DEPS_DIR)/SDL_mixer/load_voc.c  \
+    $(DEPS_DIR)/SDL_mixer/mixer.c  \
+    $(DEPS_DIR)/SDL_mixer/music_cmd.c  \
+    $(DEPS_DIR)/SDL_mixer/music_flac.c  \
+    $(DEPS_DIR)/SDL_mixer/music_mad.c  \
+    $(DEPS_DIR)/SDL_mixer/music_mod.c  \
+    $(DEPS_DIR)/SDL_mixer/music_modplug.c  \
+    $(DEPS_DIR)/SDL_mixer/music_ogg.c  \
+    $(DEPS_DIR)/SDL_mixer/music.c
 
 SOURCES_C := \
-    $(ZLIB_SOURCES) \
     $(SDL_SOURCES) \
     $(SDL_IMAGE_SOURCES) \
     $(SDL_MIXER_SOURCES)
