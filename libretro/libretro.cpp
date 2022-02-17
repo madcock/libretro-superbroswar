@@ -401,7 +401,7 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
    info->geometry.max_width    = VIDEO_WIDTH;
    info->geometry.max_height   = VIDEO_HEIGHT;
    info->geometry.aspect_ratio = (640.0f / 480.0f);
-   info->timing.fps            = 60.0;
+   info->timing.fps            = 60.0f;
    info->timing.sample_rate    = 44100.0f;
 }
 
@@ -461,6 +461,7 @@ void retro_reset(void)
 void retro_run(void)
 {
     gameloop_frame();
+    video_cb(screen->pixels, screen->w, screen->h, screen->pitch);
 }
 
 bool retro_load_game(const struct retro_game_info *info)
