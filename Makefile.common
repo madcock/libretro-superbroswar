@@ -11,10 +11,10 @@ INCFLAGS = -I$(LIBRETRO_DIR) \
            -I$(DEPS_DIR)/SDL_mixer \
            -I$(DEPS_DIR)/SDL_image
 
-CORE_DEFINE := -DNETWORK_DISABLED
+CORE_DEFINE := -DNETWORK_DISABLED -DLOAD_PNG -DLOAD_BMP
 
 FLAGS += -ffast-math
-LDFLAGS += -lz
+LDFLAGS += -lz -lpng
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive
 
 YAML_CPP_SOURCES := \
