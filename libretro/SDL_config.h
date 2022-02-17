@@ -38,8 +38,8 @@
 /* Enable the stub cdrom driver (src/cdrom/dummy/\*.c) */
 #define SDL_CDROM_DISABLED	1
 
-/* Enable the stub joystick driver (src/joystick/dummy/\*.c) */
-#define SDL_JOYSTICK_DISABLED	1
+/* Enable the libretro joystick driver (src/joystick/libretro/\*.c) */
+#define SDL_JOYSTICK_LIBRETRO	1
 
 /* Enable the stub shared object loader (src/loadso/dummy/\*.c) */
 #define SDL_LOADSO_DISABLED	1
@@ -47,8 +47,8 @@
 /* Enable the stub thread support (src/thread/generic/\*.c) */
 #define SDL_THREADS_DISABLED	1
 
-/* Enable the stub timer support (src/timer/dummy/\*.c) */
-#define SDL_TIMERS_DISABLED	1
+/* Enable the libretro timer support (src/timer/libretro/\*.c) */
+#define SDL_TIMER_LIBRETRO	1
 
 /* Enable the dummy video driver (src/video/dummy/\*.c) */
 #define SDL_VIDEO_DRIVER_DUMMY	1

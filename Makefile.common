@@ -34,10 +34,10 @@ SDL_SOURCES := \
 	$(wildcard $(DEPS_DIR)/SDL/src/video/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/audio/dummy/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/video/dummy/*.c) \
-	$(wildcard $(DEPS_DIR)/SDL/src/joystick/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/joystick/libretro/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/cdrom/dummy/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/thread/generic/*.c) \
-	$(wildcard $(DEPS_DIR)/SDL/src/timer/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/timer/libretro/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/loadso/dummy/*.c)
 
 SDL_IMAGE_SOURCES := \
