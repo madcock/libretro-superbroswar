@@ -7,9 +7,6 @@
 [submodule "data"]
 	path = data
 	url = https://github.com/mmatyas/supermariowar-data
-[submodule "dependencies/SDL"]
-	path = dependencies/SDL
-	url = https://github.com/libsdl-org/SDL-1.2.git
 [submodule "dependencies/SDL_mixer"]
 	path = dependencies/SDL_mixer
 	url = https://github.com/libsdl-org/SDL_mixer.git
