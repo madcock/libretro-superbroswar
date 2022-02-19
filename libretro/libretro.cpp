@@ -94,7 +94,7 @@ static retro_environment_t environ_cb;
 static retro_input_poll_t input_poll_cb;
 static retro_input_state_t input_state_cb;
 
-char retro_base_directory[4096];
+char retro_game_path[4096];
 
 extern "C" short int libretro_input_state_cb(unsigned port, unsigned device, unsigned index, unsigned id)
 {
@@ -367,21 +367,13 @@ static void gameloop_frame()
 
 void retro_init(void)
 {
-    const char *dir = NULL;
-    if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir)
-    {
-        snprintf(retro_base_directory, sizeof(retro_base_directory), "%s", dir);
-    }
-
     input_state_cb = NULL;
 
     SDL_putenv("SDL_VIDEODRIVER=dummy");
-    game_init();
 }
 
 void retro_deinit(void)
 {
-    game_deinit();
     input_state_cb = NULL;
 }
 
@@ -401,7 +393,7 @@ void retro_get_system_info(struct retro_system_info *info)
     info->library_name     = "Super Mario War";
     info->library_version  = "0.1";
     info->need_fullpath    = true;
-    info->valid_extensions = "";
+    info->valid_extensions = "game";
 }
 
 void retro_get_system_av_info(struct retro_system_av_info *info)
@@ -460,6 +452,21 @@ void retro_run(void)
     video_cb(screen->pixels, screen->w, screen->h, screen->pitch);
 }
 
+static void extract_directory(char *buf, const char *path, size_t size)
+{
+   strncpy(buf, path, size - 1);
+   buf[size - 1] = '\0';
+
+   char *base = strrchr(buf, '/');
+   if (!base)
+      base = strrchr(buf, '\\');
+
+   if (base)
+      *base = '\0';
+   else
+      buf[0] = '\0';
+}
+
 bool retro_load_game(const struct retro_game_info *info)
 {
     struct retro_input_descriptor desc[] = {
@@ -479,12 +486,18 @@ bool retro_load_game(const struct retro_game_info *info)
         return false;
     }
 
+    extract_directory(retro_game_path, info->path, sizeof(retro_game_path));
+    RootDataDirectory = std::string(retro_game_path);
+
+    game_init();
+
     (void)info;
     return true;
 }
 
 void retro_unload_game(void)
 {
+    game_deinit();
 }
 
 unsigned retro_get_region(void)
