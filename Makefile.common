@@ -1,26 +1,53 @@
-LIBRETRO_COMM_DIR := $(CORE_DIR)/libretro-common
 DEPS_DIR          := $(CORE_DIR)/dependencies
 
+FLAGS += -I$(CORE_DIR)/libretro-common/include
+
 INCFLAGS = -I$(LIBRETRO_DIR) \
-           -I$(LIBRETRO_COMM_DIR)/include \
            -I$(CORE_DIR)/src/common \
            -I$(CORE_DIR)/src/common_netplay \
-           -I$(CORE_DIR)/src/smw \
-           -I$(DEPS_DIR)/yaml-cpp-noboost/include \
-           -I$(DEPS_DIR)/SDL/include \
-           -I$(DEPS_DIR)/SDL_mixer \
-           -I$(DEPS_DIR)/SDL_image
+           -I$(CORE_DIR)/src/smw
 
 CORE_DEFINE := -DNETWORK_DISABLED -DLOAD_PNG -DLOAD_BMP
 
 FLAGS += -ffast-math
-LDFLAGS += -lz -lpng
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive
 
-YAML_CPP_SOURCES := \
-    $(wildcard $(DEPS_DIR)/yaml-cpp-noboost/src/*.cpp)
+SOURCES_C =
+SOURCES_CXX =
 
-SDL_SOURCES := \
+# yaml-cpp-noboost
+SOURCES_CXX += \
+    $(wildcard $(DEPS_DIR)/yaml-cpp-noboost/src/*.cpp)
+FLAGS += -I$(DEPS_DIR)/yaml-cpp-noboost/include
+
+# png
+SOURCES_C += \
+	$(wildcard $(DEPS_DIR)/libretro-deps/libpng/*.c)
+FLAGS += -I$(DEPS_DIR)/libretro-deps/libpng
+
+# zlib
+SOURCES_C += \
+	$(DEPS_DIR)/libretro-deps/libz/adler32.c \
+	$(DEPS_DIR)/libretro-deps/libz/compress.c \
+	$(DEPS_DIR)/libretro-deps/libz/crc32.c \
+	$(DEPS_DIR)/libretro-deps/libz/deflate.c \
+	$(DEPS_DIR)/libretro-deps/libz/gzclose.c \
+	$(DEPS_DIR)/libretro-deps/libz/gzlib.c \
+	$(DEPS_DIR)/libretro-deps/libz/gzread.c \
+	$(DEPS_DIR)/libretro-deps/libz/gzwrite.c \
+	$(DEPS_DIR)/libretro-deps/libz/infback.c \
+	$(DEPS_DIR)/libretro-deps/libz/inffast.c \
+	$(DEPS_DIR)/libretro-deps/libz/inflate.c \
+	$(DEPS_DIR)/libretro-deps/libz/inftrees.c \
+	$(DEPS_DIR)/libretro-deps/libz/trees.c \
+	$(DEPS_DIR)/libretro-deps/libz/uncompr.c \
+	$(DEPS_DIR)/libretro-deps/libz/zutil.c
+FLAGS += -I$(DEPS_DIR)/libretro-deps/libz
+FLAGS += -I$(DEPS_DIR)/libretro-common/compat
+FLAGS += -DWANT_ZLIB
+
+# SDL
+SOURCES_C += \
     $(wildcard $(DEPS_DIR)/SDL/src/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/audio/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/cdrom/*.c) \
@@ -39,8 +66,10 @@ SDL_SOURCES := \
 	$(wildcard $(DEPS_DIR)/SDL/src/thread/generic/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/timer/libretro/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/loadso/dummy/*.c)
+FLAGS += -I$(DEPS_DIR)/SDL/include
 
-SDL_IMAGE_SOURCES := \
+# SDL_image
+SOURCES_C += \
     $(DEPS_DIR)/SDL_image/IMG.c           \
     $(DEPS_DIR)/SDL_image/IMG_bmp.c       \
     $(DEPS_DIR)/SDL_image/IMG_gif.c       \
@@ -56,8 +85,10 @@ SDL_IMAGE_SOURCES := \
     $(DEPS_DIR)/SDL_image/IMG_xpm.c       \
     $(DEPS_DIR)/SDL_image/IMG_xv.c        \
     $(DEPS_DIR)/SDL_image/IMG_xxx.c
+FLAGS += -I$(DEPS_DIR)/SDL_image
 
-SDL_MIXER_SOURCES := \
+# SDL_mixer
+SOURCES_C += \
     $(DEPS_DIR)/SDL_mixer/dynamic_flac.c  \
     $(DEPS_DIR)/SDL_mixer/dynamic_fluidsynth.c  \
     $(DEPS_DIR)/SDL_mixer/dynamic_mod.c  \
@@ -79,14 +110,9 @@ SDL_MIXER_SOURCES := \
     $(DEPS_DIR)/SDL_mixer/music_modplug.c  \
     $(DEPS_DIR)/SDL_mixer/music_ogg.c  \
     $(DEPS_DIR)/SDL_mixer/music.c
+FLAGS += -I$(DEPS_DIR)/SDL_mixer
 
-SOURCES_C := \
-    $(SDL_SOURCES) \
-    $(SDL_IMAGE_SOURCES) \
-    $(SDL_MIXER_SOURCES)
-
-SOURCES_CXX := \
-    $(YAML_CPP_SOURCES) \
+SOURCES_CXX += \
     $(LIBRETRO_DIR)/libretro.cpp \
     $(CORE_DIR)/src/common/dirlist.cpp \
     $(CORE_DIR)/src/common/eyecandy.cpp \
