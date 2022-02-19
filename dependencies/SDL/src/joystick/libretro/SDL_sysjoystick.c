@@ -25,7 +25,7 @@
 
 #include "libretro.h"
 
-extern retro_input_state_t input_state_cb;
+extern short int libretro_input_state_cb(unsigned port, unsigned device, unsigned index, unsigned id);
 
 /* This is the system specific header for the SDL joystick API */
 
@@ -132,11 +132,8 @@ SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 	int new_an[4];
 	int i;
 
-	if (input_state_cb == NULL)
-		return;
-
 	for (i=0; i < sizeof(vbt)/sizeof(*vbt); i++)
-		if (input_state_cb(joystick->index, RETRO_DEVICE_JOYPAD, 0, i))
+		if (libretro_input_state_cb(joystick->index, RETRO_DEVICE_JOYPAD, 0, i))
 			pad_retromask |= (1 << i);
 
 	if (pad_retromask != joystick->hwdata->old_pad_data) {
@@ -153,10 +150,10 @@ SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 		joystick->hwdata->old_pad_data = pad_retromask;
 	}
 
-	new_an[0] = (input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_X));
-	new_an[1] = (input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_Y));
-	new_an[2] = (input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X));
-	new_an[3] = (input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y));
+	new_an[0] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_X));
+	new_an[1] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_Y));
+	new_an[2] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X));
+	new_an[3] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y));
 
 	for (i=0; i<4; i++) {
 	        if( new_an[i] != joystick->hwdata->an[i]) {

@@ -92,9 +92,17 @@ static retro_video_refresh_t video_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
 static retro_environment_t environ_cb;
 static retro_input_poll_t input_poll_cb;
-retro_input_state_t input_state_cb = NULL;
+static retro_input_state_t input_state_cb;
 
 char retro_base_directory[4096];
+
+extern "C" short int libretro_input_state_cb(unsigned port, unsigned device, unsigned index, unsigned id)
+{
+    if (input_state_cb == NULL)
+        return 0;
+    
+    return input_state_cb(port, device, index, id);
+}
 
 static void create_globals()
 {
@@ -365,6 +373,8 @@ void retro_init(void)
         snprintf(retro_base_directory, sizeof(retro_base_directory), "%s", dir);
     }
 
+    input_state_cb = NULL;
+
     SDL_putenv("SDL_VIDEODRIVER=dummy");
     game_init();
 }
@@ -372,6 +382,7 @@ void retro_init(void)
 void retro_deinit(void)
 {
     game_deinit();
+    input_state_cb = NULL;
 }
 
 unsigned retro_api_version(void)
