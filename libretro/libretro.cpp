@@ -412,21 +412,6 @@ void retro_set_environment(retro_environment_t cb)
     if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))
         log_cb = logging.log;
 
-    static const struct retro_controller_description controllers[] = {
-        { "Digital Controller (Gamepad)", RETRO_DEVICE_JOYPAD },
-        { "Analog Controller (DualShock)", RETRO_DEVICE_ANALOG },
-        { NULL, 0 },
-    };
-
-    static const struct retro_controller_info ports[] = {
-        { controllers, 3 },
-        { controllers, 3 },
-        { controllers, 3 },
-        { controllers, 3 },
-        { NULL, 0 },
-    };
-
-    cb(RETRO_ENVIRONMENT_SET_CONTROLLER_INFO, (void*)ports);
     cb(RETRO_ENVIRONMENT_SET_SUPPORT_NO_GAME, &no_content);
 }
 
