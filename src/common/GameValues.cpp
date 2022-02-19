@@ -236,7 +236,7 @@ void CGameValues::init()
         }
 
         //Set the players input to the default configuration (will be overwritten by options.bin settings)
-#ifdef _XBOX
+#if defined(_XBOX) || defined(__LIBRETRO__)
         inputConfiguration[iPlayer][1].iDevice = iPlayer;
         playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1];
 #else
