@@ -22,29 +22,27 @@ FLAGS += -I$(DEPS_DIR)/yaml-cpp-noboost/include
 
 # png
 SOURCES_C += \
-	$(wildcard $(DEPS_DIR)/libretro-deps/libpng/*.c)
-FLAGS += -I$(DEPS_DIR)/libretro-deps/libpng
+	$(wildcard $(DEPS_DIR)/libpng/*.c)
+FLAGS += -I$(DEPS_DIR)//libpng
 
 # zlib
 SOURCES_C += \
-	$(DEPS_DIR)/libretro-deps/libz/adler32.c \
-	$(DEPS_DIR)/libretro-deps/libz/compress.c \
-	$(DEPS_DIR)/libretro-deps/libz/crc32.c \
-	$(DEPS_DIR)/libretro-deps/libz/deflate.c \
-	$(DEPS_DIR)/libretro-deps/libz/gzclose.c \
-	$(DEPS_DIR)/libretro-deps/libz/gzlib.c \
-	$(DEPS_DIR)/libretro-deps/libz/gzread.c \
-	$(DEPS_DIR)/libretro-deps/libz/gzwrite.c \
-	$(DEPS_DIR)/libretro-deps/libz/infback.c \
-	$(DEPS_DIR)/libretro-deps/libz/inffast.c \
-	$(DEPS_DIR)/libretro-deps/libz/inflate.c \
-	$(DEPS_DIR)/libretro-deps/libz/inftrees.c \
-	$(DEPS_DIR)/libretro-deps/libz/trees.c \
-	$(DEPS_DIR)/libretro-deps/libz/uncompr.c \
-	$(DEPS_DIR)/libretro-deps/libz/zutil.c
-FLAGS += -I$(DEPS_DIR)/libretro-deps/libz
-FLAGS += -I$(DEPS_DIR)/libretro-common/compat
-FLAGS += -DWANT_ZLIB
+	$(DEPS_DIR)/zlib-1.2.11/adler32.c \
+	$(DEPS_DIR)/zlib-1.2.11/compress.c \
+	$(DEPS_DIR)/zlib-1.2.11/crc32.c \
+	$(DEPS_DIR)/zlib-1.2.11/deflate.c \
+	$(DEPS_DIR)/zlib-1.2.11/gzclose.c \
+	$(DEPS_DIR)/zlib-1.2.11/gzlib.c \
+	$(DEPS_DIR)/zlib-1.2.11/gzread.c \
+	$(DEPS_DIR)/zlib-1.2.11/gzwrite.c \
+	$(DEPS_DIR)/zlib-1.2.11/infback.c \
+	$(DEPS_DIR)/zlib-1.2.11/inffast.c \
+	$(DEPS_DIR)/zlib-1.2.11/inflate.c \
+	$(DEPS_DIR)/zlib-1.2.11/inftrees.c \
+	$(DEPS_DIR)/zlib-1.2.11/trees.c \
+	$(DEPS_DIR)/zlib-1.2.11/uncompr.c \
+	$(DEPS_DIR)/zlib-1.2.11/zutil.c
+FLAGS += -I$(DEPS_DIR)/zlib-1.2.11
 
 # SDL
 SOURCES_C += \
