@@ -13,9 +13,6 @@
 [submodule "dependencies/SDL_image"]
 	path = dependencies/SDL_image
 	url = https://github.com/libsdl-org/SDL_image.git
-[submodule "dependencies/libretro-deps"]
-	path = dependencies/libretro-deps
-	url = https://github.com/libretro/libretro-deps.git
 [submodule "dependencies/libretro-common"]
 	path = libretro-common
 	url = https://github.com/libretro/libretro-common.git
