@@ -7,7 +7,7 @@ INCFLAGS = -I$(LIBRETRO_DIR) \
            -I$(CORE_DIR)/src/common_netplay \
            -I$(CORE_DIR)/src/smw
 
-CORE_DEFINE := -DNETWORK_DISABLED -DLOAD_PNG -DLOAD_BMP
+CORE_DEFINE := -DNETWORK_DISABLED
 
 FLAGS += -ffast-math
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive
@@ -19,6 +19,29 @@ SOURCES_CXX =
 SOURCES_CXX += \
     $(wildcard $(DEPS_DIR)/yaml-cpp-noboost/src/*.cpp)
 FLAGS += -I$(DEPS_DIR)/yaml-cpp-noboost/include
+
+# ogg
+SOURCES_C += \
+    $(wildcard $(DEPS_DIR)/libogg/src/*.c)
+FLAGS += -I$(DEPS_DIR)/libogg/include
+
+# vorbisidec
+SOURCES_C += \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/mdct.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/block.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/window.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/synthesis.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/info.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/floor1.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/floor0.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/vorbisfile.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/res012.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/mapping0.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/registry.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/codebook.c \
+    $(DEPS_DIR)/libvorbisidec-1.2.1/sharedbook.c
+FLAGS += -I$(DEPS_DIR)/libogg/include
+CORE_DEFINE += -DHAVE_ALLOCA -DVAR_ARRAYS -DHAVE_SYS_TYPES_H
 
 # png
 SOURCES_C += \
@@ -84,6 +107,7 @@ SOURCES_C += \
     $(DEPS_DIR)/SDL_image/IMG_xv.c        \
     $(DEPS_DIR)/SDL_image/IMG_xxx.c
 FLAGS += -I$(DEPS_DIR)/SDL_image
+CORE_DEFINE += -DLOAD_PNG -DLOAD_BMP
 
 # SDL_mixer
 SOURCES_C += \
@@ -109,6 +133,7 @@ SOURCES_C += \
     $(DEPS_DIR)/SDL_mixer/music_ogg.c  \
     $(DEPS_DIR)/SDL_mixer/music.c
 FLAGS += -I$(DEPS_DIR)/SDL_mixer
+CORE_DEFINE += -DOGG_MUSIC -DOGG_USE_TREMOR
 
 SOURCES_CXX += \
     $(LIBRETRO_DIR)/libretro.cpp \
