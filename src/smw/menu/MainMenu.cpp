@@ -31,7 +31,7 @@ UI_MainMenu::UI_MainMenu() : UI_Menu()
 #else
 
 // disable Multiplayer button for web builds
-#if defined(__EMSCRIPTEN__) || defined(__LIBRETRO__)
+#ifdef __EMSCRIPTEN__
     miMultiplayerButton = new MI_Button(&rm->spr_selectfield, 120, 322, "Multiplayer - Under Construction", 400, 0);
     miOptionsButton = new MI_Button(&rm->spr_selectfield, 120, 362, "Options", 400, 0);
     miControlsButton = new MI_Button(&rm->spr_selectfield, 120, 402, "Controls", 400, 0);
@@ -45,14 +45,14 @@ UI_MainMenu::UI_MainMenu() : UI_Menu()
     miOptionsButton->SetCode(MENU_CODE_TO_OPTIONS_MENU);
     miControlsButton->SetCode(MENU_CODE_TO_CONTROLS_MENU);
 
-#if defined(__EMSCRIPTEN__) || defined(__LIBRETRO__)
+#ifdef __EMSCRIPTEN__
     miExitButton = NULL;
 #else
     miExitButton = new MI_Button(&rm->spr_selectfield, 120, 402, "Exit", 640 * 0.625f, 0);
     miExitButton->SetCode(MENU_CODE_EXIT_APPLICATION);
 #endif
 
-#if !defined(__EMSCRIPTEN__) && !defined(__LIBRETRO__)
+#ifndef __EMSCRIPTEN__
     AddControl(miMainStartButton, miExitButton, miPlayerSelect, NULL, miQuickGameButton);
     AddControl(miQuickGameButton, miExitButton, miPlayerSelect, miMainStartButton, NULL);
     AddControl(miPlayerSelect, miMainStartButton, miMultiplayerButton, NULL, NULL);
@@ -70,7 +70,7 @@ UI_MainMenu::UI_MainMenu() : UI_Menu()
 #endif
 
     SetHeadControl(miMainStartButton);
-#if !defined(_XBOX) && !defined(__EMSCRIPTEN__) && !defined(__LIBRETRO__)
+#if !defined(_XBOX) && !defined(__EMSCRIPTEN__)
     SetCancelCode(MENU_CODE_EXIT_APPLICATION);
 #endif
 
