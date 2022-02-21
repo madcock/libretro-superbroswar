@@ -19,6 +19,7 @@ UI_GraphicsOptionsMenu::UI_GraphicsOptionsMenu() : UI_Menu()
     miTopLayerField->SetKey(game_values.toplayer ? 1 : 0);
     miTopLayerField->SetAutoAdvance(true);
 
+#ifndef __LIBRETRO__
     miFrameLimiterField = new MI_SelectField(&rm->spr_selectfield, 70, 160, "Frame Limit", 500, 220);
     miFrameLimiterField->Add("10 FPS", 100, "", false, false);
     miFrameLimiterField->Add("15 FPS", 67, "", false, false);
@@ -61,6 +62,7 @@ UI_GraphicsOptionsMenu::UI_GraphicsOptionsMenu() : UI_Menu()
     miFullscreenField->SetAutoAdvance(true);
     miFullscreenField->SetItemChangedCode(MENU_CODE_TOGGLE_FULLSCREEN);
 #endif //_XBOX
+#endif // __LIBRETRO__
 
     miMenuGraphicsPackField = new MI_PacksField(&rm->spr_selectfield, 70, 240, "Menu Graphics", 500, 220, menugraphicspacklist, MENU_CODE_MENU_GRAPHICS_PACK_CHANGED);
     miWorldGraphicsPackField = new MI_PacksField(&rm->spr_selectfield, 70, 280, "World Graphics", 500, 220, worldgraphicspacklist, MENU_CODE_WORLD_GRAPHICS_PACK_CHANGED);
@@ -73,8 +75,9 @@ UI_GraphicsOptionsMenu::UI_GraphicsOptionsMenu() : UI_Menu()
     miGraphicsOptionsMenuRightHeaderBar = new MI_Image(&rm->menu_plain_field, 320, 0, 192, 0, 320, 32, 1, 1, 0);
     miGraphicsOptionsMenuHeaderText = new MI_Text("Graphics Options Menu", 320, 5, 0, 2, 1);
 
-    AddControl(miTopLayerField, miGraphicsOptionsMenuBackButton, miFrameLimiterField, NULL, miGraphicsOptionsMenuBackButton);
 
+#ifndef __LIBRETRO__
+    AddControl(miTopLayerField, miGraphicsOptionsMenuBackButton, miFrameLimiterField, NULL, miGraphicsOptionsMenuBackButton);
 #ifdef _XBOX
     AddControl(miFrameLimiterField, miTopLayerField, miScreenSettingsButton, NULL, miGraphicsOptionsMenuBackButton);
     AddControl(miScreenSettingsButton, miFrameLimiterField, miMenuGraphicsPackField, NULL, miGraphicsOptionsMenuBackButton);
@@ -83,7 +86,11 @@ UI_GraphicsOptionsMenu::UI_GraphicsOptionsMenu() : UI_Menu()
     AddControl(miFrameLimiterField, miTopLayerField, miFullscreenField, NULL, miGraphicsOptionsMenuBackButton);
     AddControl(miFullscreenField, miFrameLimiterField, miMenuGraphicsPackField, NULL, miGraphicsOptionsMenuBackButton);
     AddControl(miMenuGraphicsPackField, miFullscreenField, miWorldGraphicsPackField, NULL, miGraphicsOptionsMenuBackButton);
-#endif
+#endif // _XBOX
+#else
+    AddControl(miTopLayerField, miGraphicsOptionsMenuBackButton, miMenuGraphicsPackField, NULL, miGraphicsOptionsMenuBackButton);
+    AddControl(miMenuGraphicsPackField, miTopLayerField, miWorldGraphicsPackField, NULL, miGraphicsOptionsMenuBackButton);
+#endif // __LIBRETRO__
 
     AddControl(miWorldGraphicsPackField, miMenuGraphicsPackField, miGameGraphicsPackField, NULL, miGraphicsOptionsMenuBackButton);
     AddControl(miGameGraphicsPackField, miWorldGraphicsPackField, miGraphicsOptionsMenuBackButton, NULL, miGraphicsOptionsMenuBackButton);

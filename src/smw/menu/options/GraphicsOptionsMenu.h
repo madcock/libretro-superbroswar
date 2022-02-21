@@ -18,6 +18,7 @@ public:
 
 private:
     MI_SelectField * miTopLayerField;
+#ifndef __LIBRETRO__
     MI_SelectField * miFrameLimiterField;
 
 #ifdef _XBOX
@@ -25,6 +26,7 @@ private:
 #else
     MI_SelectField * miFullscreenField;
 #endif //_XBOX
+#endif // __LIBRETRO__
 
     MI_PacksField * miMenuGraphicsPackField;
     MI_PacksField * miWorldGraphicsPackField;
