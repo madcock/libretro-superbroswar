@@ -18,6 +18,18 @@ UI_MainMenu::UI_MainMenu() : UI_Menu()
 
     miPlayerSelect = new MI_PlayerSelect(&rm->menu_player_select, 120, 250, "Players", 400, 140);
 
+#ifdef __LIBRETRO__
+    miOptionsButton = new MI_Button(&rm->spr_selectfield, 120, 322, "Options", 400, 0);
+    miOptionsButton->SetCode(MENU_CODE_TO_OPTIONS_MENU);
+
+    AddControl(miMainStartButton, miOptionsButton, miPlayerSelect, NULL, miQuickGameButton);
+    AddControl(miQuickGameButton, miOptionsButton, miPlayerSelect, miMainStartButton, NULL);
+    AddControl(miPlayerSelect, miMainStartButton, miOptionsButton, NULL, NULL);
+    AddControl(miOptionsButton, miPlayerSelect, miMainStartButton, NULL, NULL);
+
+    SetHeadControl(miMainStartButton);
+#else
+
 // disable Multiplayer button for web builds
 #if defined(__EMSCRIPTEN__) || defined(__LIBRETRO__)
     miMultiplayerButton = new MI_Button(&rm->spr_selectfield, 120, 322, "Multiplayer - Under Construction", 400, 0);
@@ -61,6 +73,8 @@ UI_MainMenu::UI_MainMenu() : UI_Menu()
 #if !defined(_XBOX) && !defined(__EMSCRIPTEN__) && !defined(__LIBRETRO__)
     SetCancelCode(MENU_CODE_EXIT_APPLICATION);
 #endif
+
+#endif // __LIBRETRO__
 
     AddNonControl(miSMWTitle);
     AddNonControl(miSMWVersion);
