@@ -80,14 +80,25 @@ SOURCES_C += \
 	$(wildcard $(DEPS_DIR)/SDL/src/thread/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/timer/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/video/*.c) \
-	$(wildcard $(DEPS_DIR)/SDL/src/audio/dummy/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/audio/libretro/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/video/dummy/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/joystick/libretro/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/cdrom/dummy/*.c) \
-	$(wildcard $(DEPS_DIR)/SDL/src/thread/generic/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/timer/libretro/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/loadso/dummy/*.c)
 FLAGS += -I$(DEPS_DIR)/SDL/include
+
+ifeq ($(platform), win)
+SOURCES_C += \
+    $(DEPS_DIR)/SDL/src/thread/win32/SDL_sysmutex.c \
+    $(DEPS_DIR)/SDL/src/thread/win32/SDL_syssem.c \
+    $(DEPS_DIR)/SDL/src/thread/win32/SDL_systhread.c \
+    $(DEPS_DIR)/SDL/src/thread/generic/SDL_syscond.c
+else
+SOURCES_C += \
+    $(wildcard $(DEPS_DIR)/SDL/src/thread/pthread/*.c)
+endif
+
 
 # SDL_image
 SOURCES_C += \

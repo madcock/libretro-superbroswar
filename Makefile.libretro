@@ -58,7 +58,7 @@ ifneq (,$(findstring unix,$(platform)))
    LDFLAGS += -lroot
    CXXFLAGS += -fpermissive
    else
-   LDFLAGS += -lrt
+   LDFLAGS += -lrt -lpthread
    endif
    
    # Raspberry Pi

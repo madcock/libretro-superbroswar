@@ -111,6 +111,14 @@ extern "C" short int libretro_input_state_cb(unsigned port, unsigned device, uns
     return input_state_cb(port, device, index, id);
 }
 
+extern "C" void libretro_audio_cb(int16_t *buffer, uint32_t buffer_len)
+{
+    if (audio_batch_cb == NULL)
+        return;
+    
+    audio_batch_cb(buffer, buffer_len);
+}
+
 static void create_globals()
 {
     // this instance will contain the other relevant objects
@@ -287,16 +295,10 @@ static void game_init()
         game_values.powerupweights[iPowerup] = g_iCurrentPowerupPresets[game_values.poweruppreset][iPowerup];
     }
 
-#ifdef _XBOX
-    gfx_changefullscreen(false); //Sets flicker filter
-    SDL_SetHardwareFilter(game_values.hardwarefilter);
-    blitdest = screen;
-#else
     if (game_values.fullscreen) {
         gfx_changefullscreen(true);
         blitdest = screen;
     }
-#endif
 
     init_spawnlocations();
 
@@ -318,13 +320,6 @@ static void game_deinit()
 
     for (short i = 0; i < GAMEMODE_LAST; i++)
         delete gamemodes[i];
-
-#ifdef _XBOX
-    for (i = 0; i < joystickcount; i++)
-        SDL_JoystickClose(joysticks[i]);
-
-    delete[] joysticks;
-#endif
 
     sfx_close();
     gfx_close();
@@ -350,12 +345,6 @@ static void game_deinit()
     delete [] game_values.pfFilters;
     delete [] game_values.piFilterIcons;
 
-//Return to dash on xbox
-#ifdef _XBOX
-    LD_LAUNCH_DASHBOARD LaunchData = { XLD_LAUNCH_DASHBOARD_MAIN_MENU };
-    XLaunchNewImage( NULL, (LAUNCH_DATA*)&LaunchData );
-#endif
-
 	// release all resources
 	delete rm;
     delete smw;
@@ -375,6 +364,7 @@ static void gameloop_frame()
 void retro_init(void)
 {
     input_state_cb = NULL;
+    audio_batch_cb = NULL;
 
     SDL_putenv("SDL_VIDEODRIVER=dummy");
 }
@@ -382,6 +372,7 @@ void retro_init(void)
 void retro_deinit(void)
 {
     input_state_cb = NULL;
+    audio_batch_cb = NULL;
 }
 
 unsigned retro_api_version(void)

@@ -164,6 +164,9 @@ extern AudioBootStrap DISKAUD_bootstrap;
 #if SDL_AUDIO_DRIVER_DUMMY
 extern AudioBootStrap DUMMYAUD_bootstrap;
 #endif
+#if SDL_AUDIO_DRIVER_LIBRETRO
+extern AudioBootStrap LIBRETRO_bootstrap;
+#endif
 #if SDL_AUDIO_DRIVER_DC
 extern AudioBootStrap DCAUD_bootstrap;
 #endif
