@@ -25,6 +25,7 @@
 
 #include "libretro.h"
 
+// defined in libretro.cpp
 extern short int libretro_input_state_cb(unsigned port, unsigned device, unsigned index, unsigned id);
 
 /* This is the system specific header for the SDL joystick API */

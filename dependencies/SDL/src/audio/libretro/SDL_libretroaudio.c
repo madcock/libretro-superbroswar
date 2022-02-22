@@ -36,6 +36,7 @@
 /* The tag name used by DUMMY audio */
 #define LIBRETRO_DRIVER_NAME         "libretro"
 
+// defined in libretro.cpp
 extern short int libretro_audio_cb(int16_t *buffer, uint32_t buffer_len);
 
 static SDL_AudioDevice *audiodevice; 

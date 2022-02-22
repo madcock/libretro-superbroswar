@@ -418,9 +418,10 @@ void retro_set_environment(retro_environment_t cb)
 
 void retro_reset(void)
 {
-
+    // no reset
 }
 
+// defined in SDL_libretroaudio.c
 extern "C" void LIBRETRO_MixAudio();
 
 void retro_run(void)
