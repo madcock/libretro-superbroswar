@@ -33,12 +33,12 @@
 #include "../SDL_audiodev_c.h"
 #include "SDL_libretroaudio.h"
 
-#include "libretro.h"
+/* The tag name used by DUMMY audio */
+#define LIBRETRO_DRIVER_NAME         "libretro"
 
 extern short int libretro_audio_cb(int16_t *buffer, uint32_t buffer_len);
 
-/* The tag name used by DUMMY audio */
-#define LIBRETRO_DRIVER_NAME         "libretro"
+static SDL_AudioDevice *audiodevice; 
 
 /* Audio driver functions */
 static int LIBRETRO_OpenAudio(_THIS, SDL_AudioSpec *spec);
@@ -57,6 +57,8 @@ static void LIBRETRO_DeleteDevice(SDL_AudioDevice *device)
 {
 	SDL_free(device->hidden);
 	SDL_free(device);
+
+	audiodevice = NULL;
 }
 
 static SDL_AudioDevice *LIBRETRO_CreateDevice(int devindex)
@@ -88,6 +90,8 @@ static SDL_AudioDevice *LIBRETRO_CreateDevice(int devindex)
 
 	this->free = LIBRETRO_DeleteDevice;
 
+	audiodevice = this;
+
 	return this;
 }
 
@@ -99,24 +103,19 @@ AudioBootStrap LIBRETRO_bootstrap = {
 /* This function waits until it is possible to write a full sound buffer */
 static void LIBRETRO_WaitAudio(_THIS)
 {
-	/* Don't block on first calls to simulate initial fragment filling. */
-	if (this->hidden->initial_calls)
-		this->hidden->initial_calls--;
-	else
-		SDL_Delay(this->hidden->write_delay);
+	/* NOOP */
+	printf("LIBRETRO_WaitAudio\n");
 }
 
 static void LIBRETRO_PlayAudio(_THIS)
 {
-	SDL_AudioSpec *spec = &this->spec;
-
-	Sint16 *ptr=(Sint16*)this->hidden->mixbuf;
-	libretro_audio_cb(ptr, spec->size/spec->channels/2);
+	/* NOOP */
+	printf("LIBRETRO_PlayAudio\n");
 }
 
 static Uint8 *LIBRETRO_GetAudioBuf(_THIS)
 {
-	return(this->hidden->mixbuf);
+	return(NULL);
 }
 
 static void LIBRETRO_CloseAudio(_THIS)
@@ -127,9 +126,48 @@ static void LIBRETRO_CloseAudio(_THIS)
 	}
 }
 
+void LIBRETRO_MixAudio()
+{
+	SDL_AudioDevice *audio = (SDL_AudioDevice *) audiodevice;
+	SDL_AudioSpec *spec = &audio->spec;
+
+	if (audio == NULL) {
+		return;
+	}
+
+	spec = &audio->spec;
+
+	/* Silence the buffer, since it's ours */
+	SDL_memset(audio->hidden->mixbuf, spec->silence, audio->hidden->mixlen);
+
+	/* Only do soemthing if audio is enabled */
+	if (!audio->enabled) {
+		return;
+	}
+
+	if (audio->convert.needed) {
+		// TODO
+		return;
+	}
+
+	SDL_mutexP(audio->mixer_lock);
+	(*spec->callback)(spec->userdata, audio->hidden->mixbuf, audio->hidden->mixlen);
+	SDL_mutexV(audio->mixer_lock);
+
+	libretro_audio_cb(audio->hidden->mixbuf, spec->size / spec->channels / 2);
+}
+
 static int LIBRETRO_OpenAudio(_THIS, SDL_AudioSpec *spec)
 {
 	float bytes_per_sec = 0.0f;
+
+	spec->channels = 2;
+	spec->format = AUDIO_S16;
+	spec->freq = 44100;             // should match retro_system_timing.sample_rate
+	spec->samples = 735;            // should match retro_system_timing.fps
+
+	/* Update the fragment size as size in bytes */
+	SDL_CalculateAudioSpec(spec);
 
 	/* Allocate mixing buffer */
 	this->hidden->mixlen = spec->size;
@@ -154,6 +192,6 @@ static int LIBRETRO_OpenAudio(_THIS, SDL_AudioSpec *spec)
 	               (Uint32) ((((float) spec->size) / bytes_per_sec) * 1000.0f);
 
 	/* We're ready to rock and roll. :-) */
-	return(0);
+	return(1);
 }
 

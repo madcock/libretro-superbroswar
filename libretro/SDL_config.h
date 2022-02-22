@@ -44,11 +44,8 @@
 /* Enable the stub shared object loader (src/loadso/dummy/\*.c) */
 #define SDL_LOADSO_DISABLED	1
 
-#ifdef __LINUX__
-#define SDL_THREAD_PTHREAD 1
-#else
-#define SDL_THREAD_WIN32 1
-#endif
+/* Enable the stub thread support (src/thread/generic/\*.c) */
+#define SDL_THREADS_DISABLED	1
 
 /* Enable the libretro timer support (src/timer/libretro/\*.c) */
 #define SDL_TIMER_LIBRETRO	1

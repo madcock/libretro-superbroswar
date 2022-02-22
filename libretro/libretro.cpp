@@ -421,11 +421,16 @@ void retro_reset(void)
 
 }
 
+extern "C" void LIBRETRO_MixAudio();
+
 void retro_run(void)
 {
     input_poll_cb();
+
     gameloop_frame();
     video_cb(screen->pixels, screen->w, screen->h, screen->pitch);
+
+    LIBRETRO_MixAudio();
 }
 
 static void extract_directory(char *buf, const char *path, size_t size)
