@@ -61,6 +61,7 @@ short currentgamemode = 0;
 
 //Adds music overrides to the music lists
 extern void UpdateMusicWithOverrides();
+extern void CleanUp();
 
 extern SDL_Joystick     **joysticks;
 extern short            joystickcount;
@@ -493,6 +494,8 @@ bool retro_load_game(const struct retro_game_info *info)
 
 void retro_unload_game(void)
 {
+    CleanUp();
+    game_values.gamestate = GS_QUIT;
     game_deinit();
 }
 
