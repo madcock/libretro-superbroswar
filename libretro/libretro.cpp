@@ -443,6 +443,7 @@ void retro_set_environment(retro_environment_t cb)
     
    vfs_iface_info.required_interface_version = 1;
    vfs_iface_info.iface                      = NULL;
+
    if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
       filestream_vfs_init(&vfs_iface_info);
 }
@@ -474,10 +475,10 @@ bool retro_load_game(const struct retro_game_info *info)
         { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_RIGHT, "Right" },
         { 0 },
     };
+    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
 
     environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
 
-    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
     if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
     {
         log_cb(RETRO_LOG_INFO, "RGB565 is not supported.\n");
