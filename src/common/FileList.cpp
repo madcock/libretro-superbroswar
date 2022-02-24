@@ -10,11 +10,11 @@
 #include <iostream>
 #include <algorithm>
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 #include <xtl.h>
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__LIBRETRO__)
     #ifndef _XBOX
         #define WIN32_LEAN_AND_MEAN
         #include <windows.h>

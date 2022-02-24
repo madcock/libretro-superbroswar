@@ -13,18 +13,18 @@
 #include <iostream>
 #include <stdexcept>
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 #include <xtl.h>
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__LIBRETRO__)
 #ifndef _XBOX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 #endif
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && !defined(__LIBRETRO__)
 #include <sys/stat.h>
 #endif
 

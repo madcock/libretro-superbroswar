@@ -4,7 +4,7 @@
 
 #include <cstdio>
 
-#if _WIN32
+#if	defined(_WIN32) && !defined(__LIBRETRO__)
 #include <windows.h>
 #endif
 
@@ -19,7 +19,7 @@ CGame::CGame(const char *rootDirectory)
     // make sure that the .smw directory is created
     std::string smwHome = GetHomeDirectory();
 
-#if	_WIN32
+#if	defined(_WIN32) && !defined(__LIBRETRO__)
     if (CreateDirectory(smwHome .c_str(), NULL) ||
             ERROR_ALREADY_EXISTS == GetLastError()) {
     	//TODO: print that directory already exists
@@ -37,7 +37,7 @@ CGame::CGame(const char *rootDirectory)
         perror("[error] Could not access settings directory");
 #endif
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     	//TODO: make this configurable!
     	//TV's seem to need extra shade
     	MenuTransparency = 96;

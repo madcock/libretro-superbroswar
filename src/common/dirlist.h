@@ -20,10 +20,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LIST_DIRECTORIES_HEADER
 #define LIST_DIRECTORIES_HEADER
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 #  include <xtl.h>
 #else
-#  ifdef _WIN32
+#  if defined(_WIN32) && !defined(__LIBRETRO__)
 #    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #include <cstdio>

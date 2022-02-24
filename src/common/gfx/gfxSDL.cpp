@@ -304,7 +304,7 @@ void GraphicsSDL::RecreateWindow(bool fullscreen)
     if (fullscreen)
         flags |= SDL_FULLSCREEN;
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     if (game_values.aspectratio10x11)
         flags |= SDL_10X11PIXELASPECTRATIO;
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <sys/stat.h>
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__LIBRETRO__)
     #ifdef _XBOX
         #include <xtl.h>
     #else
@@ -31,7 +31,12 @@ std::string SMW_Root_Data_Dir;
 
 const std::string GetHomeDirectory()
 {
-#ifdef _XBOX
+#ifdef __LIBRETRO__
+    std::string result(retro_save_directory);
+    result += "/supermariowar/";
+    return result;
+
+#elif _XBOX
     // NOTE: _WIN32 is also defined on _XBOX
     return std::string("D:\\.smw\\");
 
@@ -52,11 +57,6 @@ const std::string GetHomeDirectory()
 #elif ANDROID
     const char* extstorage = getenv("EXTERNAL_STORAGE");
     std::string result(extstorage ? extstorage: "/mnt/sdcard");
-    result += "/supermariowar/";
-    return result;
-
-#elif __LIBRETRO__
-    std::string result(retro_save_directory);
     result += "/supermariowar/";
     return result;
 
@@ -143,7 +143,7 @@ const string convertPath(const string& source)
     string s;
 
 /****** XBOX ******/
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 
 	s = source;
     int slash = string :: npos;
@@ -183,7 +183,7 @@ const string convertPath(const string& source, const string& pack)
     if (source.find("gfx/packs/") == 0) {
 		string trailingdir = source.substr(9);
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 		const string s = convertPartialPath(pack + trailingdir);  //Hack because pack already has d:\ in it
 #else
 		const string s = pack + trailingdir;
@@ -200,7 +200,7 @@ const string convertPath(const string& source, const string& pack)
     if (source.find("sfx/packs/") == 0) {
 		string trailingdir = source.substr(9);
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 		const string s = convertPartialPath(pack + trailingdir);  //Hack because pack already has d:\ in it
 #else
 		const string s = pack + trailingdir;
@@ -219,7 +219,7 @@ const string convertPath(const string& source, const string& pack)
 
 const string getDirectorySeperator()
 {
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 	return std::string("\\");
 #else
 	return std::string("/");
@@ -230,7 +230,7 @@ const string convertPartialPath(const string & source)
 {
 	string s = source;
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     int slash = string :: npos;
 
     while (string::npos != (slash = s.find("/")))
@@ -253,7 +253,7 @@ const string getFileFromPath(const string &path)
 //Takes a path to a file and gives you back the file name (with or without author) as a char *
 void GetNameFromFileName(char * szName, const char * szFileName, bool fStripAuthor)
 {
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     const char * p = strrchr(szFileName, '\\');
 #else
     const char * p = strrchr(szFileName, '/');

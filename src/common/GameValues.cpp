@@ -46,7 +46,7 @@ SDL_KEYTYPE controlkeys[2][2][4][NUM_KEYS] = { { { {SDLK_LEFT, SDLK_RIGHT, SDLK_
             {SDLK_p, SDLK_SEMICOLON, SDLK_l, SDLK_QUOTE, SDLK_LEFTBRACKET, SDLK_o, SDLK_UNKNOWN, SDLK_UNKNOWN}
         }
     },
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     //left, right, jump, down, turbo, powerup, start, cancel
     {   {   {JOY_HAT_LEFT, JOY_HAT_RIGHT, 12, JOY_HAT_DOWN, 14, 15, 20, 21},
             {JOY_HAT_LEFT, JOY_HAT_RIGHT, 12, JOY_HAT_DOWN, 14, 15, 20, 21},
@@ -115,7 +115,7 @@ void CGameValues::init()
     softfilter      = 0;  //No soft filter by default
     aspectratio10x11  = false;  //No 10x11 aspect ratio by default
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     SDL_XBOX_SetScreenPosition(screenResizeX, screenResizeY);
     SDL_XBOX_SetScreenStretch(screenResizeW, screenResizeH);
 #endif
@@ -319,7 +319,7 @@ void CGameValues::ReadBinaryConfig() {
             return;
         }
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
         flickerfilter = options.read_i16();
         hardwarefilter = options.read_i16();
         softfilter = options.read_i16();
@@ -395,7 +395,7 @@ void CGameValues::ReadBinaryConfig() {
         poweruppreset = options.read_i16();
         options.read_i16_array((int16_t *)g_iCurrentPowerupPresets, NUM_POWERUP_PRESETS * NUM_POWERUPS);
 
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
         fullscreen = options.read_bool();
 #endif
 
@@ -453,7 +453,7 @@ void CGameValues::ReadBinaryConfig() {
         for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
             short iDevice = controls.read_i16();
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1]; //Always use gamepads as input devices on xbox
 #else
             if (iDevice >= joystickcount)
@@ -480,7 +480,7 @@ void CGameValues::WriteConfig()
 
         options.write_raw(g_iVersion, sizeof(int) * 4);
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
         options.write_i16(flickerfilter);
         options.write_i16(hardwarefilter);
         options.write_i16(softfilter);
@@ -553,7 +553,7 @@ void CGameValues::WriteConfig()
         options.write_i16(poweruppreset);
         options.write_raw(&g_iCurrentPowerupPresets, sizeof(short) * NUM_POWERUP_PRESETS * NUM_POWERUPS);
 
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
         options.write_bool(fullscreen);
 #endif
         //Write out game mode goals

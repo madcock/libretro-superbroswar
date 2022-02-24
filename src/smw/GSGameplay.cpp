@@ -1137,7 +1137,7 @@ void GameplayState::drawFrontLayer()
 {
     g_map->drawPlatforms(2);
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     g_map->drawfrontlayer();
 #else
     if (game_values.toplayer)
@@ -1989,7 +1989,7 @@ void GameplayState::handleInput()
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
         case SDL_QUIT: {
             CleanUp();
             game_values.gamestate = GS_QUIT;
@@ -1998,7 +1998,7 @@ void GameplayState::handleInput()
         break;
 #endif
         case SDL_KEYDOWN: {
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
             if (event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
                 if (event.key.keysym.sym == SDLK_F4) {
                     CleanUp();
@@ -2125,7 +2125,7 @@ void GameplayState::handleInput()
             break;
         }
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
         case SDL_JOYBUTTONDOWN: {
             if (event.jbutton.state == SDL_PRESSED && event.jbutton.button == 5) {
                 PlayNextMusicTrack();
