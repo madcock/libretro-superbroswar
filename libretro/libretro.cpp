@@ -103,6 +103,10 @@ void retro_set_input_state(retro_input_state_t cb) { input_state_cb = cb; }
 
 char retro_game_path[4096];
 
+const char *retro_save_directory;
+const char *retro_system_directory;
+const char *retro_content_directory;
+
 extern "C" short int libretro_input_state_cb(unsigned port, unsigned device, unsigned index, unsigned id)
 {
     if (input_state_cb == NULL)
@@ -365,6 +369,25 @@ void retro_init(void)
 {
     input_state_cb = NULL;
     audio_batch_cb = NULL;
+
+    const char *system_dir      = NULL;
+    const char *content_dir     = NULL;
+    const char *save_dir        = NULL;
+
+    // if defined, use the system directory			
+    if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_dir) && system_dir)
+        retro_system_directory=system_dir;		
+
+    // if defined, use the system directory			
+    if (environ_cb(RETRO_ENVIRONMENT_GET_CONTENT_DIRECTORY, &content_dir) && content_dir)
+        retro_content_directory=content_dir;		
+
+    // If save directory is defined use it, otherwise use system directory
+    if (environ_cb(RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY, &save_dir) && save_dir)
+        retro_save_directory = *save_dir ? save_dir : retro_system_directory;      
+    else
+        // make retro_save_directory the same in case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY is not implemented by the frontend
+        retro_save_directory=retro_system_directory;
 
     SDL_putenv("SDL_VIDEODRIVER=dummy");
 }

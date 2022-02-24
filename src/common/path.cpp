@@ -22,6 +22,10 @@
 
 extern std::string RootDataDirectory;
 
+#ifdef __LIBRETRO__
+extern const char * retro_save_directory;
+#endif
+
 using namespace std;
 std::string SMW_Root_Data_Dir;
 
@@ -48,6 +52,11 @@ const std::string GetHomeDirectory()
 #elif ANDROID
     const char* extstorage = getenv("EXTERNAL_STORAGE");
     std::string result(extstorage ? extstorage: "/mnt/sdcard");
+    result += "/supermariowar/";
+    return result;
+
+#elif __LIBRETRO__
+    std::string result(retro_save_directory);
     result += "/supermariowar/";
     return result;
 
