@@ -1,11 +1,12 @@
 DEPS_DIR          := $(CORE_DIR)/dependencies
+LIBRETRO_COMM_DIR := $(CORE_DIR)/libretro-common
 
-FLAGS += -I$(CORE_DIR)/libretro-common/include
-
-INCFLAGS = -I$(LIBRETRO_DIR) \
-           -I$(CORE_DIR)/src/common \
-           -I$(CORE_DIR)/src/common_netplay \
-           -I$(CORE_DIR)/src/smw
+INCFLAGS = \
+    -I$(LIBRETRO_COMM_DIR)/include \
+    -I$(LIBRETRO_DIR) \
+    -I$(CORE_DIR)/src/common \
+    -I$(CORE_DIR)/src/common_netplay \
+    -I$(CORE_DIR)/src/smw
 
 CORE_DEFINE := -DNETWORK_DISABLED
 
@@ -134,6 +135,14 @@ SOURCES_C += \
     $(DEPS_DIR)/SDL_mixer/music.c
 FLAGS += -I$(DEPS_DIR)/SDL_mixer
 CORE_DEFINE += -DOGG_MUSIC -DOGG_USE_TREMOR
+
+# libretro-common
+SOURCES_C += \
+    $(LIBRETRO_COMM_DIR)/file/file_path.c \
+    $(LIBRETRO_COMM_DIR)/compat/compat_strl.c \
+    $(LIBRETRO_COMM_DIR)/encodings/encoding_utf.c \
+    $(LIBRETRO_COMM_DIR)/string/stdstring.c \
+    $(LIBRETRO_COMM_DIR)/time/rtime.c
 
 SOURCES_CXX += \
     $(LIBRETRO_DIR)/libretro.cpp \

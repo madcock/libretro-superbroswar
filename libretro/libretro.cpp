@@ -1,4 +1,10 @@
+#include <ctime>
+#include <cmath>
+#include <cstdlib> // srand()
+
 #include "libretro.h"
+#include <string/stdstring.h>
+#include <file/file_path.h>
 
 #define VIDEO_WIDTH 640
 #define VIDEO_HEIGHT 480
@@ -23,10 +29,6 @@
 
 #include "FPSLimiter.h"
 #include "GSSplashScreen.h"
-
-#include <ctime>
-#include <cmath>
-#include <cstdlib> // srand()
 
 //------ system stuff ------
 SDL_Surface		*screen = NULL;		//for gfx (maybe the gfx system should be improved -> resource manager)
@@ -457,21 +459,6 @@ void retro_run(void)
     LIBRETRO_MixAudio();
 }
 
-static void extract_directory(char *buf, const char *path, size_t size)
-{
-   strncpy(buf, path, size - 1);
-   buf[size - 1] = '\0';
-
-   char *base = strrchr(buf, '/');
-   if (!base)
-      base = strrchr(buf, '\\');
-
-   if (base)
-      *base = '\0';
-   else
-      buf[0] = '\0';
-}
-
 bool retro_load_game(const struct retro_game_info *info)
 {
     struct retro_input_descriptor desc[] = {
@@ -491,13 +478,17 @@ bool retro_load_game(const struct retro_game_info *info)
         return false;
     }
 
-    extract_directory(retro_game_path, info->path, sizeof(retro_game_path));
-    RootDataDirectory = std::string(retro_game_path);
+    if (info && !string_is_empty(info->path))
+    {
+        fill_pathname_basedir(retro_game_path, info->path, sizeof(retro_game_path));
+        RootDataDirectory = std::string(retro_game_path);
 
-    game_init();
+        game_init();
 
-    (void)info;
-    return true;
+        return true;
+    }
+
+    return false;
 }
 
 void retro_unload_game(void)
