@@ -377,7 +377,7 @@ class MI_BonusWheel : public UI_Control
 		bool fCpuControlled;
 };
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 class MI_ScreenResize : public UI_Control
 {
 	public:

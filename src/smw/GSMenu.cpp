@@ -42,7 +42,7 @@
 #include "menu/network/NetRoomMenu.h"
 #include "menu/network/NetServersMenu.h"
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 #include "menu/xbox/ScreenResizeMenu.h"
 #include "menu/xbox/ScreenSettingsMenu.h"
 #endif
@@ -51,18 +51,18 @@
 #include <cassert>
 #include <sstream>
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 #include <xtl.h>
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__LIBRETRO__)
 #ifndef _XBOX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 #endif
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && !defined(__LIBRETRO__)
 #include <sys/stat.h>
 #endif
 
@@ -156,8 +156,10 @@ void MenuState::CreateMenu()
     mEyeCandyOptionsMenu = new UI_EyeCandyOptionsMenu();
     mSoundOptionsMenu = new UI_SoundOptionsMenu();
 
+#ifndef __LIBRETRO__
     mPlayerControlsSelectMenu = new UI_PlayerControlsSelectMenu();
     mPlayerControlsMenu = new UI_PlayerControlsMenu();
+#endif
 
     mModeOptionsMenu = new UI_ModeOptionsMenu();
     mMatchSelectionMenu = new UI_MatchSelectionMenu();
@@ -176,7 +178,7 @@ void MenuState::CreateMenu()
     mNetNewRoomSettingsMenu = new UI_NetNewRoomSettingsMenu(mGameSettingsMenu);
     mNetRoomMenu = new UI_NetRoomMenu();
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
     mScreenSettingsMenu = new UI_ScreenSettingsMenu();
     mScreenResizeMenu = new UI_ScreenResizeMenu();
 #endif
@@ -424,7 +426,7 @@ void MenuState::update()
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
         case SDL_QUIT:
             Exit();
             return;
@@ -436,7 +438,7 @@ void MenuState::update()
                 game_values.showfps = !game_values.showfps;
             }
 
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
 
 #ifdef _DEBUG
             if (event.key.keysym.sym == SDLK_F2) {
@@ -642,6 +644,7 @@ void MenuState::update()
             net_startSession();
         } else if (MENU_CODE_BACK_TO_GRAPHIC_OPTIONS_MENU == code) {
             mCurrentMenu = mGraphicsOptionsMenu;
+#ifndef __LIBRETRO__
         } else if (MENU_CODE_TO_CONTROLS_MENU == code) {
             mCurrentMenu = mPlayerControlsSelectMenu;
             mCurrentMenu->ResetMenu();
@@ -663,8 +666,9 @@ void MenuState::update()
             mPlayerControlsMenu->SetPlayer(3);
             mCurrentMenu = mPlayerControlsMenu;
             mCurrentMenu->ResetMenu();
+#endif
         }
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
         else if (MENU_CODE_TO_SCREEN_SETTINGS == code) {
             mCurrentMenu = mScreenSettingsMenu;
             mCurrentMenu->ResetMenu();

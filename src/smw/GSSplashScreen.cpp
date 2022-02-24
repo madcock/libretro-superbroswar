@@ -12,11 +12,11 @@
 #include <string>
 #include <iostream>
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 #include <xtl.h>
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__LIBRETRO__)
 #ifndef _XBOX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -167,7 +167,7 @@ void SplashScreenState::update()
     while (SDL_PollEvent(&loop_event)) {
         switch (loop_event.type) {
 
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
         case SDL_QUIT: {
             game_values.gamestate = GS_QUIT;
             return;
@@ -178,7 +178,7 @@ void SplashScreenState::update()
             switch (loop_event.key.keysym.sym) {
             case SDLK_RETURN:
                 if (loop_event.key.keysym.mod & (KMOD_LALT | KMOD_RALT)) {
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
                     game_values.fullscreen = !game_values.fullscreen;
                     gfx_changefullscreen(game_values.fullscreen);
                     blitdest = screen;
@@ -186,7 +186,7 @@ void SplashScreenState::update()
                 }
                 break;
 
-#ifndef _XBOX
+#if !defined(_XBOX) && !defined(__LIBRETRO__)
             case SDLK_F4:
                 if (loop_event.key.keysym.mod & (KMOD_LALT | KMOD_RALT))
                     game_values.gamestate = GS_QUIT;

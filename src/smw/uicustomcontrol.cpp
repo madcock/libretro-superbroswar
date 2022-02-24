@@ -2130,7 +2130,7 @@ void MI_BonusWheel::Reset(bool fTournament)
  * MI_ScreenResize Class
  **************************************/
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 MI_ScreenResize::MI_ScreenResize() :
     UI_Control(0, 0)
 {

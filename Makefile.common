@@ -204,8 +204,6 @@ SOURCES_CXX += \
     $(CORE_DIR)/src/smw/menu/MatchSelectionMenu.cpp \
     $(CORE_DIR)/src/smw/menu/ModeOptionsMenu.cpp \
     $(CORE_DIR)/src/smw/menu/OptionsMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/PlayerControlsMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/PlayerControlsSelectMenu.cpp \
     $(CORE_DIR)/src/smw/menu/TeamSelectMenu.cpp \
     $(CORE_DIR)/src/smw/menu/TournamentScoreboardMenu.cpp \
     $(CORE_DIR)/src/smw/menu/TourStopMenu.cpp \
@@ -261,7 +259,6 @@ SOURCES_CXX += \
     $(CORE_DIR)/src/smw/player_components/PlayerWarpStatus.cpp \
     $(CORE_DIR)/src/smw/player_components/PlayerWings.cpp \
     $(CORE_DIR)/src/smw/ui/MI_FrenzyModeOptions.cpp \
-    $(CORE_DIR)/src/smw/ui/MI_InputControlContainer.cpp \
     $(CORE_DIR)/src/smw/ui/MI_NetRoomTeamSelect.cpp \
     $(CORE_DIR)/src/smw/ui/MI_PowerupSlider.cpp \
     $(CORE_DIR)/src/smw/ui/MI_StringScroll.cpp \

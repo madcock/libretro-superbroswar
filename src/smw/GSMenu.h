@@ -36,7 +36,7 @@ class UI_NetNewRoomSettingsMenu;
 class UI_NetRoomMenu;
 class UI_NetServersMenu;
 
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 class UI_ScreenResizeMenu;
 class UI_ScreenSettingsMenu;
 #endif
@@ -128,14 +128,15 @@ class MenuState : public GameState
 		UI_GraphicsOptionsMenu* mGraphicsOptionsMenu;
 		UI_EyeCandyOptionsMenu* mEyeCandyOptionsMenu;
 		UI_SoundOptionsMenu* mSoundOptionsMenu;
-#ifdef _XBOX
+#if defined(_XBOX) && !defined(__LIBRETRO__)
 		UI_ScreenSettingsMenu* mScreenSettingsMenu;
 		UI_ScreenResizeMenu* mScreenResizeMenu;
 #endif
+#ifndef __LIBRETRO__
 		// Controls menu
 		UI_PlayerControlsSelectMenu* mPlayerControlsSelectMenu;
 		UI_PlayerControlsMenu* mPlayerControlsMenu;
-
+#endif
 		// Gameplay menus
 		UI_ModeOptionsMenu* mModeOptionsMenu;
 		UI_MatchSelectionMenu* mMatchSelectionMenu;
