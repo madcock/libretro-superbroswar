@@ -5,6 +5,7 @@
 #include "libretro.h"
 #include <string/stdstring.h>
 #include <file/file_path.h>
+#include <streams/file_stream.h>
 
 #define VIDEO_WIDTH 640
 #define VIDEO_HEIGHT 480
@@ -433,13 +434,17 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 
 void retro_set_environment(retro_environment_t cb)
 {
+    struct retro_vfs_interface_info vfs_iface_info;
+
     environ_cb = cb;
-    bool no_content = true;
 
     if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))
         log_cb = logging.log;
-
-    cb(RETRO_ENVIRONMENT_SET_SUPPORT_NO_GAME, &no_content);
+    
+   vfs_iface_info.required_interface_version = 1;
+   vfs_iface_info.iface                      = NULL;
+   if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
+      filestream_vfs_init(&vfs_iface_info);
 }
 
 void retro_reset(void)
