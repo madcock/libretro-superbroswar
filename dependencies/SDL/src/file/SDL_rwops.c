@@ -362,6 +362,49 @@ static int SDLCALL stdio_close(SDL_RWops *context)
 }
 #endif /* !HAVE_STDIO_H */
 
+#ifdef __LIBRETRO__
+static int SDLCALL libretro_seek(SDL_RWops *context, int offset, int whence)
+{
+	if ( rfseek(context->hidden.libretro.fp, offset, whence) == 0 ) {
+		return(rftell(context->hidden.libretro.fp));
+	} else {
+		SDL_Error(SDL_EFSEEK);
+		return(-1);
+	}
+}
+static int SDLCALL libretro_read(SDL_RWops *context, void *ptr, int size, int maxnum)
+{
+	size_t nread;
+
+	nread = rfread(ptr, size, maxnum, context->hidden.libretro.fp); 
+	if ( nread == 0 && rferror(context->hidden.libretro.fp) ) {
+		SDL_Error(SDL_EFREAD);
+	}
+	return(nread);
+}
+static int SDLCALL libretro_write(SDL_RWops *context, const void *ptr, int size, int num)
+{
+	size_t nwrote;
+
+	nwrote = rfwrite(ptr, size, num, context->hidden.libretro.fp);
+	if ( nwrote == 0 && rferror(context->hidden.libretro.fp) ) {
+		SDL_Error(SDL_EFWRITE);
+	}
+	return(nwrote);
+}
+static int SDLCALL libretro_close(SDL_RWops *context)
+{
+	if ( context ) {
+		if ( context->hidden.libretro.autoclose ) {
+			/* WARNING:  Check the return value here! */
+			rfclose(context->hidden.libretro.fp);
+		}
+		SDL_FreeRW(context);
+	}
+	return(0);
+}
+#endif
+
 /* Functions to read/write memory pointers */
 
 static int SDLCALL mem_seek(SDL_RWops *context, int offset, int whence)
@@ -483,6 +526,10 @@ static char *unix_to_mac(const char *file)
 SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
 {
 	SDL_RWops *rwops = NULL;
+#ifdef __LIBRETRO__
+	RFILE *rfp = NULL;
+	(void) rfp;
+#endif
 #ifdef HAVE_STDIO_H
 	FILE *fp = NULL;
 	(void) fp;
@@ -492,6 +539,14 @@ SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
 		return NULL;
 	}
 
+#if __LIBRETRO__
+	rfp = rfopen(file, mode);
+	if ( rfp == NULL ) {
+		SDL_SetError("Couldn't open %s", file);
+	} else {
+		rwops = SDL_RWFromLIBRETRO(rfp, 1);
+	}
+#else
 #if defined(__WIN32__) && !defined(__SYMBIAN32__)
 	rwops = SDL_AllocRW();
 	if (!rwops)
@@ -524,7 +579,7 @@ SDL_RWops *SDL_RWFromFile(const char *file, const char *mode)
 #else
 	SDL_SetError("SDL not compiled with stdio support");
 #endif /* !HAVE_STDIO_H */
-
+#endif
 	return(rwops);
 }
 
@@ -545,6 +600,24 @@ SDL_RWops *SDL_RWFromFP(FILE *fp, int autoclose)
 	return(rwops);
 }
 #endif /* HAVE_STDIO_H */
+
+#ifdef __LIBRETRO__
+SDL_RWops *SDL_RWFromLIBRETRO(RFILE *fp, int autoclose)
+{
+	SDL_RWops *rwops = NULL;
+
+	rwops = SDL_AllocRW();
+	if ( rwops != NULL ) {
+		rwops->seek = libretro_seek;
+		rwops->read = libretro_read;
+		rwops->write = libretro_write;
+		rwops->close = libretro_close;
+		rwops->hidden.libretro.fp = fp;
+		rwops->hidden.libretro.autoclose = autoclose;
+	}
+	return(rwops);
+}
+#endif
 
 SDL_RWops *SDL_RWFromMem(void *mem, int size)
 {

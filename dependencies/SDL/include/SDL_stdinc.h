@@ -36,6 +36,10 @@
 #ifdef HAVE_STDIO_H
 #include <stdio.h>
 #endif
+#ifdef __LIBRETRO__
+#define SKIP_STDIO_REDEFINES
+#include <streams/file_stream_transforms.h>
+#endif
 #if defined(STDC_HEADERS)
 # include <stdlib.h>
 # include <stddef.h>

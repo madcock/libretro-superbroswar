@@ -80,6 +80,12 @@ typedef struct SDL_RWops {
 	 	FILE *fp;
 	    } stdio;
 #endif
+#ifdef __LIBRETRO__
+	    struct {
+		int autoclose;
+	 	RFILE *fp;
+	    } libretro;
+#endif
 	    struct {
 		Uint8 *base;
 	 	Uint8 *here;
@@ -100,6 +106,10 @@ extern DECLSPEC SDL_RWops * SDLCALL SDL_RWFromFile(const char *file, const char 
 
 #ifdef HAVE_STDIO_H
 extern DECLSPEC SDL_RWops * SDLCALL SDL_RWFromFP(FILE *fp, int autoclose);
+#endif
+
+#ifdef __LIBRETRO__
+extern DECLSPEC SDL_RWops * SDLCALL SDL_RWFromLIBRETRO(RFILE *fp, int autoclose);
 #endif
 
 extern DECLSPEC SDL_RWops * SDLCALL SDL_RWFromMem(void *mem, int size);
