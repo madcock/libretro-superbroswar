@@ -441,11 +441,14 @@ void retro_set_environment(retro_environment_t cb)
     if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))
         log_cb = logging.log;
     
-   vfs_iface_info.required_interface_version = 1;
+   vfs_iface_info.required_interface_version = 3;
    vfs_iface_info.iface                      = NULL;
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
-      filestream_vfs_init(&vfs_iface_info);
+   {
+       filestream_vfs_init(&vfs_iface_info);
+       path_vfs_init(&vfs_iface_info);
+   }
 }
 
 void retro_reset(void)
