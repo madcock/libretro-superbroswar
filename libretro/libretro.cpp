@@ -5,6 +5,7 @@
 #include "libretro.h"
 #include <string/stdstring.h>
 #include <file/file_path.h>
+#include <retro_dirent.h>
 #include <streams/file_stream.h>
 
 #define VIDEO_WIDTH 640
@@ -448,6 +449,7 @@ void retro_set_environment(retro_environment_t cb)
    {
        filestream_vfs_init(&vfs_iface_info);
        path_vfs_init(&vfs_iface_info);
+       dirent_vfs_init(&vfs_iface_info);
    }
 }
 
