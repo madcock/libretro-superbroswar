@@ -20,10 +20,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef LIST_DIRECTORIES_HEADER
 #define LIST_DIRECTORIES_HEADER
 
-#if defined(_XBOX) && !defined(__LIBRETRO__)
+#ifdef __LIBRETRO__
+    #include <retro_dirent.h>
+#else
+#if defined(_XBOX)
 #  include <xtl.h>
 #else
-#  if defined(_WIN32) && !defined(__LIBRETRO__)
+#  if defined(_WIN32)
 #    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #include <cstdio>
@@ -33,6 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #    include <unistd.h>
 #    include <dirent.h>
 #  endif
+#endif
 #endif
 
 #include <string>
@@ -62,6 +66,10 @@ class DirectoryListing
 		std::string path;
         std::string Filename_Extension;
 
+        #ifdef __LIBRETRO__
+        RDIR* dhandle;
+        
+        #else
         #ifdef _WIN32
         WIN32_FIND_DATA	finddata;
         HANDLE			findhandle;
@@ -71,6 +79,7 @@ class DirectoryListing
         DIR * dhandle;
         struct dirent * current;
 
+        #endif
         #endif
 };
 

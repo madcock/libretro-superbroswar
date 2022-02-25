@@ -20,8 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "dirlist.h"
 
 #include <string>
+
+#ifndef __LIBRETRO__
 #include <sys/stat.h>
 #include <sys/types.h>
+#endif
 
 using namespace std;
 
@@ -46,6 +49,10 @@ DirectoryListing::DirectoryListing(string dlPath, string file_ext)
     Filename_Extension = file_ext;
     this->path = dlPath;
 
+    #ifdef __LIBRETRO__
+        dhandle = retro_opendir(path.c_str());
+        Success = dhandle != NULL;
+    #else
     /* Windows Directory Enumeration*/
     #ifdef _WIN32
 
@@ -59,16 +66,21 @@ DirectoryListing::DirectoryListing(string dlPath, string file_ext)
         dhandle = opendir(path.c_str());
         Success = dhandle != NULL;
     #endif
+    #endif
 }
 
 DirectoryListing::~DirectoryListing()
 {
     if (!Success) return;
 
+    #ifdef __LIBRETRO__
+        retro_closedir(dhandle);
+    #else
     #ifdef _WIN32
         FindClose(findhandle);
     #else
         closedir(dhandle);
+    #endif
     #endif
 }
 
@@ -86,6 +98,16 @@ bool DirectoryListing :: operator() (string &s)
 
     do
     {
+        #ifdef __LIBRETRO__
+
+        if (retro_readdir(dhandle)) {
+            s = retro_dirent_get_name(dhandle);
+            retval = true;
+        } else {
+            retval = false;
+        }
+
+        #else
         /* Microsoft directory enumeration - here we retval = a stored filename first,
          * and then fetch the next filename from microsoft */
         #ifdef _WIN32
@@ -123,6 +145,7 @@ bool DirectoryListing :: operator() (string &s)
             else retval = false;
 
         #endif
+        #endif
 
     } while (retval == true && endsWith(s, Filename_Extension) == false);
 
@@ -134,6 +157,18 @@ bool DirectoryListing :: NextDirectory (string &s)
 	if (!Success) return false;
 
     bool retval;
+#ifdef __LIBRETRO__
+
+    do {
+        if (retro_readdir(dhandle)) {
+            s = retro_dirent_get_name(dhandle);
+            retval = true;
+        } else {
+            retval = false;
+        }
+    } while (retval == true && (!retro_dirent_is_dir(dhandle, NULL) || s == "." || s == ".." || s == "CVS" || s == ".svn"));
+
+#else
         /* Microsoft directory enumeration - here we retval = a stored filename first,
          * and then fetch the next directory from microsoft */
 #ifdef _WIN32
@@ -177,6 +212,7 @@ bool DirectoryListing :: NextDirectory (string &s)
         else retval = false;
     } while (retval == true && (stat(fullName(s).c_str(), &fileinfo) == -1 || !S_ISDIR(fileinfo.st_mode) || s == "." || s == ".." || s == "CVS" || s == ".svn"));
 
+#endif
 #endif
 
     return retval;
