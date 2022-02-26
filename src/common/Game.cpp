@@ -4,7 +4,10 @@
 
 #include <cstdio>
 
-#if	defined(_WIN32) && !defined(__LIBRETRO__)
+#ifdef __LIBRETRO__
+#include <file/file_path.h>
+#else
+#if	defined(_WIN32)
 #include <windows.h>
 #endif
 
@@ -13,13 +16,19 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
+#endif
 
 CGame::CGame(const char *rootDirectory)
 {
     // make sure that the .smw directory is created
     std::string smwHome = GetHomeDirectory();
 
-#if	defined(_WIN32) && !defined(__LIBRETRO__)
+#ifdef __LIBRETRO__
+    if(path_stat(smwHome.c_str()) == 0) {
+        path_mkdir(smwHome.c_str());
+    }
+#else
+#if	defined(_WIN32)
     if (CreateDirectory(smwHome .c_str(), NULL) ||
             ERROR_ALREADY_EXISTS == GetLastError()) {
     	//TODO: print that directory already exists
@@ -35,6 +44,7 @@ CGame::CGame(const char *rootDirectory)
     }
     else if (!S_ISDIR(st.st_mode)) // inode exist, but not a directory
         perror("[error] Could not access settings directory");
+#endif
 #endif
 
 #if defined(_XBOX) && !defined(__LIBRETRO__)
