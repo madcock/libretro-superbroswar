@@ -41,7 +41,7 @@ prefix := /usr
 libdir := $(prefix)/lib
 
 LIBRETRO_INSTALL_DIR := libretro
-TARGET_NAME := supermariowar
+TARGET_NAME := superbroswar
 
 # GIT HASH
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"

@@ -12,10 +12,9 @@
 #define VIDEO_HEIGHT 480
 #define VIDEO_PIXELS VIDEO_WIDTH * VIDEO_HEIGHT
 
-#define TITLESTRING "Super Mario War"
-#define VERSIONNUMBER "2.0"
+#define TITLESTRING "Super Bros War"
+#define VERSIONNUMBER "1.0"
 
-#include "CmdArgs.h"
 #include "FileList.h"
 #include "GameMode.h"
 #include "gamemodes.h"
