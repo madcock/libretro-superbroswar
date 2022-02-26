@@ -10,17 +10,22 @@
 #include <iostream>
 #include <algorithm>
 
-#if defined(_XBOX) && !defined(__LIBRETRO__)
+#ifdef __LIBRETRO__
+    #include <retro_dirent.h>
+    #include <streams/file_stream_transforms.h>
+#else
+#if defined(_XBOX)
 #include <xtl.h>
 #endif
 
-#if defined(_WIN32) && !defined(__LIBRETRO__)
+#if defined(_WIN32)
     #ifndef _XBOX
         #define WIN32_LEAN_AND_MEAN
         #include <windows.h>
     #endif
 #else
     #include <dirent.h>
+#endif
 #endif
 
 using std::cout;
