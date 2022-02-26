@@ -22,9 +22,11 @@ const std::string convertPartialPath(const std::string & source);
 const std::string getFileFromPath(const std::string &path);
 
 const std::string GetHomeDirectory();
+#ifndef __LIBRETRO__
 const std::string GetRootDirectory();
+#endif
 
-#ifdef __APPLE__
+#if defined(__APPLE__)  && !defined(__LIBRETRO__)
     void Initialize_Paths();
 #else
 #  define Initialize_Paths();

@@ -6,9 +6,14 @@
 
 #include <cstring>
 #include <string>
+
+#ifdef __LIBRETRO__
+#include <file/file_path.h>
+#include <streams/file_stream.h>
+#else
 #include <sys/stat.h>
 
-#if defined(_WIN32) && !defined(__LIBRETRO__)
+#if defined(_WIN32)
     #ifdef _XBOX
         #include <xtl.h>
     #else
@@ -17,6 +22,7 @@
     #endif
 #else
 #include <stdlib.h>
+#endif
 #endif
 
 
@@ -27,7 +33,9 @@ extern const char * retro_save_directory;
 #endif
 
 using namespace std;
+#ifndef __LIBRETRO__
 std::string SMW_Root_Data_Dir;
+#endif
 
 const std::string GetHomeDirectory()
 {
@@ -69,6 +77,7 @@ const std::string GetHomeDirectory()
 #endif
 }
 
+#ifndef __LIBRETRO__
 const std::string GetRootDirectory()
 {
 #if !defined(_WIN32) && defined(USE_SDL2)
@@ -84,19 +93,24 @@ const std::string GetRootDirectory()
 
     return "./";
 }
+#endif
 
 bool File_Exists (const std::string fileName)
 {
+#ifdef __LIBRETRO__
+    return filestream_exists(fileName.c_str());
+#else
 	struct stat buffer;
 	int i = stat(fileName.c_str(), &buffer);
 
 	return (i == 0);
+#endif
 }
 
 /*********************************************************************
   Mac OS X Application Bundles                              *********/
 
-#ifdef __APPLE__
+#if defined(__APPLE__) && !defined(__LIBRETRO__)
 #include <iostream>
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -140,10 +154,13 @@ void Initialize_Paths()
 
 const string convertPath(const string& source)
 {
+#ifdef __LIBRETRO__
+    return RootDataDirectory + source;
+#else
     string s;
 
 /****** XBOX ******/
-#if defined(_XBOX) && !defined(__LIBRETRO__)
+#ifdef _XBOX
 
 	s = source;
     int slash = string :: npos;
@@ -176,6 +193,7 @@ const string convertPath(const string& source)
 #endif
     s += source;
     return s;
+#endif
 }
 
 const string convertPath(const string& source, const string& pack)
@@ -219,10 +237,14 @@ const string convertPath(const string& source, const string& pack)
 
 const string getDirectorySeperator()
 {
-#if defined(_XBOX) && !defined(__LIBRETRO__)
+#ifdef __LIBRETRO__
+    return std::string(PATH_DEFAULT_SLASH());
+#else
+#if defined(_XBOX)
 	return std::string("\\");
 #else
 	return std::string("/");
+#endif
 #endif
 }
 

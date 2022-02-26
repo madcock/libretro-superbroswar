@@ -22,10 +22,14 @@
 int32_t g_iVersion[] = {2, 0, 0, 0};
 
 // main game directory, read from command line argument
+#ifdef __LIBRETRO__
+std::string RootDataDirectory;
+#else
 #ifdef __ANDROID__
 std::string RootDataDirectory = GetHomeDirectory() + "data";
 #else
 std::string RootDataDirectory = GetRootDirectory() + "data";
+#endif
 #endif
 
 CGame *smw;
