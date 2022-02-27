@@ -1,6 +1,7 @@
 LOCAL_PATH := $(call my-dir)
 
 CORE_DIR := $(LOCAL_PATH)/..
+LIBRETRO_DIR := $(CORE_DIR)/libretro
 
 DEBUG                    := 0
 FRONTEND_SUPPORTS_RGB565 := 1
