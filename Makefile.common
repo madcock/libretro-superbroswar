@@ -8,7 +8,7 @@ INCFLAGS = \
     -I$(CORE_DIR)/src/common_netplay \
     -I$(CORE_DIR)/src/smw
 
-CORE_DEFINE := -DNETWORK_DISABLED -DNO_GZCOMPRESS -DNO_GZIP
+CORE_DEFINE := -DNETWORK_DISABLED
 
 FLAGS += -ffast-math
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive
@@ -63,6 +63,7 @@ SOURCES_C += \
 	$(DEPS_DIR)/zlib-1.2.11/uncompr.c \
 	$(DEPS_DIR)/zlib-1.2.11/zutil.c
 FLAGS += -I$(DEPS_DIR)/zlib-1.2.11
+CORE_DEFINE += -DNO_GZCOMPRESS -DNO_GZIP
 
 # SDL
 SOURCES_C += \
