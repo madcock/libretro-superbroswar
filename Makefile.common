@@ -8,7 +8,7 @@ INCFLAGS = \
     -I$(CORE_DIR)/src/common_netplay \
     -I$(CORE_DIR)/src/smw
 
-CORE_DEFINE := -DNETWORK_DISABLED
+CORE_DEFINE := -DNETWORK_DISABLED -DNO_GZCOMPRESS -DNO_GZIP
 
 FLAGS += -ffast-math
 CXXFLAGS += -std=c++11 -fexceptions -fpermissive -Wno-c++11-narrowing
@@ -55,10 +55,6 @@ SOURCES_C += \
 	$(DEPS_DIR)/zlib-1.2.11/compress.c \
 	$(DEPS_DIR)/zlib-1.2.11/crc32.c \
 	$(DEPS_DIR)/zlib-1.2.11/deflate.c \
-	$(DEPS_DIR)/zlib-1.2.11/gzclose.c \
-	$(DEPS_DIR)/zlib-1.2.11/gzlib.c \
-	$(DEPS_DIR)/zlib-1.2.11/gzread.c \
-	$(DEPS_DIR)/zlib-1.2.11/gzwrite.c \
 	$(DEPS_DIR)/zlib-1.2.11/infback.c \
 	$(DEPS_DIR)/zlib-1.2.11/inffast.c \
 	$(DEPS_DIR)/zlib-1.2.11/inflate.c \
