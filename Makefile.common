@@ -11,7 +11,7 @@ INCFLAGS = \
 CORE_DEFINE := -DNETWORK_DISABLED -DNO_GZCOMPRESS -DNO_GZIP
 
 FLAGS += -ffast-math
-CXXFLAGS += -std=c++11 -fexceptions -fpermissive -Wno-c++11-narrowing
+CXXFLAGS += -std=c++11 -fexceptions -fpermissive
 
 SOURCES_C =
 SOURCES_CXX =
@@ -266,3 +266,19 @@ SOURCES_CXX += \
     $(CORE_DIR)/src/smw/ui/MI_StringScroll.cpp \
     $(CORE_DIR)/src/smw/ui/MI_TeamSelect.cpp \
     $(CORE_DIR)/src/smw/ui/NetworkListScroll.cpp
+
+ifeq ($(platform),osx)
+    CXXFLAGS += -Wno-c++11-narrowing
+endif
+
+ifeq ($(platform),ios-arm64)
+    CXXFLAGS += -Wno-c++11-narrowing
+endif
+
+ifeq ($(platform),ios9)
+    CXXFLAGS += -Wno-c++11-narrowing
+endif
+
+ifeq ($(platform),tvos-arm64)
+    CXXFLAGS += -Wno-c++11-narrowing
+endif
