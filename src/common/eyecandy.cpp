@@ -1266,23 +1266,14 @@ void Spotlight::UpdatePosition(short x, short y)
 
 void Spotlight::Draw()
 {
-    SDL_Rect rDst = {
-        static_cast<Sint16>(ix - iHalfWidth), static_cast<Sint16>(iy - iHalfWidth),
-        static_cast<Uint16>(iWidth), static_cast<Uint16>(iWidth)
-    };
+    SDL_Rect rDst = {ix - iHalfWidth, iy - iHalfWidth, iWidth, iWidth};
     SDL_BlitSurface(rm->spr_overlayhole.getSurface(), &rSrc, rm->spr_overlay.getSurface(), &rDst);
 
     if (ix - iHalfWidth < 0) {
-		SDL_Rect rDstWrap = {
-            static_cast<Sint16>(ix - iHalfWidth + smw->ScreenWidth), static_cast<Sint16>(iy - iHalfWidth),
-            static_cast<Uint16>(iWidth), static_cast<Uint16>(iWidth)
-        };
+		SDL_Rect rDstWrap = {ix - iHalfWidth + smw->ScreenWidth, iy - iHalfWidth, iWidth, iWidth};
         SDL_BlitSurface(rm->spr_overlayhole.getSurface(), &rSrc, rm->spr_overlay.getSurface(), &rDstWrap);
 	} else if (ix + iHalfWidth >= smw->ScreenWidth) {
-		SDL_Rect rDstWrap = {
-            static_cast<Sint16>(ix - iHalfWidth - smw->ScreenWidth), static_cast<Sint16>(iy - iHalfWidth),
-            static_cast<Uint16>(iWidth), static_cast<Uint16>(iWidth)
-        };
+		SDL_Rect rDstWrap = {ix - iHalfWidth - smw->ScreenWidth, iy - iHalfWidth, iWidth, iWidth};
         SDL_BlitSurface(rm->spr_overlayhole.getSurface(), &rSrc, rm->spr_overlay.getSurface(), &rDstWrap);
     }
 
