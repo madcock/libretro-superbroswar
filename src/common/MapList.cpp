@@ -473,7 +473,7 @@ void MapList::WriteFilters()
 
             fclose(fp);
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && !defined(__LIBRETRO__)
             chmod(filterslist->GetIndex(iFilter), S_IRWXU | S_IRWXG | S_IROTH);
 #endif
         }
@@ -615,7 +615,7 @@ void MapList::WriteMapSummaryCache()
 
     fclose(fp);
 
-#if defined(__APPLE__)
+#if defined(__APPLE__) && !defined(__LIBRETRO__)
     chmod(convertPath("maps/cache/mapsummary.txt").c_str(), S_IRWXU | S_IRWXG | S_IROTH);
 #endif
 }
