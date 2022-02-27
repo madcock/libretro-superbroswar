@@ -59,7 +59,7 @@
 #define HAVE_INTTYPES_H 1
 #define HAVE_LIMITS_H   1
 #define HAVE_MATH_H 1
-#define HAVE_SIGNAL_H 1
+//#define HAVE_SIGNAL_H 1
 #define HAVE_STDINT_H   1
 //#define HAVE_STDIO_H    1
 #define HAVE_STRING_H   1
@@ -137,7 +137,7 @@
 #define HAVE_SQRTF  1
 #define HAVE_TAN    1
 #define HAVE_TANF   1
-#define HAVE_SIGACTION 1
+//#define HAVE_SIGACTION 1
 #define HAVE_SETJMP 1
 #define HAVE_NANOSLEEP  1
 #define HAVE_SYSCONF    1
