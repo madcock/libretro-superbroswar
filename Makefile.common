@@ -11,7 +11,7 @@ INCFLAGS = \
 CORE_DEFINE := -DNETWORK_DISABLED
 
 FLAGS += -ffast-math
-CXXFLAGS += -std=c++11 -fexceptions -fpermissive
+CXXFLAGS += -std=c++11 -fexceptions -fpermissive -Wno-c++11-narrowing
 
 SOURCES_C =
 SOURCES_CXX =

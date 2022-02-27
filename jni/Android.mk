@@ -17,7 +17,7 @@ endif
 
 include $(CORE_DIR)/Makefile.common
 
-COREFLAGS := $(FLAGS) -funroll-loops $(INCFLAGS) -D__LIBRETRO__ $(CORE_DEFINE)
+COREFLAGS := $(FLAGS) -funroll-loops $(INCFLAGS) -D__LIBRETRO__ $(CORE_DEFINE) -Wno-c++11-narrowing
 
 GIT_VERSION := " $(shell git rev-parse --short HEAD || echo unknown)"
 ifneq ($(GIT_VERSION)," unknown")
