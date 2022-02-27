@@ -47,7 +47,7 @@ CORE_DEFINE += -DHAVE_ALLOCA -DVAR_ARRAYS -DHAVE_SYS_TYPES_H
 # png
 SOURCES_C += \
 	$(wildcard $(DEPS_DIR)/libpng/*.c)
-FLAGS += -I$(DEPS_DIR)//libpng
+FLAGS += -I$(DEPS_DIR)/libpng
 
 # zlib
 SOURCES_C += \
