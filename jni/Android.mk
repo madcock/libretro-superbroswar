@@ -30,4 +30,5 @@ LOCAL_SRC_FILES    := $(SOURCES_C) $(SOURCES_CXX)
 LOCAL_CFLAGS       := $(COREFLAGS)
 LOCAL_CXXFLAGS     := $(CXXFLAGS) $(COREFLAGS)
 LOCAL_LDFLAGS      := -Wl,-version-script=$(CORE_DIR)/libretro/link.T
+LOCAL_CPP_FEATURES := exceptions rtti
 include $(BUILD_SHARED_LIBRARY)
