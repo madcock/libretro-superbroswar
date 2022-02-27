@@ -7,6 +7,10 @@
 #include <stdexcept>
 #include <vector>
 
+#ifdef __LIBRETRO__
+    #include <streams/file_stream_transforms.h>
+#endif
+
 BinaryFile::BinaryFile(const char* filename, const char* options)
     : fp(NULL)
 {

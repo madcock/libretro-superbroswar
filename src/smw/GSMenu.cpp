@@ -51,19 +51,23 @@
 #include <cassert>
 #include <sstream>
 
-#if defined(_XBOX) && !defined(__LIBRETRO__)
+#ifdef __LIBRETRO__
+    #include <streams/file_stream_transforms.h>
+#else
+#ifdef _XBOX
 #include <xtl.h>
 #endif
 
-#if defined(_WIN32) && !defined(__LIBRETRO__)
+#ifdef _WIN32
 #ifndef _XBOX
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
 #endif
 
-#if defined(__APPLE__) && !defined(__LIBRETRO__)
+#if defined(__APPLE__)
 #include <sys/stat.h>
+#endif
 #endif
 
 bool LoadStartGraphics();

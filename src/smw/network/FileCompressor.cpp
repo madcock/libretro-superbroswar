@@ -7,6 +7,10 @@
 #include <cstdlib>
 #include <cstring>
 
+#ifdef __LIBRETRO__
+    #include <streams/file_stream_transforms.h>
+#endif
+
 #define COMPRESSION_SIZE_LIMIT 20000
 
 CompressedData::CompressedData(uint8_t* data, size_t size)
