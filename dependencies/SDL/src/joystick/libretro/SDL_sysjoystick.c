@@ -151,6 +151,7 @@ SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 		joystick->hwdata->old_pad_data = pad_retromask;
 	}
 
+#if 0
 	new_an[0] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_X));
 	new_an[1] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_Y));
 	new_an[2] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X));
@@ -162,6 +163,7 @@ SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 	        }
 	        joystick->hwdata->an[i] = new_an[i];
 	}
+#endif
 
 	return;
 }
