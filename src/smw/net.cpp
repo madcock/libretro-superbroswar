@@ -29,6 +29,7 @@
 #include <cstring>
 #include <ctime>
 #include <string>
+#include <sstream>
 
 NetworkHandler networkHandler;
 Networking netplay;

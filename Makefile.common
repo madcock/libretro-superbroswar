@@ -16,11 +16,6 @@ CXXFLAGS += -std=c++11 -fexceptions -fpermissive
 SOURCES_C =
 SOURCES_CXX =
 
-# yaml-cpp-noboost
-SOURCES_CXX += \
-    $(wildcard $(DEPS_DIR)/yaml-cpp-noboost/src/*.cpp)
-FLAGS += -I$(DEPS_DIR)/yaml-cpp-noboost/include
-
 # ogg
 SOURCES_C += \
     $(wildcard $(DEPS_DIR)/libogg/src/*.c)

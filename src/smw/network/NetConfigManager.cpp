@@ -11,6 +11,7 @@
 
 void NetConfigManager::save()
 {
+#ifndef NETWORK_DISABLED
     assert(netplay.myPlayerName);
 
     std::ofstream config(GetHomeDirectory() + "servers.yml");
@@ -45,18 +46,22 @@ void NetConfigManager::save()
 
     config << content.c_str();
     config.close();
+#endif
 }
 
 void NetConfigManager::load()
 {
+#ifndef NETWORK_DISABLED
     YAML::Node config;
     if (!load_file(config))
         return;
 
     read_playername(config);
     read_servers(config);
+#endif
 }
 
+#ifndef NETWORK_DISABLED
 bool NetConfigManager::load_file(YAML::Node& config) {
     try {
         config = YAML::LoadFile(GetHomeDirectory() + "servers.yml");
@@ -134,3 +139,4 @@ void NetConfigManager::read_servers(YAML::Node& config)
         printf("[net][warning] servers.yml: %s\n", error.what());
     }
 }
+#endif
