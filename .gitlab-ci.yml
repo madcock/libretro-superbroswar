@@ -23,16 +23,16 @@ include:
     file: '/windows-i686-mingw.yml'
 
   # Windows msvc10 64-bit
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/windows-x64-msvc10-msys2.yml'
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/windows-x64-msvc10-msys2.yml'
 
-  # Windows msvc10 32-bit
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/windows-i686-msvc10-msys2.yml'
+  # # Windows msvc10 32-bit
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/windows-i686-msvc10-msys2.yml'
 
   # Windows msvc05 32-bit
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/windows-i686-msvc05-msys2.yml'
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/windows-i686-msvc05-msys2.yml'
 
   # Linux 64-bit
   - project: 'libretro-infrastructure/ci-templates'
@@ -65,20 +65,20 @@ include:
 
   ################################## CONSOLES ################################
   # PlayStation Portable
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/psp-static.yml'
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/psp-static.yml'
 
   # PlayStation Vita
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/vita-static.yml'
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/vita-static.yml'
     
   # Nintendo WiiU
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/wiiu-static.yml'
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/wiiu-static.yml'
 
   # Nintendo Switch
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/libnx-static.yml'
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/libnx-static.yml'
 
   # tvOS (AppleTV)
   - project: 'libretro-infrastructure/ci-templates'
@@ -114,28 +114,28 @@ libretro-build-windows-i686:
     MAKEFILE: Makefile.libretro
 
 # Windows msvc10 64-bit
-libretro-build-windows-msvc10-x64:
-  extends:
-    - .libretro-windows-x64-msvc10-msys2-make-default
-    - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
+# libretro-build-windows-msvc10-x64:
+#   extends:
+#     - .libretro-windows-x64-msvc10-msys2-make-default
+#     - .core-defs
+#   variables:
+#     MAKEFILE: Makefile.libretro
 
 # Windows msvc10 32-bit
-libretro-build-windows-msvc10-i686:
-  extends:
-    - .libretro-windows-i686-msvc10-msys2-make-default
-    - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
+# libretro-build-windows-msvc10-i686:
+#   extends:
+#     - .libretro-windows-i686-msvc10-msys2-make-default
+#     - .core-defs
+#   variables:
+#     MAKEFILE: Makefile.libretro
 
 # Windows msvc05 32-bit
-libretro-build-windows-msvc05-i686:
-  extends:
-    - .libretro-windows-i686-msvc05-msys2-make-default
-    - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
+# libretro-build-windows-msvc05-i686:
+#   extends:
+#     - .libretro-windows-i686-msvc05-msys2-make-default
+#     - .core-defs
+#   variables:
+#     MAKEFILE: Makefile.libretro
     
 # Linux 64-bit
 libretro-build-linux-x64:
