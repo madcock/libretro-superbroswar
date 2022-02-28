@@ -46,7 +46,24 @@ SDL_KEYTYPE controlkeys[2][2][4][NUM_KEYS] = { { { {SDLK_LEFT, SDLK_RIGHT, SDLK_
             {SDLK_p, SDLK_SEMICOLON, SDLK_l, SDLK_QUOTE, SDLK_LEFTBRACKET, SDLK_o, SDLK_UNKNOWN, SDLK_UNKNOWN}
         }
     },
-#if defined(_XBOX) && !defined(__LIBRETRO__)
+#if defined(__LIBRETRO__)
+    //left, right, jump, down, turbo, powerup, start, cancel;
+    {   {   {RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_B, RETRO_JOYPAD_Y, RETRO_JOYPAD_START, RETRO_JOYPAD_SELECT},
+            {RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_B, RETRO_JOYPAD_Y, RETRO_JOYPAD_START, RETRO_JOYPAD_SELECT},
+            {RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_B, RETRO_JOYPAD_Y, RETRO_JOYPAD_START, RETRO_JOYPAD_SELECT},
+            {RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_B, RETRO_JOYPAD_Y, RETRO_JOYPAD_START, RETRO_JOYPAD_SELECT}
+        },
+
+        //up, down, left, right, select, cancel, random, fast scroll
+        {   {RETRO_JOYPAD_UP, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_B, -1, -1},
+            {RETRO_JOYPAD_UP, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_B, -1, -1},
+            {RETRO_JOYPAD_UP, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_B, -1, -1},
+            {RETRO_JOYPAD_UP, RETRO_JOYPAD_DOWN, RETRO_JOYPAD_LEFT, RETRO_JOYPAD_RIGHT, RETRO_JOYPAD_A, RETRO_JOYPAD_B, -1, -1}
+        }
+    }
+};
+#else
+#ifdef  _XBOX
     //left, right, jump, down, turbo, powerup, start, cancel
     {   {   {JOY_HAT_LEFT, JOY_HAT_RIGHT, 12, JOY_HAT_DOWN, 14, 15, 20, 21},
             {JOY_HAT_LEFT, JOY_HAT_RIGHT, 12, JOY_HAT_DOWN, 14, 15, 20, 21},
@@ -78,6 +95,7 @@ SDL_KEYTYPE controlkeys[2][2][4][NUM_KEYS] = { { { {SDLK_LEFT, SDLK_RIGHT, SDLK_
         }
     }
 };
+#endif
 #endif
 
 extern CGameValues game_values;
@@ -434,6 +452,7 @@ void CGameValues::ReadBinaryConfig() {
         return;
     }
 
+#ifndef __LIBRETRO__
     try {
 #ifdef USE_SDL2
         std::string controls_path(GetHomeDirectory() + "controls.sdl2.bin");
@@ -453,7 +472,7 @@ void CGameValues::ReadBinaryConfig() {
         for (short iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++) {
             short iDevice = controls.read_i16();
 
-#if defined(_XBOX) && !defined(__LIBRETRO__)
+#ifdef _XBOX
             playerInput.inputControls[iPlayer] = &inputConfiguration[iPlayer][1]; //Always use gamepads as input devices on xbox
 #else
             if (iDevice >= joystickcount)
@@ -468,6 +487,7 @@ void CGameValues::ReadBinaryConfig() {
         perror(error.what());
         return;
     }
+#endif
 }
 
 void CGameValues::WriteConfig()
@@ -584,6 +604,7 @@ void CGameValues::WriteConfig()
         return;
     }
 
+#ifndef __LIBRETRO__
     try {
 #ifdef USE_SDL2
         std::string controls_path(GetHomeDirectory() + "controls.sdl2.bin");
@@ -605,6 +626,7 @@ void CGameValues::WriteConfig()
         perror(error.what());
         return;
     }
+#endif
 
     maplist->WriteFilters();
     maplist->WriteMapSummaryCache();

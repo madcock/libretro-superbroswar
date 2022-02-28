@@ -49,6 +49,19 @@
 
 #define KEY_NONE            -1
 
+#ifdef __LIBRETRO__
+#define RETRO_JOYPAD_A            12
+#define RETRO_JOYPAD_B            13
+#define RETRO_JOYPAD_X            14
+#define RETRO_JOYPAD_Y            15
+#define RETRO_JOYPAD_SELECT       18
+#define RETRO_JOYPAD_START        19
+#define RETRO_JOYPAD_RIGHT        20
+#define RETRO_JOYPAD_LT           21
+#define RETRO_JOYPAD_LEFT         23
+#define RETRO_JOYPAD_UP           24
+#define RETRO_JOYPAD_DOWN         25
+#endif
 
 struct CKeyState {
 	bool fDown;
