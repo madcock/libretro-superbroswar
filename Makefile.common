@@ -228,7 +228,6 @@ SOURCES_CXX += \
     $(CORE_DIR)/src/smw/menu/options/TeamOptionsMenu.cpp \
     $(CORE_DIR)/src/smw/network/FileCompressor.cpp \
     $(CORE_DIR)/src/smw/network/NetConfigManager.cpp \
-    $(CORE_DIR)/src/smw/menu/options/TeamOptionsMenu.cpp \
     $(CORE_DIR)/src/smw/objects/blocks/BounceBlock.cpp \
     $(CORE_DIR)/src/smw/objects/blocks/BreakableBlock.cpp \
     $(CORE_DIR)/src/smw/objects/blocks/DonutBlock.cpp \
