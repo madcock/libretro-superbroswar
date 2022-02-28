@@ -41,7 +41,7 @@ const std::string GetHomeDirectory()
 {
 #ifdef __LIBRETRO__
     std::string result(retro_save_directory);
-    result += "/supermariowar/";
+    result += "/superbroswar/";
     return result;
 
 #elif _XBOX
