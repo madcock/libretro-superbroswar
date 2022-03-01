@@ -277,3 +277,7 @@ endif
 ifeq ($(platform),tvos-arm64)
     CXXFLAGS += -Wno-c++11-narrowing
 endif
+
+ifeq ($(platform),vita)
+    CFLAGS += -Wno-narrowing
+endif
