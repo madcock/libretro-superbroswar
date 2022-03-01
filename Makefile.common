@@ -279,5 +279,5 @@ ifeq ($(platform),tvos-arm64)
 endif
 
 ifeq ($(platform),vita)
-    CFLAGS += -Wno-narrowing
+    CXXFLAGS += -Wno-narrowing
 endif
