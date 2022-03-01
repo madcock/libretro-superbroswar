@@ -69,8 +69,8 @@ include:
   #   file: '/psp-static.yml'
 
   # PlayStation Vita
-  - project: 'libretro-infrastructure/ci-templates'
-    file: '/vita-static.yml'
+  # - project: 'libretro-infrastructure/ci-templates'
+  #   file: '/vita-static.yml'
     
   # Nintendo WiiU
   # - project: 'libretro-infrastructure/ci-templates'
@@ -240,9 +240,9 @@ libretro-build-libnx-aarch64:
 #     - .core-defs
 
 # PlayStation Vita
-libretro-build-vita:
-  extends:
-    - .libretro-vita-static-retroarch-master
-    - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
+# libretro-build-vita:
+#   extends:
+#     - .libretro-vita-static-retroarch-master
+#     - .core-defs
+#   variables:
+#     MAKEFILE: Makefile.libretro
