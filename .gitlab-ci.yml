@@ -69,16 +69,16 @@ include:
   #   file: '/psp-static.yml'
 
   # PlayStation Vita
-  # - project: 'libretro-infrastructure/ci-templates'
-  #   file: '/vita-static.yml'
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/vita-static.yml'
     
   # Nintendo WiiU
   # - project: 'libretro-infrastructure/ci-templates'
   #   file: '/wiiu-static.yml'
 
   # Nintendo Switch
-  # - project: 'libretro-infrastructure/ci-templates'
-  #   file: '/libnx-static.yml'
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/libnx-static.yml'
 
   # tvOS (AppleTV)
   - project: 'libretro-infrastructure/ci-templates'
@@ -226,10 +226,12 @@ libretro-build-tvos-arm64:
 #     - .core-defs
     
 # Nintendo Switch
-# libretro-build-libnx-aarch64:
-#   extends:
-#     - .libretro-libnx-static-retroarch-master
-#     - .core-defs
+libretro-build-libnx-aarch64:
+  extends:
+    - .libretro-libnx-static-retroarch-master
+    - .core-defs
+  variables:
+    MAKEFILE: Makefile.libretro
 
 # PlayStation Portable
 # libretro-build-psp:
@@ -238,7 +240,9 @@ libretro-build-tvos-arm64:
 #     - .core-defs
 
 # PlayStation Vita
-# libretro-build-vita:
-#   extends:
-#     - .libretro-vita-static-retroarch-master
-#     - .core-defs
+libretro-build-vita:
+  extends:
+    - .libretro-vita-static-retroarch-master
+    - .core-defs
+  variables:
+    MAKEFILE: Makefile.libretro
