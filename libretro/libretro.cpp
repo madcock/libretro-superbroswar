@@ -2,7 +2,13 @@
 #include <cmath>
 #include <cstdlib> // srand()
 
+#include <stdio.h>
+#if defined(_WIN32) && !defined(_XBOX)
+#include <windows.h>
+#endif
+
 #include "libretro.h"
+
 #include <string/stdstring.h>
 #include <file/file_path.h>
 #include <retro_dirent.h>
@@ -125,6 +131,15 @@ extern "C" void libretro_audio_cb(int16_t *buffer, uint32_t buffer_len)
         return;
     
     audio_batch_cb(buffer, buffer_len);
+}
+
+static void fallback_log(enum retro_log_level level, const char *fmt, ...)
+{
+   (void)level;
+   va_list va;
+   va_start(va, fmt);
+   vfprintf(stderr, fmt, va);
+   va_end(va);
 }
 
 static void create_globals()
@@ -440,6 +455,8 @@ void retro_set_environment(retro_environment_t cb)
 
     if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))
         log_cb = logging.log;
+    else
+        log_cb = fallback_log;
     
    vfs_iface_info.required_interface_version = 3;
    vfs_iface_info.iface                      = NULL;
