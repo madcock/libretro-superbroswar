@@ -95,16 +95,7 @@ extern std::string RootDataDirectory;
 extern CGameValues game_values;
 extern CResourceManager* rm;
 
-static void fallback_log(enum retro_log_level level, const char *fmt, ...)
-{
-   (void)level;
-   va_list va;
-   va_start(va, fmt);
-   vfprintf(stderr, fmt, va);
-   va_end(va);
-}
-
-static retro_log_printf_t log_cb = fallback_log;
+static retro_log_printf_t log_cb;
 static retro_video_refresh_t video_cb;
 static retro_audio_sample_t audio_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
@@ -138,6 +129,15 @@ extern "C" void libretro_audio_cb(int16_t *buffer, uint32_t buffer_len)
         return;
     
     audio_batch_cb(buffer, buffer_len);
+}
+
+static void fallback_log(enum retro_log_level level, const char *fmt, ...)
+{
+   (void)level;
+   va_list va;
+   va_start(va, fmt);
+   vfprintf(stderr, fmt, va);
+   va_end(va);
 }
 
 void libretro_printf(const char *fmt, ...)
@@ -394,109 +394,12 @@ static void gameloop_frame()
 
 void retro_init(void)
 {
-    input_state_cb = NULL;
-    audio_batch_cb = NULL;
-
     const char *system_dir      = NULL;
     const char *content_dir     = NULL;
     const char *save_dir        = NULL;
-
-    // if defined, use the system directory			
-    if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_dir) && system_dir)
-        retro_system_directory=system_dir;		
-
-    // if defined, use the system directory			
-    if (environ_cb(RETRO_ENVIRONMENT_GET_CONTENT_DIRECTORY, &content_dir) && content_dir)
-        retro_content_directory=content_dir;		
-
-    // If save directory is defined use it, otherwise use system directory
-    if (environ_cb(RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY, &save_dir) && save_dir)
-        retro_save_directory = *save_dir ? save_dir : retro_system_directory;      
-    else
-        // make retro_save_directory the same in case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY is not implemented by the frontend
-        retro_save_directory=retro_system_directory;
-
-    SDL_putenv("SDL_VIDEODRIVER=dummy");
-}
-
-void retro_deinit(void)
-{
-    input_state_cb = NULL;
-    audio_batch_cb = NULL;
-}
-
-unsigned retro_api_version(void)
-{
-    return RETRO_API_VERSION;
-}
-
-void retro_set_controller_port_device(unsigned port, unsigned device)
-{
-    log_cb(RETRO_LOG_INFO, "Plugging device %u into port %u.\n", device, port);
-}
-
-void retro_get_system_info(struct retro_system_info *info)
-{
-    memset(info, 0, sizeof(*info));
-    info->library_name     = "Super Bros War";
-    info->library_version  = "0.1";
-    info->need_fullpath    = true;
-    info->valid_extensions = "game";
-}
-
-void retro_get_system_av_info(struct retro_system_av_info *info)
-{
-    info->geometry.base_width   = VIDEO_WIDTH;
-    info->geometry.base_height  = VIDEO_HEIGHT;
-    info->geometry.max_width    = VIDEO_WIDTH;
-    info->geometry.max_height   = VIDEO_HEIGHT;
-    info->geometry.aspect_ratio = (640.0f / 480.0f);
-    info->timing.fps            = 60.0f;
-    info->timing.sample_rate    = 44100.0f;
-}
-
-void retro_set_environment(retro_environment_t cb)
-{
     struct retro_vfs_interface_info vfs_iface_info;
     struct retro_log_callback logging;
 
-    environ_cb = cb;
-
-    if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging)) {
-        log_cb = logging.log;
-    }
-    
-   vfs_iface_info.required_interface_version = 3;
-   vfs_iface_info.iface                      = NULL;
-
-   if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
-   {
-        filestream_vfs_init(&vfs_iface_info);
-        path_vfs_init(&vfs_iface_info);
-        dirent_vfs_init(&vfs_iface_info);
-   }
-}
-
-void retro_reset(void)
-{
-    // no reset
-}
-
-// defined in SDL_libretroaudio.c
-extern "C" void LIBRETRO_MixAudio();
-
-void retro_run(void)
-{
-    input_poll_cb();
-
-    gameloop_frame();
-    video_cb(screen->pixels, screen->w, screen->h, screen->pitch);
-
-    LIBRETRO_MixAudio();
-}
-
-bool retro_load_game(const struct retro_game_info *info)
-{
     struct retro_input_descriptor desc[] = {
         { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_LEFT,  "Left" },
         { 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_UP,    "Up" },
@@ -542,14 +445,111 @@ bool retro_load_game(const struct retro_game_info *info)
     };
     enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
 
+    input_state_cb = NULL;
+    audio_batch_cb = NULL;
+
+    // if defined, use the system directory			
+    if (environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &system_dir) && system_dir)
+        retro_system_directory=system_dir;		
+
+    // if defined, use the system directory			
+    if (environ_cb(RETRO_ENVIRONMENT_GET_CONTENT_DIRECTORY, &content_dir) && content_dir)
+        retro_content_directory=content_dir;		
+
+    // If save directory is defined use it, otherwise use system directory
+    if (environ_cb(RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY, &save_dir) && save_dir)
+        retro_save_directory = *save_dir ? save_dir : retro_system_directory;      
+    else
+        // make retro_save_directory the same in case RETRO_ENVIRONMENT_GET_SAVE_DIRECTORY is not implemented by the frontend
+        retro_save_directory=retro_system_directory;
+
     environ_cb(RETRO_ENVIRONMENT_SET_INPUT_DESCRIPTORS, desc);
+
+    if (environ_cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging)) {
+        log_cb = logging.log;
+    } else {
+        log_cb = fallback_log;
+    }
 
     if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
     {
         log_cb(RETRO_LOG_INFO, "RGB565 is not supported.\n");
-        return false;
+    }
+    
+    vfs_iface_info.required_interface_version = 3;
+    vfs_iface_info.iface                      = NULL;
+
+    if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
+    {
+        filestream_vfs_init(&vfs_iface_info);
+        path_vfs_init(&vfs_iface_info);
+        dirent_vfs_init(&vfs_iface_info);
     }
 
+    SDL_putenv("SDL_VIDEODRIVER=dummy");
+}
+
+void retro_deinit(void)
+{
+    input_state_cb = NULL;
+    audio_batch_cb = NULL;
+}
+
+unsigned retro_api_version(void)
+{
+    return RETRO_API_VERSION;
+}
+
+void retro_set_controller_port_device(unsigned port, unsigned device)
+{
+    log_cb(RETRO_LOG_INFO, "Plugging device %u into port %u.\n", device, port);
+}
+
+void retro_get_system_info(struct retro_system_info *info)
+{
+    memset(info, 0, sizeof(*info));
+    info->library_name     = "Super Bros War";
+    info->library_version  = "0.1";
+    info->need_fullpath    = true;
+    info->valid_extensions = "game";
+}
+
+void retro_get_system_av_info(struct retro_system_av_info *info)
+{
+    info->geometry.base_width   = VIDEO_WIDTH;
+    info->geometry.base_height  = VIDEO_HEIGHT;
+    info->geometry.max_width    = VIDEO_WIDTH;
+    info->geometry.max_height   = VIDEO_HEIGHT;
+    info->geometry.aspect_ratio = (640.0f / 480.0f);
+    info->timing.fps            = 60.0f;
+    info->timing.sample_rate    = 44100.0f;
+}
+
+void retro_set_environment(retro_environment_t cb)
+{
+    environ_cb = cb;
+}
+
+void retro_reset(void)
+{
+    // no reset
+}
+
+// defined in SDL_libretroaudio.c
+extern "C" void LIBRETRO_MixAudio();
+
+void retro_run(void)
+{
+    input_poll_cb();
+
+    gameloop_frame();
+    video_cb(screen->pixels, screen->w, screen->h, screen->pitch);
+
+    LIBRETRO_MixAudio();
+}
+
+bool retro_load_game(const struct retro_game_info *info)
+{
     if (info && !string_is_empty(info->path))
     {
         fill_pathname_basedir(retro_game_path, info->path, sizeof(retro_game_path));
