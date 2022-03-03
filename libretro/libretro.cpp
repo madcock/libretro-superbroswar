@@ -34,7 +34,6 @@
 #include "sfx.h"
 #include "TilesetManager.h"
 
-#include "FPSLimiter.h"
 #include "GSSplashScreen.h"
 
 //------ system stuff ------
@@ -96,8 +95,16 @@ extern std::string RootDataDirectory;
 extern CGameValues game_values;
 extern CResourceManager* rm;
 
-static struct retro_log_callback logging;
-static retro_log_printf_t log_cb;
+static void fallback_log(enum retro_log_level level, const char *fmt, ...)
+{
+   (void)level;
+   va_list va;
+   va_start(va, fmt);
+   vfprintf(stderr, fmt, va);
+   va_end(va);
+}
+
+static retro_log_printf_t log_cb = fallback_log;
 static retro_video_refresh_t video_cb;
 static retro_audio_sample_t audio_cb;
 static retro_audio_sample_batch_t audio_batch_cb;
@@ -133,13 +140,19 @@ extern "C" void libretro_audio_cb(int16_t *buffer, uint32_t buffer_len)
     audio_batch_cb(buffer, buffer_len);
 }
 
-static void fallback_log(enum retro_log_level level, const char *fmt, ...)
+void libretro_printf(const char *fmt, ...)
 {
-   (void)level;
-   va_list va;
-   va_start(va, fmt);
-   vfprintf(stderr, fmt, va);
-   va_end(va);
+    static char formatted[4096];
+    va_list args;
+
+    if (fmt == NULL)
+        return;
+
+    va_start(args, fmt);
+    vsnprintf(formatted, sizeof(formatted), fmt, args);
+    va_end(args);
+
+    log_cb(RETRO_LOG_INFO, "%s", formatted);
 }
 
 static void create_globals()
@@ -260,10 +273,10 @@ static void game_init()
 {
     create_globals();
 
-    printf("-------------------------------------------------------------------------------\n");
-    printf(" %s %s\n", TITLESTRING, VERSIONNUMBER);
-    printf("-------------------------------------------------------------------------------\n");
-    printf("\n---------------- startup ----------------\n");
+    libretro_printf("-------------------------------------------------------------------------------\n");
+    libretro_printf(" %s %s\n", TITLESTRING, VERSIONNUMBER);
+    libretro_printf("-------------------------------------------------------------------------------\n");
+    libretro_printf("\n---------------- startup ----------------\n");
 
 	gfx_init(smw->ScreenWidth, smw->ScreenHeight, false);		//initialize the graphics (SDL)
     blitdest = screen;
@@ -293,7 +306,7 @@ static void game_init()
     gfx_settitle(title);
     SDL_ShowCursor(SDL_DISABLE);
 
-    printf("\n---------------- loading ----------------\n");
+    libretro_printf("\n---------------- loading ----------------\n");
 
     for (short iScore = 0; iScore < 4; iScore++)
         score[iScore] = new CScore(iScore);
@@ -339,7 +352,7 @@ static void game_init()
 
 static void game_deinit()
 {
-    printf("\n---------------- shutdown ----------------\n");
+    libretro_printf("\n---------------- shutdown ----------------\n");
 
     for (short i = 0; i < GAMEMODE_LAST; i++)
         delete gamemodes[i];
@@ -375,13 +388,8 @@ static void game_deinit()
 
 static void gameloop_frame()
 {
-    FPSLimiter::instance().frameStart();
-
     GameStateManager::instance().currentState->update();
-
-    FPSLimiter::instance().beforeFlip();
     gfx_flipscreen();
-    FPSLimiter::instance().afterFlip();
 }
 
 void retro_init(void)
@@ -450,22 +458,22 @@ void retro_get_system_av_info(struct retro_system_av_info *info)
 void retro_set_environment(retro_environment_t cb)
 {
     struct retro_vfs_interface_info vfs_iface_info;
+    struct retro_log_callback logging;
 
     environ_cb = cb;
 
-    if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging))
+    if (cb(RETRO_ENVIRONMENT_GET_LOG_INTERFACE, &logging)) {
         log_cb = logging.log;
-    else
-        log_cb = fallback_log;
+    }
     
    vfs_iface_info.required_interface_version = 3;
    vfs_iface_info.iface                      = NULL;
 
    if (environ_cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs_iface_info))
    {
-       filestream_vfs_init(&vfs_iface_info);
-       path_vfs_init(&vfs_iface_info);
-       dirent_vfs_init(&vfs_iface_info);
+        filestream_vfs_init(&vfs_iface_info);
+        path_vfs_init(&vfs_iface_info);
+        dirent_vfs_init(&vfs_iface_info);
    }
 }
 

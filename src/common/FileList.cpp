@@ -10,6 +10,8 @@
 #include <iostream>
 #include <algorithm>
 
+extern void libretro_printf(const char *fmt, ...);
+
 #ifdef __LIBRETRO__
     #include <retro_dirent.h>
     #include <streams/file_stream_transforms.h>
@@ -28,8 +30,6 @@
 #endif
 #endif
 
-using std::cout;
-using std::endl;
 using std::string;
 
 extern const char * g_szMusicCategoryNames[MAXMUSICCATEGORY];
@@ -357,7 +357,7 @@ SimpleDirectoryList::SimpleDirectoryList(const std::string &path)
         filelist.insert(filelist.end(), d.fullName(curname));
     }
     if (filelist.empty()) {
-        printf("ERROR: Empty directory.  %s\n", path.c_str());
+        libretro_printf("ERROR: Empty directory.  %s\n", path.c_str());
         //exit(0);
     }
 
@@ -464,7 +464,7 @@ MusicEntry::MusicEntry(const std::string & musicdirectory)
     std::string musicfile = musicdirectory + getDirectorySeperator() + std::string("Music.txt");
     FILE * in = fopen(musicfile.c_str(), "r");
     if (!in) {
-        printf("Error: Could not open: %s\n", musicfile.c_str());
+        libretro_printf("Error: Could not open: %s\n", musicfile.c_str());
         fError = true;
         return;
     }
@@ -616,7 +616,7 @@ MusicEntry::MusicEntry(const std::string & musicdirectory)
     }
 
     if (iNumFile == 0) {
-        printf("Error: No songs found in: %s\n", musicdirectory.c_str());
+        libretro_printf("Error: No songs found in: %s\n", musicdirectory.c_str());
         fError = true;
         return;
     }
@@ -625,7 +625,7 @@ MusicEntry::MusicEntry(const std::string & musicdirectory)
     for (i = 0; i < MAXMUSICCATEGORY; i++) {
         if (numsongsforcategory[i] == 0) {
             if (i < 4) {
-                printf("Error: Missing track definition for music category: %s\n", g_szMusicCategoryNames[i]);
+                libretro_printf("Error: Missing track definition for music category: %s\n", g_szMusicCategoryNames[i]);
                 fError = true;
                 return;
             } else { //Use default category
@@ -828,7 +828,7 @@ WorldMusicEntry::WorldMusicEntry(const std::string & musicdirectory)
     std::string musicfile = musicdirectory + getDirectorySeperator() + std::string("Music.txt");
     FILE * in = fopen(musicfile.c_str(), "r");
     if (!in) {
-        printf("Error: Could not open: %s\n", musicfile.c_str());
+        libretro_printf("Error: Could not open: %s\n", musicfile.c_str());
         fError = true;
         return;
     }

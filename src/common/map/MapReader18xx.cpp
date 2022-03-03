@@ -12,6 +12,8 @@ extern short g_iTileTypeConversion[NUMTILETYPES];
 
 using namespace std;
 
+extern void libretro_printf(const char *fmt, ...);
+
 MapReader1800::MapReader1800()
     : MapReader1702()
     , iMaxTilesetID(-1)
@@ -208,9 +210,7 @@ bool MapReader1800::read_spawn_areas(CMap& map, BinaryFile& mapfile)
         map.numspawnareas[i] = (short)mapfile.read_i32();
 
         if (map.numspawnareas[i] > MAXSPAWNAREAS) {
-            cout << endl << " ERROR: Number of spawn areas (" << map.numspawnareas[i]
-                 << ") was greater than max allowed (" << MAXSPAWNAREAS << ')'
-                 << endl;
+            libretro_printf("\n ERROR: Number of spawn areas (%d) was greater than max allowed (%d)\n", map.numspawnareas[i], MAXSPAWNAREAS);
             return false;
         }
 

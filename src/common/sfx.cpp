@@ -8,6 +8,7 @@
 
 using namespace std;
 
+extern void libretro_printf(const char *fmt, ...);
 
 bool fResumeMusic = true;
 extern void DECLSPEC soundfinished(int channel);
@@ -30,7 +31,7 @@ bool sfx_init()
 #else
     SDL_version ver_compiled;
     SDL_MIXER_VERSION(&ver_compiled);
-    printf("[sfx] SDL_Mixer %d.%d.%d initialized.\n",
+    libretro_printf("[sfx] SDL_Mixer %d.%d.%d initialized.\n",
         ver_compiled.major, ver_compiled.minor, ver_compiled.patch);
 #endif
 
@@ -77,11 +78,11 @@ bool sfxSound::init(const string& filename)
 	if (sfx)
 		reset();
 
-	cout << "load " << filename << "..." << endl;
+	libretro_printf("load %s...\n", filename.c_str());
 	sfx = Mix_LoadWAV(filename.c_str());
 
     if (sfx == NULL) {
-		printf(" failed loading %s\n", filename.c_str());
+		libretro_printf(" failed loading %s\n", filename.c_str());
 		return false;
 	}
 
@@ -110,7 +111,7 @@ int sfxSound::play()
 		starttime = ticks;
 
 		if (g_PlayingSoundChannels[channel])
-			printf("Error: Sound was played on channel that was not cleared!\n");
+			libretro_printf("Error: Sound was played on channel that was not cleared!\n");
 
 		g_PlayingSoundChannels[channel] = this;
 	}
@@ -195,11 +196,11 @@ bool sfxMusic::load(const string& filename)
 	if (music)
 		reset();
 
-    cout << "load " << filename << "..." << endl;
+	libretro_printf("load %s...\n", filename.c_str());
 	music = Mix_LoadMUS(filename.c_str());
 
     if (!music) {
-	    printf("Error Loading Music: %s\n", Mix_GetError());
+	    libretro_printf("Error Loading Music: %s\n", Mix_GetError());
 		return false;
 	}
 

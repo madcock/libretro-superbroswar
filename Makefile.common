@@ -190,7 +190,6 @@ SOURCES_CXX += \
     $(CORE_DIR)/src/smw/player.cpp \
     $(CORE_DIR)/src/smw/uicustomcontrol.cpp \
     $(CORE_DIR)/src/smw/world.cpp \
-    $(CORE_DIR)/src/smw/FPSLimiter.cpp \
     $(CORE_DIR)/src/smw/GSGameplay.cpp \
     $(CORE_DIR)/src/smw/GSMenu.cpp \
     $(CORE_DIR)/src/smw/GSSplashScreen.cpp \

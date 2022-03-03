@@ -23,8 +23,6 @@
 #endif
 #endif
 
-using std::cout;
-using std::endl;
 using std::string;
 
 extern SDL_Surface* screen;

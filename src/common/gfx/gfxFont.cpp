@@ -9,6 +9,8 @@
 
 using namespace std;
 
+extern void libretro_printf(const char *fmt, ...);
+
 extern SDL_Surface * blitdest;
 
 gfxFont::gfxFont()
@@ -27,22 +29,21 @@ bool gfxFont::init(const std::string& filename)
     if (m_font)
         SFont_FreeFont(m_font);
 
-    cout << "loading font " << filename << " ... ";
+    libretro_printf("loading font %s ...", filename.c_str());
 
     SDL_Surface *fontsurf = IMG_Load(filename.c_str());
     if (fontsurf == NULL) {
-        cout << endl << " ERROR: Couldn't load file "
-             << filename << ": " << SDL_GetError() << endl;
+        libretro_printf(" ERROR: Couldn't load file %s: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
     m_font = SFont_InitFont(fontsurf);
     if (!m_font) {
-        cout << endl << " ERROR: an error occurre while loading the font." << endl;
+        libretro_printf("\n ERROR: an error occurre while loading the font.\n");
         return false;
     }
 
-    cout << "done" << endl;
+    libretro_printf("done\n");
     return true;
 }
 
@@ -117,6 +118,6 @@ void gfxFont::drawf(int x, int y, const char *s, ...)
 void gfxFont::setalpha(Uint8 alpha)
 {
     if ( (SDL_SETALPHABYTE(m_font->Surface, SDL_TRUE, alpha)) < 0) {
-        printf("\n ERROR: couldn't set alpha on sprite: %s\n", SDL_GetError());
+        libretro_printf("\n ERROR: couldn't set alpha on sprite: %s\n", SDL_GetError());
     }
 }

@@ -11,6 +11,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+extern void libretro_printf(const char *fmt, ...);
+
 extern SDL_Surface* screen;
 
 #define GFX_BPP 16
@@ -46,7 +48,7 @@ bool GraphicsSDL::Init(bool fullscreen)
         return false;
     }
 
-    printf("[gfx] Game window initialized (%dx%d, %dbpp)\n",
+    libretro_printf("[gfx] Game window initialized (%dx%d, %dbpp)\n",
         GFX_SCREEN_W, GFX_SCREEN_H, screen->format->BitsPerPixel);
 
     return true;
@@ -56,7 +58,7 @@ void GraphicsSDL::init_sdl()
 {
     // init SDL
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("[gfx] SDL error: %s\n", SDL_GetError());
+        libretro_printf("[gfx] SDL error: %s\n", SDL_GetError());
         throw E_INIT_SDL;
     }
 
@@ -71,7 +73,7 @@ void GraphicsSDL::init_sdl_img()
     // init SDL_image
     int img_flags = IMG_INIT_PNG;
     if ((IMG_Init(img_flags) & img_flags) != img_flags) {
-        printf("[gfx] SDL_image error: %s\n", IMG_GetError());
+        libretro_printf("[gfx] SDL_image error: %s\n", IMG_GetError());
         throw E_INIT_SDL_IMG;
     }
 
@@ -90,7 +92,7 @@ void GraphicsSDL::print_sdl_version()
     ver_current = *constptr_ver_current;
 #endif
 
-    printf("[gfx] SDL %d.%d.%d loaded.\n",
+    libretro_printf("[gfx] SDL %d.%d.%d loaded.\n",
         ver_current.major, ver_current.minor, ver_current.patch);
 }
 
@@ -100,7 +102,7 @@ void GraphicsSDL::print_sdl_img_version()
     SDL_version ver_compiled;
     const SDL_version * ver_img_current = IMG_Linked_Version();
     SDL_IMAGE_VERSION(&ver_compiled);
-    printf("[gfx] SDL_image %d.%d.%d loaded.\n",
+    libretro_printf("[gfx] SDL_image %d.%d.%d loaded.\n",
         ver_img_current->major, ver_img_current->minor, ver_img_current->patch);
 }
 
@@ -316,7 +318,7 @@ void GraphicsSDL::RecreateWindow(bool fullscreen)
 #endif
 
     if (!screen) {
-        printf("[gfx] Couldn't create window: %s\n", SDL_GetError());
+        libretro_printf("[gfx] Couldn't create window: %s\n", SDL_GetError());
         throw E_CREATE_WINDOW;
     }
 }
@@ -328,7 +330,7 @@ void GraphicsSDL::ChangeFullScreen(bool fullscreen)
 
 void GraphicsSDL::takeScreenshot() const
 {
-    fprintf(stderr, "[gfx] Taking screenshots is not implemented for the SDL 1.x backend, sorry!");
+    libretro_printf("[gfx] Taking screenshots is not implemented for the SDL 1.x backend, sorry!\n");
 }
 
 void GraphicsSDL::Close()

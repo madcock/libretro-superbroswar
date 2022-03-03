@@ -163,7 +163,7 @@ bool net_init()
 
     net_loadServerList();
 
-    printf("[net] Network system initialized.\n");
+    //printf("[net] Network system initialized.\n");
     return true;
 }
 
@@ -197,7 +197,7 @@ bool net_startSession()
 {
     net_endSession(); // Finish previous network session if active
 
-    printf("[net] Session start.\n");
+    //printf("[net] Session start.\n");
     netplay.active = true;
     netplay.connectSuccessful = false;
     netplay.gamestate_changed = false;
@@ -222,7 +222,7 @@ bool net_startSession()
 void net_endSession()
 {
     if (netplay.active) {
-        printf("[net] Session end.\n");
+        //printf("[net] Session end.\n");
 
         netplay.client.stop();
 
@@ -342,9 +342,9 @@ void NetClient::handleServerinfoAndClose(const uint8_t* data, size_t dataLength)
     NetPkgs::ServerInfo serverInfo;
     memcpy(&serverInfo, data, sizeof(NetPkgs::ServerInfo));
 
-    printf("[net] Server information: Name: %s, Protocol version: %u.%u  Players/Max: %d / %d\n",
-        serverInfo.name, serverInfo.protocolMajorVersion, serverInfo.protocolMinorVersion,
-        serverInfo.currentPlayerCount, serverInfo.maxPlayerCount);
+    // printf("[net] Server information: Name: %s, Protocol version: %u.%u  Players/Max: %d / %d\n",
+    //     serverInfo.name, serverInfo.protocolMajorVersion, serverInfo.protocolMinorVersion,
+    //     serverInfo.currentPlayerCount, serverInfo.maxPlayerCount);
 
     foreign_lobbyserver->disconnect();
     foreign_lobbyserver = NULL;
@@ -374,7 +374,7 @@ void NetClient::handleNewRoomListEntry(const uint8_t* data, size_t dataLength)
     newRoom.name = roomInfo.name;
     newRoom.playerCount = roomInfo.currentPlayerCount;
     netplay.currentRooms.push_back(newRoom);
-    printf("  Incoming room entry: [%u] %s (%d/4)\n", newRoom.roomID, newRoom.name.c_str(), newRoom.playerCount);
+    //printf("  Incoming room entry: [%u] %s (%d/4)\n", newRoom.roomID, newRoom.name.c_str(), newRoom.playerCount);
 
     if (uiRoomList) {
         // TODO: strings would be better
@@ -396,7 +396,7 @@ void NetClient::sendCreateRoomMessage()
 
 void NetClient::handleRoomCreatedMessage(const uint8_t* data, size_t dataLength)
 {
-    printf("room created!\n");
+    //printf("room created!\n");
     NetPkgs::NewRoomCreated pkg;
     memcpy(&pkg, data, sizeof(NetPkgs::NewRoomCreated));
 
@@ -431,12 +431,12 @@ void NetClient::sendJoinRoomMessage()
 {
     assert(netplay.selectedRoomIndex < netplay.currentRooms.size());
 
-    printf("currentRooms[%d] = {id=%d, name='%s', cnt=%d}, össz: %lu\n",
-        netplay.selectedRoomIndex,
-        netplay.currentRooms.at(netplay.selectedRoomIndex).roomID,
-        netplay.currentRooms.at(netplay.selectedRoomIndex).name.c_str(),
-        netplay.currentRooms.at(netplay.selectedRoomIndex).playerCount,
-        netplay.currentRooms.size());
+    // printf("currentRooms[%d] = {id=%d, name='%s', cnt=%d}, össz: %lu\n",
+    //     netplay.selectedRoomIndex,
+    //     netplay.currentRooms.at(netplay.selectedRoomIndex).roomID,
+    //     netplay.currentRooms.at(netplay.selectedRoomIndex).name.c_str(),
+    //     netplay.currentRooms.at(netplay.selectedRoomIndex).playerCount,
+    //     netplay.currentRooms.size());
 
     // TODO: implement password
     NetPkgs::JoinRoom msg(netplay.currentRooms.at(netplay.selectedRoomIndex).roomID, "");
@@ -462,7 +462,7 @@ void NetClient::handleRoomChangedMessage(const uint8_t* data, size_t dataLength)
     netplay.currentRoom.roomID = pkg.roomID;
     netplay.currentRoom.name = pkg.name;
 
-    printf("Room %u (%s) changed:\n", pkg.roomID, pkg.name);
+    //printf("Room %u (%s) changed:\n", pkg.roomID, pkg.name);
     // printf("  host: %d\n", pkg.hostPlayerNumber);
     for (uint8_t p = 0; p < 4; p++) {
         assert(strlen(pkg.playerName[p]) <= NET_MAX_PLAYER_NAME_LENGTH);

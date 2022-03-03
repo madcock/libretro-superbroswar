@@ -5,6 +5,8 @@
 #include <cassert>
 #include <cstdio>
 
+extern void libretro_printf(const char *fmt, ...);
+
 gfxPalette::gfxPalette()
     : numcolors(0)
 {
@@ -59,7 +61,7 @@ bool gfxPalette::load(const char* palette_path)
     SDL_Surface * palette = IMG_Load(palette_path);
 
     if ( palette == NULL ) {
-        printf("Couldn't load color palette: %s\n", SDL_GetError());
+        libretro_printf("Couldn't load color palette: %s\n", SDL_GetError());
         return false;
     }
 

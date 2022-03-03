@@ -10,6 +10,8 @@
 #include <stdio.h>
 #include <stdexcept>
 
+extern void libretro_printf(const char *fmt, ...);
+
 // TODO: Refactor externs
 
 extern CGameMode * gamemodes[GAMEMODE_LAST];
@@ -333,7 +335,7 @@ void CGameValues::ReadBinaryConfig() {
         options.read_i32_array(version, 4);
 
         if (!VersionIsEqual(g_iVersion, version[0], version[1], version[2], version[3])) {
-            printf("Old options.bin detected. Skipped reading it.\n");
+            libretro_printf("Old options.bin detected. Skipped reading it.\n");
             return;
         }
 

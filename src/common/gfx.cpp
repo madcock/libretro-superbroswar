@@ -9,6 +9,8 @@
 #include <iostream>
 #include <string>
 
+extern void libretro_printf(const char *fmt, ...);
+
 using namespace std;
 
 extern SDL_Surface * blitdest;
@@ -150,7 +152,7 @@ SDL_Surface * gfx_createskinsurface(
     SDL_UnlockSurface(temp);
 
     if ( SDL_SETCOLORKEY(temp, SDL_TRUE, SDL_MapRGB(temp->format, r, g, b)) < 0 ) {
-        printf("\n ERROR: Couldn't set ColorKey + RLE for new skin surface: %s\n", SDL_GetError());
+        libretro_printf("\n ERROR: Couldn't set ColorKey + RLE for new skin surface: %s\n", SDL_GetError());
         return NULL;
     }
 
@@ -160,7 +162,7 @@ SDL_Surface * gfx_createskinsurface(
     SDL_Surface * final = SDL_DisplayFormat(temp);
 #endif
     if (!final) {
-        printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
+        libretro_printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
         return NULL;
     }
 
@@ -176,8 +178,7 @@ bool gfx_loadmenuskin(gfxSprite ** gSprite, const std::string& filename, Uint8 r
     SDL_Surface * skin = IMG_Load(filename.c_str());
 
     if (!skin) {
-        cout << endl << " ERROR: Couldn't load " << filename << ": "
-             << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't load %s: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
@@ -188,9 +189,7 @@ bool gfx_loadmenuskin(gfxSprite ** gSprite, const std::string& filename, Uint8 r
         SDL_Surface * skinSurface = gfx_createskinsurface(skin, iSprite, r, g, b, colorScheme, true, false);
 
         if (skinSurface == NULL) {
-            cout << endl << " ERROR: Couldn't create menu skin from " << filename
-                 << ": " << SDL_GetError() << endl;
-
+            libretro_printf("\n ERROR: Couldn't create menu skin from %s: %s\n", filename.c_str(), SDL_GetError());
             return false;
         }
 
@@ -202,9 +201,7 @@ bool gfx_loadmenuskin(gfxSprite ** gSprite, const std::string& filename, Uint8 r
             SDL_Surface * skinSurface = gfx_createskinsurface(skin, iSprite, r, g, b, colorScheme, true, true);
 
             if (skinSurface == NULL) {
-                cout << endl << " ERROR: Couldn't create menu skin from " << filename
-                     << ": " << SDL_GetError() << endl;
-
+                libretro_printf("\n ERROR: Couldn't create menu skin from %s: %s\n", filename.c_str(), SDL_GetError());
                 return false;
             }
 
@@ -224,8 +221,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
     SDL_Surface * skin = IMG_Load(filename.c_str());
 
     if (!skin) {
-        cout << endl << " ERROR: Couldn't load " << filename
-             << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't load %s: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
@@ -237,8 +233,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
             SDL_Surface * skinSurface = gfx_createskinsurface(skin, k, r, g, b, colorScheme, true, j != 0);
 
             if (skinSurface == NULL) {
-                cout << endl << " ERROR: Couldn't create menu skin from "
-                     << filename << ": " << SDL_GetError() << endl;
+                libretro_printf("\n ERROR: Couldn't create menu skin from %s: %s\n", filename.c_str(), SDL_GetError());
                 SDL_FreeSurface(skin);
                 return false;
             }
@@ -251,7 +246,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
     SDL_Surface * skinSurface = gfx_createskinsurface(skin, 4, r, g, b, colorScheme, true, false);
 
     if (skinSurface == NULL) {
-        cout << endl << " ERROR: Couldn't create menu skin from " << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't create menu skin from %s: %s\n", filename.c_str(), SDL_GetError());
         SDL_FreeSurface(skin);
         return false;
     }
@@ -262,8 +257,7 @@ bool gfx_loadfullskin(gfxSprite ** gSprites, const std::string& filename, Uint8 
     skinSurface = gfx_createskinsurface(skin, 5, r, g, b, colorScheme, true, false);
 
     if (skinSurface == NULL) {
-        cout << endl << " ERROR: Couldn't create menu skin from "
-             << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't create menu skin from %s: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
@@ -361,13 +355,13 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
     SDL_UnlockSurface(sTempImage);
 
     if ( SDL_SETCOLORKEY(sTempImage, SDL_TRUE, SDL_MapRGB(sTempImage->format, r, g, b)) < 0 ) {
-        printf("\n ERROR: Couldn't set ColorKey + RLE for new team colored surface: %s\n", SDL_GetError());
+        libretro_printf("\n ERROR: Couldn't set ColorKey + RLE for new team colored surface: %s\n", SDL_GetError());
         return NULL;
     }
 
     if (a < 255) {
         if (SDL_SETALPHABYTE(sTempImage, SDL_TRUE, a) < 0) {
-            cout << endl << " ERROR: Couldn't set per-surface alpha: " << SDL_GetError() << endl;
+            libretro_printf("\n ERROR: Couldn't set per-surface alpha: %s\n", SDL_GetError());
             return NULL;
         }
     }
@@ -378,7 +372,7 @@ SDL_Surface * gfx_createteamcoloredsurface(SDL_Surface * sImage, short iColor, U
     SDL_Surface * sFinalImage = SDL_DisplayFormat(sTempImage);
 #endif
     if (!sFinalImage) {
-        printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
+        libretro_printf("\n ERROR: Couldn't create new surface using SDL_DisplayFormat(): %s\n", SDL_GetError());
         return NULL;
     }
     SDL_FreeSurface(sTempImage);
@@ -392,7 +386,7 @@ bool gfx_loadteamcoloredimage(gfxSprite ** gSprites, const std::string& filename
     SDL_Surface * sImage = IMG_Load(filename.c_str());
 
     if (sImage == NULL) {
-        cout << endl << " ERROR: Couldn't load " << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't load %s : %s\n", filename.c_str() , SDL_GetError());
         return false;
     }
 
@@ -400,7 +394,7 @@ bool gfx_loadteamcoloredimage(gfxSprite ** gSprites, const std::string& filename
         SDL_Surface * sTeamColoredSurface = gfx_createteamcoloredsurface(sImage, k, r, g, b, a);
 
         if (sTeamColoredSurface == NULL) {
-            cout << endl << " ERROR: Couldn't create menu skin from " << filename << ": " << SDL_GetError() << endl;
+            libretro_printf("\n ERROR: Couldn't create menu skin from %s : %s\n", filename.c_str() , SDL_GetError());
             SDL_FreeSurface(sTeamColoredSurface);
             return false;
         }
@@ -421,14 +415,14 @@ bool gfx_loadteamcoloredimage(gfxSprite * gSprites, const std::string& filename,
     SDL_Surface * sImage = IMG_Load(filename.c_str());
 
     if (sImage == NULL) {
-        cout << endl << " ERROR: Couldn't load " << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't load %s : %s\n", filename.c_str() , SDL_GetError());
         return false;
     }
 
     SDL_Surface * sTeamColoredSurface = gfx_createteamcoloredsurface(sImage, fVertical ? -1 : -2, r, g, b, a);
 
     if (sTeamColoredSurface == NULL) {
-        cout << endl << " ERROR: Couldn't create menu skin from " << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't create menu skin from %s : %s\n", filename.c_str() , SDL_GetError());
         SDL_FreeSurface(sTeamColoredSurface);
         return false;
     }
@@ -559,7 +553,7 @@ void gfx_drawpreview(
 
     // Blit onto the screen surface
     if (SDL_BlitSurface(surface, &rSrcRect, blitdest, &rDstRect) < 0) {
-        fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+        libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
         return;
     }
 
@@ -591,7 +585,7 @@ void gfx_drawpreview(
                 gfx_adjusthiddenrects(&rSrcRect, &rDstRect, hiddenDirection, hiddenPlane);
 
             if (SDL_BlitSurface(surface, &rSrcRect, blitdest, &rDstRect) < 0) {
-                fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+                libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
                 return;
             }
         }

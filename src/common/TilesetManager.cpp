@@ -10,6 +10,7 @@
 #include <sys/stat.h>
 #endif
 
+extern void libretro_printf(const char *fmt, ...);
 
 /*********************************
 *  CTileset
@@ -58,7 +59,7 @@ bool CTileset::ReadTileTypeFile(char * szFile)
     if (File_Exists(szFile)) {
 		BinaryFile tsf(szFile, "rb");
         if (!tsf.is_open()) {
-			printf("ERROR: couldn't open tileset file: %s\n", szFile);
+			libretro_printf("ERROR: couldn't open tileset file: %s\n", szFile);
 			return false;
 		}
 
@@ -129,7 +130,7 @@ void CTileset::SaveTileset()
 {
 	BinaryFile tsf(szTilesetPath, "wb");
     if (!tsf.is_open()) {
-		printf("ERROR: couldn't open tileset file to save tile types: %s\n", szTilesetPath);
+		libretro_printf("ERROR: couldn't open tileset file to save tile types: %s\n", szTilesetPath);
 		return;
 	}
 

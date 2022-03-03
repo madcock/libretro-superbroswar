@@ -13,6 +13,8 @@
 #include <iostream>
 #include <stdexcept>
 
+extern void libretro_printf(const char *fmt, ...);
+
 #ifdef __LIBRETRO__
     #include <streams/file_stream_transforms.h>
 #else
@@ -32,8 +34,6 @@
 #endif
 #endif
 
-using std::cout;
-using std::endl;
 using std::string;
 
 extern int32_t g_iVersion[];
@@ -129,7 +129,7 @@ MapList::MapList(bool fWorldEditor)
 
     //TODO: add proper test via size
     if (maps.empty()) {
-        printf("ERROR: Empty map directory!\n");
+        libretro_printf("ERROR: Empty map directory!\n");
         throw std::runtime_error("ERROR: Empty map directory!");
     }
 

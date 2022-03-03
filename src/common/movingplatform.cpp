@@ -14,6 +14,8 @@
 
 #include <cmath>
 
+extern void libretro_printf(const char *fmt, ...);
+
 extern SDL_Surface* screen;
 extern SDL_Surface* blitdest;
 
@@ -366,7 +368,7 @@ MovingPlatform::MovingPlatform(TilesetTile ** tiledata, MapTile ** tiletypes, sh
         sSurface[iSurface] = SDL_CreateRGBSurface(screen->flags, w * iTileSize, h * iTileSize, screen->format->BitsPerPixel, 0, 0, 0, 0);
 
         if ( SDL_SETCOLORKEY(sSurface[iSurface], SDL_FALSE, SDL_MapRGB(sSurface[iSurface]->format, 255, 0, 255)) < 0)
-            printf("\n ERROR: Couldn't set ColorKey for moving platform: %s\n", SDL_GetError());
+            libretro_printf("\n ERROR: Couldn't set ColorKey for moving platform: %s\n", SDL_GetError());
 
         SDL_FillRect(sSurface[iSurface], NULL, SDL_MapRGB(sSurface[iSurface]->format, 255, 0, 255));
     }
@@ -438,7 +440,7 @@ void MovingPlatform::draw()
 
     // Blit onto the screen surface
     if (SDL_BlitSurface(sSurface[1 - g_iCurrentDrawIndex], &rSrcRect, blitdest, &rDstRect) < 0) {
-        fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+        libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
         return;
     }
 
@@ -458,7 +460,7 @@ void MovingPlatform::draw()
         rDstRect.h = iHeight;
 
         if (SDL_BlitSurface(sSurface[1 - g_iCurrentDrawIndex], &rSrcRect, blitdest, &rDstRect) < 0) {
-            fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+            libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
         }
 
         //rDstRect.x = ix - iHalfWidth;

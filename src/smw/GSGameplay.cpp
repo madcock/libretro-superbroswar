@@ -22,6 +22,8 @@
 #include <cassert>
 #include <cstring>
 
+extern void libretro_printf(const char *fmt, ...);
+
 #define COUNTDOWN_START_INDEX 4
 
 extern SDL_Surface* screen;
@@ -156,7 +158,7 @@ extern sfxSound * g_PlayingSoundChannels[NUM_SOUND_CHANNELS];
 void DECLSPEC soundfinished(int channel)
 {
     if (!g_PlayingSoundChannels[channel])
-        printf("Error: SoundFinished() tried to clear a channel that was already cleared!\n");
+        libretro_printf("Error: SoundFinished() tried to clear a channel that was already cleared!\n");
     else {
         g_PlayingSoundChannels[channel]->clearchannel();
         g_PlayingSoundChannels[channel] = NULL;

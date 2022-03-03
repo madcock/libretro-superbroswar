@@ -7,7 +7,8 @@
 
 #include <cassert>
 #include <cstring>
-#include <iostream>
+
+extern void libretro_printf(const char *fmt, ...);
 
 extern CTilesetManager* g_tilesetmanager;
 extern const char* g_szBackgroundConversion[26];
@@ -194,9 +195,7 @@ bool MapReader1700::read_spawn_areas(CMap& map, BinaryFile& mapfile)
         map.numspawnareas[i] = (short)mapfile.read_i32();
 
         if (map.numspawnareas[i] > MAXSPAWNAREAS) {
-            cout << endl << " ERROR: Number of spawn areas (" << map.numspawnareas[i]
-                 << ") was greater than max allowed (" << MAXSPAWNAREAS << ')'
-                 << endl;
+            libretro_printf("\n ERROR: Number of spawn areas (%d) was greater than max allowed (%d)\n", map.numspawnareas[i], MAXSPAWNAREAS);
             return false;
         }
 

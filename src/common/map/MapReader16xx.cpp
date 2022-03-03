@@ -4,7 +4,7 @@
 #include "FileIO.h"
 #include "TilesetManager.h"
 
-#include <iostream>
+extern void libretro_printf(const char *fmt, ...);
 
 extern CTilesetManager* g_tilesetmanager;
 extern short g_iTileConversion[];
@@ -139,9 +139,7 @@ bool MapReader1600::read_spawn_areas(CMap& map, BinaryFile& mapfile)
     map.numspawnareas[0] = (short)mapfile.read_i32();
 
     if (map.numspawnareas[0] > MAXSPAWNAREAS) {
-        std::cout << std::endl << " ERROR: Number of spawn areas (" << map.numspawnareas[0]
-                  << ") was greater than max allowed (" << MAXSPAWNAREAS << ')'
-                  << std::endl;
+        libretro_printf("\n ERROR: Number of spawn areas (%d) was greater than max allowed (%d)\n", map.numspawnareas[0], MAXSPAWNAREAS);
         return false;
     }
 
@@ -190,9 +188,7 @@ bool MapReader1600::read_draw_areas(CMap& map, BinaryFile& mapfile)
     map.numdrawareas = (short)mapfile.read_i32();
 
     if (map.numdrawareas > MAXDRAWAREAS) {
-        std::cout << std::endl << " ERROR: Number of draw areas (" << map.numdrawareas
-                  << ") was greater than max allowed (" << MAXDRAWAREAS << ')'
-                  << std::endl;
+        libretro_printf("\n ERROR: Number of draw areas (%d) was greater than max allowed (%d)\n", map.numdrawareas, MAXDRAWAREAS);
         return false;
     }
 

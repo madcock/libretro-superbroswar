@@ -15,14 +15,12 @@
 #include "sdl12wrapper.h"
 
 #include <cmath>
-#include <iostream>
-using std::cout;
-using std::endl;
 
 #if defined(__APPLE__)
 #include <sys/stat.h>
 #endif
 
+extern void libretro_printf(const char *fmt, ...);
 
 #ifdef PNG_SAVE_FORMAT
     // this function was added to SDL2
@@ -606,7 +604,7 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
 
     BinaryFile mapfile(file.c_str(), "rb");
     if (!mapfile.is_open()) {
-        cout << endl << " ERROR: Couldn't open map" << endl;
+        libretro_printf("\n ERROR: Couldn't open map %s\n", file.c_str());
         return;
     }
 
@@ -618,21 +616,21 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
     //version[3] = mapfile.read_i32(); //Build
     mapfile.read_i32_array(version, 4);
 
-    if (iReadType != read_type_summary) {
-        cout << "loading map " << file;
+    // if (iReadType != read_type_summary) {
+    //     cout << "loading map " << file;
 
-        if (iReadType == read_type_preview)
-            cout << " (preview)";
+    //     if (iReadType == read_type_preview)
+    //         cout << " (preview)";
 
-        if (VersionIsEqualOrAfter(version, 1, 6, 0, 0)) {
-            cout << " [v" << version[0] << '.' << version[1] << '.'
-                 << version[2] << '.' << version[3] << "]";
-        }
-        else
-            cout << " [v1.5]";
+    //     if (VersionIsEqualOrAfter(version, 1, 6, 0, 0)) {
+    //         cout << " [v" << version[0] << '.' << version[1] << '.'
+    //              << version[2] << '.' << version[3] << "]";
+    //     }
+    //     else
+    //         cout << " [v1.5]";
 
-        cout << " ...";
-    }
+    //     cout << " ...";
+    // }
 
     MapReader* reader = MapReader::getLoaderByVersion(version);
     reader->load(*this, mapfile, iReadType);
@@ -643,7 +641,7 @@ void CMap::loadMap(const std::string& file, ReadType iReadType)
         return;
 
     clearWarpLocks();
-    cout << " done" << endl;
+    //cout << " done" << endl;
 }
 
 void CMap::UpdateAllTileGaps()
@@ -736,11 +734,11 @@ void CMap::saveMap(const std::string& file)
 {
     int i, j, k;
 
-    cout << "saving map " << file << " ... ";
+    //cout << "saving map " << file << " ... ";
 
     BinaryFile mapfile(file.c_str(), "wb");
     if (!mapfile.is_open()) {
-        cout << endl << " ERROR: couldn't save map" << endl;
+        //cout << endl << " ERROR: couldn't save map" << endl;
         return;
     }
 
@@ -1344,7 +1342,7 @@ void CMap::saveMap(const std::string& file)
     chmod(file.c_str(), S_IRWXU | S_IRWXG | S_IROTH);
 #endif
 
-    cout << "done" << endl;
+    //cout << "done" << endl;
 
     /*
     	//Save thumbnail
@@ -1388,7 +1386,7 @@ SDL_Surface * CMap::createThumbnailSurface(bool fUseClassicPack)
 
     SDL_Surface * temp = IMG_Load(path.c_str());
     if (!temp) {
-        printf("ERROR: Couldn't load thumbnail background: %s\n", IMG_GetError());
+        libretro_printf("ERROR: Couldn't load thumbnail background: %s\n", IMG_GetError());
         return NULL;
     }
 
@@ -1397,7 +1395,7 @@ SDL_Surface * CMap::createThumbnailSurface(bool fUseClassicPack)
 #else
     SDL_Surface * sBackground = SDL_DisplayFormat(temp);
     if (!sBackground) {
-        printf("ERROR: Couldn't convert thumbnail background to diplay pixel format: %s\n", SDL_GetError());
+        libretro_printf("ERROR: Couldn't convert thumbnail background to diplay pixel format: %s\n", SDL_GetError());
         return NULL;
     }
 
@@ -1408,7 +1406,7 @@ SDL_Surface * CMap::createThumbnailSurface(bool fUseClassicPack)
     SDL_Rect dstRectBackground = {0, 0, 160, 120};
 
     if (SDL_SCALEBLIT(sBackground, &srcRectBackground, sThumbnail, &dstRectBackground) < 0) {
-        fprintf(stderr, "SDL_SoftStretch error: %s\n", SDL_GetError());
+        libretro_printf("SDL_SoftStretch error: %s\n", SDL_GetError());
         return NULL;
     }
 
@@ -1883,7 +1881,7 @@ void CMap::preDrawPreviewBackground(gfxSprite * background, SDL_Surface * target
     }
 
     if (SDL_SCALEBLIT(background->getSurface(), &srcrect, targetSurface, &dstrect) < 0) {
-        fprintf(stderr, "SDL_SoftStretch error: %s\n", SDL_GetError());
+        libretro_printf("SDL_SoftStretch error: %s\n", SDL_GetError());
         return;
     }
 
@@ -2179,7 +2177,7 @@ void CMap::SetupAnimatedTiles()
                     if (tilesetTile->iID == TILESETANIMATED) {
                         SDL_BlitSurface(animatedTileSrcSurface, &(tile->rSrc[0][sTileAnimationFrame]), animatedTilesSurface, &rDst);
                     } else {
-                        cout << endl << " ERROR: A nonanimated platform tile was added to the animated tile list" << endl;
+                        libretro_printf("\n ERROR: A nonanimated platform tile was added to the animated tile list\n");
                     }
 
                     rDst.x += 32;

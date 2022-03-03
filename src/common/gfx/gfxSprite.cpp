@@ -7,7 +7,6 @@
 
 #include <cassert>
 #include <cstdio>
-#include <iostream>
 
 using namespace std;
 
@@ -15,6 +14,8 @@ extern SDL_Surface * blitdest;
 extern SDL_Surface * screen;
 extern short x_shake;
 extern short y_shake;
+
+extern void libretro_printf(const char *fmt, ...);
 
 gfxSprite::gfxSprite()
 {
@@ -56,7 +57,7 @@ void gfxSprite::freeSurface()
 //
 bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, bool fUseAccel)
 {
-    cout << "loading sprite (mode 1) " << filename << "...";
+    libretro_printf("loading sprite (mode 1) %s...",filename.c_str());
 
     if (m_picture) {
         SDL_FreeSurface(m_picture);
@@ -66,13 +67,12 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
     // Load the BMP file into a surface
     m_picture = IMG_Load(filename.c_str());
     if (!m_picture) {
-        cout << endl << " ERROR: Couldn't load " << filename << ": " << IMG_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't load %s: %s\n", filename.c_str(), IMG_GetError());
         return false;
     }
 
     if ( SDL_SETCOLORKEY(m_picture, fUseAccel ? SDL_TRUE : SDL_FALSE, SDL_MapRGB(m_picture->format, r, g, b)) < 0) {
-        cout << endl << " ERROR: Couldn't set ColorKey + RLE for "
-             << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't set ColorKey + RLE for %s: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
@@ -82,9 +82,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
 #else
     SDL_Surface* temp = SDL_DisplayFormat(m_picture);
     if (!temp) {
-        cout << endl << " ERROR: Couldn't convert "
-             << filename << " to the display's pixel format: " << SDL_GetError()
-             << endl;
+        libretro_printf("\n ERROR: Couldn't convert %s to the display's pixel format: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
@@ -95,7 +93,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
     m_bltrect.w = (Uint16)m_picture->w;
     m_bltrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+    libretro_printf("done\n");
     return true;
 }
 
@@ -104,7 +102,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, boo
 //
 bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool fUseAccel)
 {
-    cout << "Loading sprite (mode 2) " << filename << " ...";
+    libretro_printf("loading sprite (mode 2) %s...",filename.c_str());
 
     if (m_picture) {
         SDL_FreeSurface(m_picture);
@@ -114,20 +112,17 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
     // Load the BMP file into a surface
     m_picture = IMG_Load(filename.c_str());
     if (!m_picture) {
-        cout << endl << " ERROR: Couldn't load "
-             << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't load %s: %s\n", filename.c_str(), IMG_GetError());
         return false;
     }
 
     if ( SDL_SETCOLORKEY(m_picture, fUseAccel ? SDL_TRUE : SDL_FALSE, SDL_MapRGB(m_picture->format, r, g, b)) < 0) {
-        cout << endl << " ERROR: Couldn't set ColorKey + RLE for "
-             << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't set ColorKey + RLE for %s: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
     if ( (SDL_SETALPHABYTE(m_picture, fUseAccel ? SDL_TRUE : SDL_FALSE, a)) < 0) {
-        cout << endl << " ERROR: Couldn't set per-surface alpha on "
-             << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't set per-surface alpha on %s: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
@@ -137,9 +132,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
     SDL_Surface* temp = SDL_DisplayFormatAlpha(m_picture);
 #endif
     if (!temp) {
-        cout << endl << " ERROR: Couldn't convert "
-             << filename << " to the display's pixel format: " << SDL_GetError()
-             << endl;
+        libretro_printf("\n ERROR: Couldn't convert %s to the display's pixel format: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
     SDL_FreeSurface(m_picture);
@@ -148,7 +141,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
     m_bltrect.w = (Uint16)m_picture->w;
     m_bltrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+    libretro_printf("done\n");
     return true;
 }
 
@@ -157,7 +150,7 @@ bool gfxSprite::init(const std::string& filename, Uint8 r, Uint8 g, Uint8 b, Uin
 //
 bool gfxSprite::init(const std::string& filename)
 {
-    cout << "loading sprite (mode 3) " << filename << "...";
+    libretro_printf("loading sprite (mode 3) %s...",filename.c_str());
 
     if (m_picture) {
         SDL_FreeSurface(m_picture);
@@ -168,8 +161,7 @@ bool gfxSprite::init(const std::string& filename)
     m_picture = IMG_Load(filename.c_str());
 
     if (!m_picture) {
-        cout << endl << " ERROR: Couldn't load "
-             << filename << ": " << SDL_GetError() << endl;
+        libretro_printf("\n ERROR: Couldn't load %s: %s\n", filename.c_str(), IMG_GetError());
         return false;
     }
 
@@ -179,9 +171,7 @@ bool gfxSprite::init(const std::string& filename)
     SDL_Surface * temp = SDL_DisplayFormat(m_picture);
 #endif
     if (!temp) {
-        cout << endl << " ERROR: Couldn't convert "
-             << filename << " to the display's pixel format: " << SDL_GetError()
-             << endl;
+        libretro_printf("\n ERROR: Couldn't convert %s to the display's pixel format: %s\n", filename.c_str(), SDL_GetError());
         return false;
     }
 
@@ -196,7 +186,7 @@ bool gfxSprite::init(const std::string& filename)
     m_srcrect.w = (Uint16)m_picture->w;
     m_srcrect.h = (Uint16)m_picture->h;
 
-    cout << "done" << endl;
+    libretro_printf("done\n");
     return true;
 }
 
@@ -208,7 +198,7 @@ bool gfxSprite::draw(short x, short y)
     m_bltrect.y = y + y_shake;
 
     if (SDL_BlitSurface(m_picture, NULL, blitdest, &m_bltrect) < 0) {
-        fprintf(stderr, "BlitSurface error: %s\n", SDL_GetError());
+        libretro_printf("BlitSurface error: %s\n", SDL_GetError());
         return false;
     }
 
@@ -218,7 +208,7 @@ bool gfxSprite::draw(short x, short y)
             m_bltrect.y = y + y_shake;
 
             if (SDL_BlitSurface(m_picture, NULL, blitdest, &m_bltrect) < 0) {
-                fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+                libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
                 return false;
             }
         } else if (x < 0) {
@@ -226,7 +216,7 @@ bool gfxSprite::draw(short x, short y)
             m_bltrect.y = y + y_shake;
 
             if (SDL_BlitSurface(m_picture, NULL, blitdest, &m_bltrect) < 0) {
-                fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+                libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
                 return false;
             }
         }
@@ -257,7 +247,7 @@ bool gfxSprite::draw(short x, short y, short srcx, short srcy, short w, short h,
 
     // Blit onto the screen surface
     if (SDL_BlitSurface(m_picture, &m_srcrect, blitdest, &m_bltrect) < 0) {
-        fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+        libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
         return false;
     }
 
@@ -272,7 +262,7 @@ bool gfxSprite::draw(short x, short y, short srcx, short srcy, short w, short h,
             }
 
             if (SDL_BlitSurface(m_picture, &m_srcrect, blitdest, &m_bltrect) < 0) {
-                fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+                libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
                 return false;
             }
         } else if (x < 0) {
@@ -285,7 +275,7 @@ bool gfxSprite::draw(short x, short y, short srcx, short srcy, short w, short h,
             }
 
             if (SDL_BlitSurface(m_picture, &m_srcrect, blitdest, &m_bltrect) < 0) {
-                fprintf(stderr, "SDL_BlitSurface error: %s\n", SDL_GetError());
+                libretro_printf("SDL_BlitSurface error: %s\n", SDL_GetError());
                 return false;
             }
         }
@@ -311,7 +301,7 @@ bool gfxSprite::drawStretch(short x, short y, short w, short h, short srcx, shor
     // Looks like SoftStretch doesn't respect transparent colors
     // I need to look into the actual SDL code to see if I can fix this
     if (SDL_SCALEBLIT(m_picture, &m_srcrect, blitdest, &m_bltrect) < 0) {
-        fprintf(stderr, "SDL_SoftStretch error: %s\n", SDL_GetError());
+        libretro_printf("SDL_SoftStretch error: %s\n", SDL_GetError());
         return false;
     }
 
@@ -323,7 +313,7 @@ void gfxSprite::setalpha(Uint8 alpha)
     assert(m_picture != NULL);
 
     if ( (SDL_SETALPHABYTE(m_picture, SDL_TRUE, alpha)) < 0) {
-        printf("\n ERROR: couldn't set alpha on sprite: %s\n", SDL_GetError());
+        libretro_printf("\n ERROR: couldn't set alpha on sprite: %s\n", SDL_GetError());
     }
 }
 
