@@ -129,6 +129,8 @@ FLAGS += -I$(DEPS_DIR)/SDL_mixer
 CORE_DEFINE += -DOGG_MUSIC -DOGG_USE_TREMOR
 
 # libretro-common
+ifeq ($(STATIC_LINKING),1)
+else
 SOURCES_C += \
     $(LIBRETRO_COMM_DIR)/file/file_path.c \
     $(LIBRETRO_COMM_DIR)/file/file_path_io.c \
@@ -141,6 +143,7 @@ SOURCES_C += \
     $(LIBRETRO_COMM_DIR)/streams/file_stream_transforms.c \
     $(LIBRETRO_COMM_DIR)/string/stdstring.c \
     $(LIBRETRO_COMM_DIR)/time/rtime.c
+endif
 
 SOURCES_CXX += \
     $(LIBRETRO_DIR)/libretro.cpp \
