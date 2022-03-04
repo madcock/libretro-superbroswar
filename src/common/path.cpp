@@ -290,8 +290,10 @@ void GetNameFromFileName(char * szName, const char * szFileName, bool fStripAuth
 
     if (fStripAuthor) {
         char * pUnderscore = strchr(szName, '_');
-        if (pUnderscore)
-            strcpy(szName, ++pUnderscore);
+        if (pUnderscore) {
+            size_t len = strlen(++pUnderscore);
+            memmove(szName, pUnderscore, len + 1);
+        }
     }
 
     char * pLastPeriod = strrchr(szName, '.');
