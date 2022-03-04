@@ -29,12 +29,14 @@ class UI_ProjectileOptionsMenu;
 class UI_SoundOptionsMenu;
 class UI_TeamOptionsMenu;
 
+#ifndef NETWORK_DISABLED
 class UI_NetEditServersMenu;
 class UI_NetLobbyMenu;
 class UI_NetNewRoomMenu;
 class UI_NetNewRoomSettingsMenu;
 class UI_NetRoomMenu;
 class UI_NetServersMenu;
+#endif
 
 #if defined(_XBOX) && !defined(__LIBRETRO__)
 class UI_ScreenResizeMenu;
@@ -148,6 +150,7 @@ class MenuState : public GameState
 		UI_TournamentScoreboardMenu* mTournamentScoreboardMenu;
 		UI_BonusWheelMenu* mBonusWheelMenu;
 
+#ifndef NETWORK_DISABLED
 		// Multiplayer menu
 		UI_NetServersMenu* mNetServersMenu;
 		UI_NetEditServersMenu* mNetEditServersMenu;
@@ -155,6 +158,7 @@ class MenuState : public GameState
 		UI_NetNewRoomMenu* mNetNewRoomMenu;
 		UI_NetNewRoomSettingsMenu* mNetNewRoomSettingsMenu;
 		UI_NetRoomMenu* mNetRoomMenu;
+#endif
 
 		DisplayError iDisplayError;
 		short iDisplayErrorTimer;

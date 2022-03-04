@@ -35,12 +35,14 @@
 #include "menu/options/SoundOptionsMenu.h"
 #include "menu/options/TeamOptionsMenu.h"
 
+#ifndef NETWORK_DISABLED
 #include "menu/network/NetEditServersMenu.h"
 #include "menu/network/NetLobbyMenu.h"
 #include "menu/network/NetNewRoomMenu.h"
 #include "menu/network/NetNewRoomSettingsMenu.h"
 #include "menu/network/NetRoomMenu.h"
 #include "menu/network/NetServersMenu.h"
+#endif
 
 #if defined(_XBOX) && !defined(__LIBRETRO__)
 #include "menu/xbox/ScreenResizeMenu.h"
@@ -175,12 +177,14 @@ void MenuState::CreateMenu()
     mTournamentScoreboardMenu = new UI_TournamentScoreboardMenu();
     mBonusWheelMenu = new UI_BonusWheelMenu();
 
+#ifndef NETWORK_DISABLED
     mNetServersMenu = new UI_NetServersMenu();
     mNetEditServersMenu = new UI_NetEditServersMenu();
     mNetLobbyMenu = new UI_NetLobbyMenu();
     mNetNewRoomMenu = new UI_NetNewRoomMenu();
     mNetNewRoomSettingsMenu = new UI_NetNewRoomSettingsMenu(mGameSettingsMenu);
     mNetRoomMenu = new UI_NetRoomMenu();
+#endif
 
 #if defined(_XBOX) && !defined(__LIBRETRO__)
     mScreenSettingsMenu = new UI_ScreenSettingsMenu();
@@ -218,11 +222,13 @@ void MenuState::onEnterState()
         //Reset back to main menu after quick game
         mCurrentMenu = mMainMenu;
         mCurrentMenu->ResetMenu();
+#ifndef NETWORK_DISABLED
     } else if (game_values.matchtype == MATCH_TYPE_NET_GAME) {
         mCurrentMenu = mNetLobbyMenu;
         mCurrentMenu->ResetMenu();
         netplay.joinSuccessful = false;
         netplay.gameRunning = false;
+#endif
     }
 
     if (game_values.matchtype == MATCH_TYPE_WORLD) {
@@ -642,10 +648,12 @@ void MenuState::update()
             mCurrentMenu->ResetMenu();
         } else if (MENU_CODE_BACK_TO_OPTIONS_MENU == code) {
             mCurrentMenu = mOptionsMenu;
+#ifndef NETWORK_DISABLED
         } else if (MENU_CODE_TO_NET_SERVERS_MENU == code) {
             mCurrentMenu = mNetServersMenu;
             mCurrentMenu->ResetMenu();
             net_startSession();
+#endif
         } else if (MENU_CODE_BACK_TO_GRAPHIC_OPTIONS_MENU == code) {
             mCurrentMenu = mGraphicsOptionsMenu;
 #ifndef __LIBRETRO__
@@ -893,14 +901,18 @@ void MenuState::update()
             if (fNeedTeamAnnouncement)
                 mWorldMenu->miWorld->DisplayTeamControlAnnouncement();
         } else if (MENU_CODE_BACK_TO_GAME_SETUP_MENU_FROM_MODE_SETTINGS == code) {
+#ifndef NETWORK_DISABLED
             if (netplay.active)
                 mCurrentMenu = mNetNewRoomSettingsMenu;
             else
+#endif
                 mCurrentMenu = mGameSettingsMenu;
         } else if (MENU_CODE_MODE_CHANGED == code) {
             game_values.gamemode = gamemodes[mGameSettingsMenu->GetCurrentGameModeID()];
             mGameSettingsMenu->RefreshGameModeButtons();
+#ifndef NETWORK_DISABLED
             mNetNewRoomSettingsMenu->RefreshGameModeButtons();
+#endif
         } else if (MENU_CODE_BACK_TEAM_SELECT_MENU == code) {
             if (game_values.matchtype == MATCH_TYPE_WORLD) {
                 mWorldMenu->OpenExitDialog();
@@ -1001,11 +1013,13 @@ void MenuState::update()
             mCurrentMenu = mProjectileLimitsMenu;
             mCurrentMenu->ResetMenu();
         } else if (MENU_CODE_TO_MODE_SETTINGS_MENU == code) {
+#ifndef NETWORK_DISABLED
             if (netplay.active) {
                 mCurrentMenu = mModeOptionsMenu->GetOptionsMenu(mNetNewRoomSettingsMenu->getSelectedGameModeID());
                 mCurrentMenu->ResetMenu();
             }
             else {
+#endif
                 for (short iGameMode = 0; iGameMode < GAMEMODE_LAST; iGameMode++) {
                     if (mGameSettingsMenu->miGoalField[iGameMode]->IsVisible()) {
                         mCurrentMenu = mModeOptionsMenu->GetOptionsMenu(iGameMode);
@@ -1013,7 +1027,9 @@ void MenuState::update()
                         break;
                     }
                 }
+#ifndef NETWORK_DISABLED
             }
+#endif
         } else if (MENU_CODE_MENU_GRAPHICS_PACK_CHANGED == code) {
             LoadStartGraphics();
             rm->LoadMenuGraphics();
@@ -1073,13 +1089,16 @@ void MenuState::update()
             for (short iPlayer = 0; iPlayer < 4; iPlayer++)
                 game_values.storedpowerups[iPlayer] = -1;
         } else if (MENU_CODE_MAP_CHANGED == code) {
+#ifndef NETWORK_DISABLED
             if (mCurrentMenu == mNetNewRoomSettingsMenu) {
                 assert(netplay.active);
                 netplay.mapfilepath = mNetNewRoomSettingsMenu->getCurrentMapPath();
                 //printf("[net] Selected map: %s\n", netplay.mapfilepath.c_str());
                 mNetRoomMenu->SetPreviewMapPath(netplay.mapfilepath);
             }
-            else if (game_values.matchtype != MATCH_TYPE_TOUR)
+            else 
+#endif
+            if (game_values.matchtype != MATCH_TYPE_TOUR)
                 szCurrentMapName = mGameSettingsMenu->miMapField->GetMapName();
         } else if (MENU_CODE_MAP_FILTER_EXIT == code) {
             maplist->ApplyFilters(game_values.pfFilters);
@@ -1129,6 +1148,7 @@ void MenuState::update()
             mModeOptionsMenu->HealthModeMaxLifeChanged();
         }
 
+#ifndef NETWORK_DISABLED
         if (netplay.active) {
 
             LastMessage lastSent = netplay.client.lastSentMessage;
@@ -1274,6 +1294,7 @@ void MenuState::update()
                 netplay.currentMenuChanged = false;
             }
         }
+#endif
 
         /*if (code != MENU_CODE_NONE)
             printf("Code: %d\n", code);*/

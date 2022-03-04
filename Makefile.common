@@ -208,12 +208,6 @@ SOURCES_CXX += \
     $(CORE_DIR)/src/smw/menu/TournamentScoreboardMenu.cpp \
     $(CORE_DIR)/src/smw/menu/TourStopMenu.cpp \
     $(CORE_DIR)/src/smw/menu/WorldMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/network/NetEditServersMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/network/NetLobbyMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/network/NetNewRoomMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/network/NetNewRoomSettingsMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/network/NetRoomMenu.cpp \
-    $(CORE_DIR)/src/smw/menu/network/NetServersMenu.cpp \
     $(CORE_DIR)/src/smw/menu/options/EyeCandyOptionsMenu.cpp \
     $(CORE_DIR)/src/smw/menu/options/GameplayOptionsMenu.cpp \
     $(CORE_DIR)/src/smw/menu/options/GraphicsOptionsMenu.cpp \
