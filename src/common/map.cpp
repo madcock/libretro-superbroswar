@@ -454,7 +454,7 @@ CMap::CMap()
     , animatedFrontmapSurface(nullptr)
     , animatedBackmapSurface(nullptr)
     , animatedTilesSurface(nullptr)
-    , iAnimatedTileCount(0),
+    , iAnimatedTileCount(0)
     , numwarpexits(0)
 {}
 
