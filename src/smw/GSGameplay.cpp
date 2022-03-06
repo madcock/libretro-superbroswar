@@ -1011,7 +1011,7 @@ void GameplayState::drawScreenFade()
             //display the mode and goal at the start of the game
             //if (game_values.matchtype == MATCH_TYPE_QUICK_GAME)
             if (game_values.startmodedisplay && game_values.singleplayermode == -1) {
-                char szMode[128];
+                char szMode[256];
                 if (game_values.gamemode->goal < 0)
                     sprintf(szMode, "%s  %s: X", game_values.gamemode->GetModeName(), game_values.gamemode->GetGoalName());
                 else

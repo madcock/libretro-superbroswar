@@ -3756,7 +3756,7 @@ bool MO_CollectionCard::collide(CPlayer * player)
         state = 2;
         animationspeed = 4;
         animationtimer = 0;
-        animationOffsetY = animationOffsetY = (value + 1) << 5; // FIXME
+        animationOffsetY = (value + 1) << 5; // FIXME
         drawframe = 96;
     }
 

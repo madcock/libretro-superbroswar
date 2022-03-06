@@ -232,7 +232,7 @@ short g_iAutoFilterIcons[NUM_AUTO_FILTERS] = {37, 29, 33, 1, 0, 6, 40, 73, 19, 8
 
 void LoadCurrentMapBackground()
 {
-    char filename[128];
+    char filename[256];
     sprintf(filename, "gfx/packs/backgrounds/%s", g_map->szBackgroundFile);
     std::string path = convertPath(filename, gamegraphicspacklist->current_name());
 

@@ -1365,7 +1365,7 @@ SDL_Surface * CMap::createThumbnailSurface(bool fUseClassicPack)
 {
     SDL_Surface * sThumbnail = SDL_CreateRGBSurface(screen->flags, 160, 120, 16, 0, 0, 0, 0);
 
-    char localSzBackgroundFile[128];
+    char localSzBackgroundFile[256];
     std::string path;
 
     if (fUseClassicPack) {
