@@ -45,20 +45,24 @@ SOURCES_C += \
 FLAGS += -I$(DEPS_DIR)/libpng
 
 # zlib
+ifeq ($(STATIC_LINKING),1)
 SOURCES_C += \
-	$(DEPS_DIR)/zlib-1.2.11/adler32.c \
-	$(DEPS_DIR)/zlib-1.2.11/compress.c \
-	$(DEPS_DIR)/zlib-1.2.11/crc32.c \
-	$(DEPS_DIR)/zlib-1.2.11/deflate.c \
-	$(DEPS_DIR)/zlib-1.2.11/infback.c \
-	$(DEPS_DIR)/zlib-1.2.11/inffast.c \
-	$(DEPS_DIR)/zlib-1.2.11/inflate.c \
-	$(DEPS_DIR)/zlib-1.2.11/inftrees.c \
-	$(DEPS_DIR)/zlib-1.2.11/trees.c \
-	$(DEPS_DIR)/zlib-1.2.11/uncompr.c \
-	$(DEPS_DIR)/zlib-1.2.11/zutil.c
-FLAGS += -I$(DEPS_DIR)/zlib-1.2.11
-CORE_DEFINE += -DNO_GZCOMPRESS -DNO_GZIP
+    $(DEPS_DIR)/zlib/uncompr.c
+else
+SOURCES_C += \
+	$(DEPS_DIR)/zlib/adler32.c \
+	$(DEPS_DIR)/zlib/compress.c \
+	$(DEPS_DIR)/zlib/crc32.c \
+	$(DEPS_DIR)/zlib/deflate.c \
+	$(DEPS_DIR)/zlib/infback.c \
+	$(DEPS_DIR)/zlib/inffast.c \
+	$(DEPS_DIR)/zlib/inflate.c \
+	$(DEPS_DIR)/zlib/inftrees.c \
+	$(DEPS_DIR)/zlib/trees.c \
+	$(DEPS_DIR)/zlib/uncompr.c \
+	$(DEPS_DIR)/zlib/zutil.c
+endif
+FLAGS += -I$(DEPS_DIR)/zlib
 
 # SDL
 SOURCES_C += \
