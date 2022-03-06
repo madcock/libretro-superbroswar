@@ -1382,7 +1382,7 @@ SDL_Surface * CMap::createThumbnailSurface(bool fUseClassicPack)
         //if the background file doesn't exist, use the classic background
         if (!File_Exists(path))
             path = convertPath("gfx/packs/backgrounds/Land_Classic.png", gamegraphicspacklist->current_name());
-    }
+  }
 
     SDL_Surface * temp = IMG_Load(path.c_str());
     if (!temp) {
@@ -2337,7 +2337,7 @@ WarpExit * CMap::getRandomWarpExit(int connection, int currentID)
 
     WarpExit * currentWarp = NULL;
 
-    for (int k = 0; k < numwarpexits; k++) {
+    for (int k = 0; k < numwarpexits && k < MAXWARPS; k++) {
         if (warpexits[k].connection == connection) {
             if (warpexits[k].id == currentID)
                 currentWarp = &warpexits[k];
@@ -2359,14 +2359,14 @@ void CMap::clearWarpLocks()
         warplocked[iConnection] = false;
     }
 
-    for (short iWarpExit = 0; iWarpExit < numwarpexits; iWarpExit++) {
+    for (short iWarpExit = 0; iWarpExit < numwarpexits && iWarpExit < MAXWARPS; iWarpExit++) {
         warpexits[iWarpExit].locktimer = 0;
     }
 }
 
 void CMap::drawWarpLocks()
 {
-    for (int iWarpExit = 0; iWarpExit < numwarpexits; iWarpExit++) {
+    for (int iWarpExit = 0; iWarpExit < numwarpexits && iWarpExit < MAXWARPS; iWarpExit++) {
         if (warplocked[warpexits[iWarpExit].connection] || warpexits[iWarpExit].locktimer > 0) {
             rm->spr_warplock.draw(warpexits[iWarpExit].lockx, warpexits[iWarpExit].locky);
         }
@@ -2386,7 +2386,7 @@ void CMap::update()
     }
 
     //If warp is individually locked, then reduce lock timer
-    for (short iWarpExit = 0; iWarpExit < numwarpexits; iWarpExit++) {
+    for (short iWarpExit = 0; iWarpExit < numwarpexits && iWarpExit < MAXWARPS; iWarpExit++) {
         if (warpexits[iWarpExit].locktimer > 0)
             --warpexits[iWarpExit].locktimer;
     }

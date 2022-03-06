@@ -10,8 +10,11 @@ INCFLAGS = \
 
 CORE_DEFINE := -DNETWORK_DISABLED
 
-FLAGS += -ffast-math
-CXXFLAGS += -std=c++11 -fexceptions -fpermissive
+FLAGS += -ffast-math -fno-strict-aliasing
+FLAGS += -Wno-narrowing -Wno-unused-but-set-variable -Wno-unused-label
+FLAGS += -Wno-misleading-indentation -Wno-unknown-pragmas
+CXXFLAGS += -std=c++11 -fexceptions -fvisibility-inlines-hidden
+CFLAGS += -std=c99
 
 SOURCES_C =
 SOURCES_CXX =
@@ -37,7 +40,7 @@ SOURCES_C += \
     $(DEPS_DIR)/libvorbisidec-1.2.1/codebook.c \
     $(DEPS_DIR)/libvorbisidec-1.2.1/sharedbook.c
 FLAGS += -I$(DEPS_DIR)/libogg/include
-CORE_DEFINE += -DHAVE_ALLOCA -DVAR_ARRAYS -DHAVE_SYS_TYPES_H
+CORE_DEFINE += -DVAR_ARRAYS -DHAVE_SYS_TYPES_H
 
 # png
 SOURCES_C += \
@@ -261,23 +264,4 @@ SOURCES_CXX += \
     $(CORE_DIR)/src/smw/ui/MI_StringScroll.cpp \
     $(CORE_DIR)/src/smw/ui/MI_TeamSelect.cpp \
     $(CORE_DIR)/src/smw/ui/NetworkListScroll.cpp
-
-ifeq ($(platform),osx)
-    CXXFLAGS += -Wno-c++11-narrowing
-endif
-
-ifeq ($(platform),ios-arm64)
-    CXXFLAGS += -Wno-c++11-narrowing
-endif
-
-ifeq ($(platform),ios9)
-    CXXFLAGS += -Wno-c++11-narrowing
-endif
-
-ifeq ($(platform),tvos-arm64)
-    CXXFLAGS += -Wno-c++11-narrowing
-endif
-
-ifeq ($(platform),vita)
-    CXXFLAGS += -Wno-narrowing
-endif
+    

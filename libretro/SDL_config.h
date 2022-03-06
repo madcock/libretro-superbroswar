@@ -98,7 +98,7 @@
 #define HAVE_ATOF 1
 #define HAVE_STRCMP 1
 #define HAVE_STRNCMP    1
-#define HAVE_STRCASECMP 1
+//#define HAVE_STRCASECMP 1
 #define HAVE_STRNCASECMP 1
 #define HAVE_VSSCANF 1
 #define HAVE_VSNPRINTF  1
@@ -140,9 +140,9 @@
 #define HAVE_TANF   1
 //#define HAVE_SIGACTION 1
 #define HAVE_SETJMP 1
-#define HAVE_NANOSLEEP  1
+//#define HAVE_NANOSLEEP  1
 #define HAVE_SYSCONF    1
-#define HAVE_CLOCK_GETTIME  1
+//#define HAVE_CLOCK_GETTIME  1
 
 #define SIZEOF_VOIDP 4
 
