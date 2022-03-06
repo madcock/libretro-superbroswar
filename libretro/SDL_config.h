@@ -47,8 +47,8 @@
 /* Enable the stub thread support (src/thread/generic/\*.c) */
 #define SDL_THREADS_DISABLED	1
 
-/* Enable the libretro timer support (src/timer/libretro/\*.c) */
-#define SDL_TIMER_LIBRETRO	1
+/* Enable the libretro timer support (src/timer/dummy/\*.c) */
+#define SDL_TIMERS_DISABLED	1
 
 /* Enable the dummy video driver (src/video/dummy/\*.c) */
 #define SDL_VIDEO_DRIVER_DUMMY	1
@@ -71,7 +71,7 @@
 #define HAVE_CALLOC 1
 #define HAVE_REALLOC    1
 #define HAVE_FREE   1
-#define HAVE_ALLOCA 1
+//#define HAVE_ALLOCA 1
 //#define HAVE_GETENV 1
 //#define HAVE_SETENV 1
 //#define HAVE_PUTENV 1
@@ -140,7 +140,7 @@
 #define HAVE_TANF   1
 //#define HAVE_SIGACTION 1
 #define HAVE_SETJMP 1
-#define HAVE_NANOSLEEP  1
+//#define HAVE_NANOSLEEP  1
 #define HAVE_SYSCONF    1
 //#define HAVE_CLOCK_GETTIME  1
 

@@ -84,7 +84,7 @@ SOURCES_C += \
 	$(wildcard $(DEPS_DIR)/SDL/src/video/dummy/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/joystick/libretro/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/cdrom/dummy/*.c) \
-	$(wildcard $(DEPS_DIR)/SDL/src/timer/libretro/*.c) \
+	$(wildcard $(DEPS_DIR)/SDL/src/timer/dummy/*.c) \
 	$(wildcard $(DEPS_DIR)/SDL/src/loadso/dummy/*.c) \
     $(wildcard $(DEPS_DIR)/SDL/src/thread/generic/*.c)
 FLAGS += -I$(DEPS_DIR)/SDL/include
