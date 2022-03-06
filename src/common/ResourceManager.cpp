@@ -408,10 +408,6 @@ bool CResourceManager::LoadGameSounds()
         return false;
 #endif
 
-#if defined(VITA) || defined(__SWITCH__) // TEST
-    return false;
-#endif
-
     const char * soundpack = soundpacklist->current_name();
 
     sfx_mip.init(convertPath("sfx/packs/mip.wav", soundpack));
