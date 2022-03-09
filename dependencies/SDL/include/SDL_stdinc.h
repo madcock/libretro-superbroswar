@@ -151,7 +151,7 @@ typedef enum {
 	DUMMY_ENUM_VALUE
 } SDL_DUMMY_ENUM;
 
-#if !defined(__NDS__) && !defined(VITA)
+#if !defined(__NDS__) && !defined(VITA) && !defined(_3DS)
 SDL_COMPILE_TIME_ASSERT(enum, sizeof(SDL_DUMMY_ENUM) == sizeof(int));
 #endif
 /*@}*/
