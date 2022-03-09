@@ -72,9 +72,13 @@ include:
   - project: 'libretro-infrastructure/ci-templates'
     file: '/vita-static.yml'
     
+  # Nintendo Wii
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/wii-static.yml'
+
   # Nintendo WiiU
-  # - project: 'libretro-infrastructure/ci-templates'
-  #   file: '/wiiu-static.yml'
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/wiiu-static.yml'
 
   # Nintendo Switch
   - project: 'libretro-infrastructure/ci-templates'
@@ -219,12 +223,22 @@ libretro-build-tvos-arm64:
     MAKEFILE: Makefile.libretro
 
 ################################### CONSOLES #################################
+# Nintendo Wii
+libretro-build-wii:
+  extends:
+    - .libretro-wii-static-retroarch-master
+    - .core-defs
+  variables:
+    MAKEFILE: Makefile.libretro
+
 # Nintendo WiiU
-# libretro-build-wiiu:
-#   extends:
-#     - .libretro-wiiu-static-retroarch-master
-#     - .core-defs
-    
+libretro-build-wiiu:
+  extends:
+    - .libretro-wiiu-static-retroarch-master
+    - .core-defs
+  variables:
+    MAKEFILE: Makefile.libretro
+
 # Nintendo Switch
 libretro-build-libnx-aarch64:
   extends:
