@@ -443,7 +443,6 @@ void retro_init(void)
 
         { 0 },
     };
-    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
 
     input_state_cb = NULL;
     audio_batch_cb = NULL;
@@ -469,11 +468,6 @@ void retro_init(void)
         log_cb = logging.log;
     } else {
         log_cb = fallback_log;
-    }
-
-    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
-    {
-        log_cb(RETRO_LOG_INFO, "RGB565 is not supported.\n");
     }
     
     vfs_iface_info.required_interface_version = 3;
@@ -550,6 +544,14 @@ void retro_run(void)
 
 bool retro_load_game(const struct retro_game_info *info)
 {
+    enum retro_pixel_format fmt = RETRO_PIXEL_FORMAT_RGB565;
+
+    if (!environ_cb(RETRO_ENVIRONMENT_SET_PIXEL_FORMAT, &fmt))
+    {
+        log_cb(RETRO_LOG_INFO, "RGB565 is not supported.\n");
+        return false;
+    }
+    
     if (info && !string_is_empty(info->path))
     {
         fill_pathname_basedir(retro_game_path, info->path, sizeof(retro_game_path));
