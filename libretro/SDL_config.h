@@ -146,10 +146,4 @@
 
 #define SIZEOF_VOIDP 4
 
-#if (BYTE_ORDER == BIG_ENDIAN)
-#define SDL_BYTEORDER SDL_BIG_ENDIAN
-#else
-#define SDL_BYTEORDER SDL_LIL_ENDIAN
-#endif
-
 #endif /* _SDL_config_h */
