@@ -73,8 +73,8 @@ include:
     file: '/vita-static.yml'
 
   # Nintendo 3DS
-  # - project: 'libretro-infrastructure/ci-templates'
-  #   file: '/ctr-static.yml'
+  - project: 'libretro-infrastructure/ci-templates'
+    file: '/ctr-static.yml'
 
   # Nintendo Wii
   # - project: 'libretro-infrastructure/ci-templates'
@@ -228,12 +228,12 @@ libretro-build-tvos-arm64:
 
 ################################### CONSOLES #################################
 # Nintendo 3DS
-# libretro-build-ctr:
-#   extends:
-#     - .libretro-ctr-static-retroarch-master
-#     - .core-defs
-#   variables:
-#     MAKEFILE: Makefile.libretro
+libretro-build-ctr:
+  extends:
+    - .libretro-ctr-static-retroarch-master
+    - .core-defs
+  variables:
+    MAKEFILE: Makefile.libretro
 
 # Nintendo Wii
 # libretro-build-wii:
