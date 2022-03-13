@@ -10,6 +10,7 @@
     GIT_SUBMODULE_STRATEGY: recursive
     JNI_PATH: .
     CORENAME: superbroswar
+    MAKEFILE: Makefile.libretro
 
 # Inclusion templates, required for the build to work
 include:
@@ -110,16 +111,12 @@ libretro-build-windows-x64:
   extends:
     - .libretro-windows-x64-mingw-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
     
 # Windows 32-bit
 libretro-build-windows-i686:
   extends:
     - .libretro-windows-i686-mingw-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # Windows msvc10 64-bit
 # libretro-build-windows-msvc10-x64:
@@ -150,32 +147,24 @@ libretro-build-linux-x64:
   extends:
     - .libretro-linux-x64-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # Linux 32-bit
 libretro-build-linux-i686:
   extends:
     - .libretro-linux-i686-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # MacOS 64-bit
 libretro-build-osx-x64:
   extends:
     - .libretro-osx-x64-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # MacOS ARM 64-bit
 libretro-build-osx-arm64:
   extends:
     - .libretro-osx-arm64-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 ################################### CELLULAR #################################
 # Android ARMv7a
@@ -207,24 +196,18 @@ libretro-build-ios-arm64:
   extends:
     - .libretro-ios-arm64-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # iOS (armv7) [iOS 9 and up]
 libretro-build-ios9:
   extends:
     - .libretro-ios9-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
     
 # tvOS
 libretro-build-tvos-arm64:
   extends:
     - .libretro-tvos-arm64-make-default
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 ################################### CONSOLES #################################
 # Nintendo 3DS
@@ -232,8 +215,6 @@ libretro-build-ctr:
   extends:
     - .libretro-ctr-static-retroarch-master
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # Nintendo Wii
 # libretro-build-wii:
@@ -248,16 +229,12 @@ libretro-build-wiiu:
   extends:
     - .libretro-wiiu-static-retroarch-master
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # Nintendo Switch
 libretro-build-libnx-aarch64:
   extends:
     - .libretro-libnx-static-retroarch-master
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
 
 # PlayStation Portable
 # libretro-build-psp:
@@ -270,5 +247,3 @@ libretro-build-vita:
   extends:
     - .libretro-vita-static-retroarch-master
     - .core-defs
-  variables:
-    MAKEFILE: Makefile.libretro
