@@ -14,7 +14,6 @@ FLAGS += -ffast-math -fno-strict-aliasing
 FLAGS += -Wno-narrowing -Wno-unused-label
 FLAGS += -Wno-misleading-indentation -Wno-unknown-pragmas
 CXXFLAGS += -std=c++11 -fexceptions -fvisibility-inlines-hidden
-CFLAGS += -std=c99
 
 SOURCES_C =
 SOURCES_CXX =
