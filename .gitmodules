@@ -7,6 +7,9 @@
 [submodule "dependencies/SDL_mixer"]
 	path = dependencies/SDL_mixer
 	url = https://github.com/libsdl-org/SDL_mixer.git
+		ignore = untracked
 [submodule "dependencies/SDL_image"]
 	path = dependencies/SDL_image
 	url = https://github.com/libsdl-org/SDL_image.git
+	ignore = untracked
+	
